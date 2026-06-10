@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
-    <html lang="en" className={`${inter.variable} ${ibmPlexSans.variable}`}>
+    <html lang="en" className={`${inter.variable} ${ibmPlexSans.variable}`} suppressHydrationWarning>
       <body className="bg-[#fbf9f8] text-[#1b1c1c] antialiased min-h-screen" suppressHydrationWarning>
         {children}
       </body>

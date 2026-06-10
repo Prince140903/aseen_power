@@ -1,99 +1,39 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { MapPin, ArrowUpRight, Search, Zap, Filter } from 'lucide-react';
+import type { Project as CMSProject } from '@/lib/cms';
+import Image from 'next/image';
 
-interface Project {
-  id: string;
-  title: string;
-  category: 'Industrial' | 'Commercial' | 'Infrastructure';
-  location: string;
-  detail: string;
-  imageUrl: string;
-  kVA?: string;
-  year?: string;
+interface ProjectsViewProps {
+  projects: CMSProject[];
 }
 
-export default function ProjectsView() {
+export default function ProjectsView({ projects = [] }: ProjectsViewProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('All Projects');
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const categories = ['All Projects', 'Industrial', 'Commercial', 'Infrastructure'];
 
-  const projectsData: Project[] = [
-    {
-      id: 'proj-1',
-      title: 'Techno-Park Manufacturing Unit',
-      category: 'Industrial',
-      location: 'Pune, Maharashtra',
-      detail: 'Complete 33KV substation installation, internal power distribution bus ducting, and automated generator synchronizing panels for a heavy engine casting facility.',
-      imageUrl: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=600',
-      kVA: '2,500 kVA',
-      year: '2024'
-    },
-    {
-      id: 'proj-2',
-      title: 'Grand Meridian IT Park',
-      category: 'Commercial',
-      location: 'Bangalore, Karnataka',
-      detail: 'Integrated microprocessor lighting control systems, emergency backup solutions, double busbar installations, and star-delta heavy HVAC starters for high-rise corporate towers.',
-      imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=600',
-      kVA: '5,000 kVA',
-      year: '2025'
-    },
-    {
-      id: 'proj-3',
-      title: 'City Metro Power Grid',
-      category: 'Infrastructure',
-      location: 'Hyderabad, Telangana',
-      detail: 'Laying of 110KV heavy underground transmission lines across critical urban corridors, linking major substation units to optimize local municipal grids.',
-      imageUrl: 'https://images.unsplash.com/photo-1544724480-8237305d33b4?auto=format&fit=crop&q=80&w=600',
-      kVA: '12.5 MVA',
-      year: '2024'
-    },
-    {
-      id: 'proj-4',
-      title: 'Oceanic Petrochemical Grid',
-      category: 'Industrial',
-      location: 'Dahej, Gujarat',
-      detail: 'Design and commissioning of flame-proof distribution boards, synchronized double-ended load centers, and active harmonic filters for hazardous environments.',
-      imageUrl: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80&w=600',
-      kVA: '3,000 kVA',
-      year: '2023'
-    },
-    {
-      id: 'proj-5',
-      title: 'Central Government Hospital Block',
-      category: 'Commercial',
-      location: 'New Delhi',
-      detail: 'Fail-safe electrical networks incorporating high-speed AMF transfer panels, dual redundant UPS banks, and clean-power isolation transformers for surgical operation theatres.',
-      imageUrl: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80&w=600',
-      kVA: '1,500 kVA',
-      year: '2025'
-    },
-    {
-      id: 'proj-6',
-      title: 'Solar Farm Grid Sync Substation',
-      category: 'Infrastructure',
-      location: 'Jodhpur, Rajasthan',
-      detail: 'Turnkey pooling substation engineering comprising power transformers, state-of-the-art remote telemetry units (scada), and grid-interfaced vacuum circuit breakers (VCB).',
-      imageUrl: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&q=80&w=600',
-      kVA: '25.0 MVA',
-      year: '2024'
-    }
-  ];
+  // Map CMS data to display format
+  const projectsData: CMSProject[] = projects.length > 0 ? projects : [];
 
   // Filtering logic
   const filteredProjects = projectsData.filter(project => {
     const matchesCategory = selectedCategory === 'All Projects' || project.category === selectedCategory;
     const matchesSearch = project.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                           project.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          project.detail.toLowerCase().includes(searchQuery.toLowerCase());
+                          project.description.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
-  return (
+  return mounted ? (
     <div className="bg-[#fbf9f8] min-h-screen py-16 sm:py-24" id="projects-view-root">
       <div className="max-w-[1280px] mx-auto px-6">
         
@@ -165,9 +105,11 @@ export default function ProjectsView() {
               >
                 {/* Photo Header */}
                 <div className="relative h-56 w-full overflow-hidden">
-                  <img 
-                    src={project.imageUrl} 
-                    alt={project.title} 
+                  <Image
+                    src={project.image_url || 'https://via.placeholder.com/400x300?text=Project'} 
+                    alt={project.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
                   />
                   {/* Category Pin Badge matching Image 1: Industrial, Commercial, Infrastructure */}
@@ -197,13 +139,13 @@ export default function ProjectsView() {
                     </h3>
 
                     <p className="font-sans text-xs sm:text-sm text-[#444748] leading-relaxed mb-6">
-                      {project.detail}
+                      {project.description}
                     </p>
                   </div>
 
                   {/* Footer link to launch blueprints modal or get specs */}
                   <div className="pt-4 border-t border-gray-100 flex items-center justify-between">
-                    <span className="font-mono text-[9px] text-[#4af] bg-blue-50 text-blue-900 border border-blue-100 px-2.5 py-1 rounded-sm uppercase tracking-wider font-extrabold flex items-center gap-1">
+                    <span className="font-mono text-[9px] text-[#4af] bg-blue-50 border border-blue-100 px-2.5 py-1 rounded-sm uppercase tracking-wider font-extrabold flex items-center gap-1">
                       <Zap size={10} className="fill-blue-500 stroke-blue-500" />
                       COMMISSIONED
                     </span>
@@ -237,5 +179,7 @@ export default function ProjectsView() {
 
       </div>
     </div>
+  ) : (
+    <div className="bg-[#fbf9f8] min-h-screen py-16 sm:py-24" />
   );
 }
