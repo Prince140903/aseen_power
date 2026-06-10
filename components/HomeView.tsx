@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { 
   ShieldCheck, 
@@ -36,6 +36,11 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formError, setFormError] = useState('');
   const [ticketId, setTicketId] = useState<number>(1000);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -58,7 +63,7 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
     }, 5500);
   };
 
-  return (
+  return mounted ? (
     <div className="relative" id="home-view-container">
       {/* 1. IMMERSIVE HERO SECTION - STYLISH SUBSTATION TWILIGHT SCREEN */}
       <section className="relative min-h-[85vh] flex items-center justify-center bg-stone-950 text-white overflow-hidden py-20 px-6">
@@ -187,7 +192,7 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
             {/* Service 1 */}
             <div 
               onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r border-[#e9e8e7] flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
+              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
             >
               <div>
                 <div className="flex items-center justify-between mb-6">
@@ -207,7 +212,7 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
             {/* Service 2 */}
             <div 
               onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r border-[#e9e8e7] flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
+              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
             >
               <div>
                 <div className="flex items-center justify-between mb-6">
@@ -227,7 +232,7 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
             {/* Service 3 */}
             <div 
               onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r border-[#e9e8e7] flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
+              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
             >
               <div>
                 <div className="flex items-center justify-between mb-6">
@@ -247,7 +252,7 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
             {/* Service 4 */}
             <div 
               onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r border-[#e9e8e7] flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
+              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
             >
               <div>
                 <div className="flex items-center justify-between mb-6">
@@ -267,7 +272,7 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
             {/* Service 5 */}
             <div 
               onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r border-[#e9e8e7] flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
+              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
             >
               <div>
                 <div className="flex items-center justify-between mb-6">
@@ -287,7 +292,7 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
             {/* Service 6 */}
             <div 
               onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r border-[#e9e8e7] flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
+              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
             >
               <div>
                 <div className="flex items-center justify-between mb-6">
@@ -594,5 +599,7 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
         </div>
       </section>
     </div>
+  ) : (
+    <div className="relative" id="home-view-container" style={{ minHeight: '100vh' }} />
   );
 }

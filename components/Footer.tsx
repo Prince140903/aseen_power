@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail, Phone, MapPin, ExternalLink, Globe, Shield } from 'lucide-react';
 
 interface FooterProps {
@@ -9,12 +9,18 @@ interface FooterProps {
 }
 
 export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const handleQuickLink = (tab: string) => {
     setActiveTab(tab);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  return (
+  return mounted ? (
     <footer className="bg-black text-white py-16 lg:py-24 border-t-2 border-[#785919]/40 relative overflow-hidden">
       {/* Subtle blueprints background grid overlay */}
       <div className="absolute inset-0 engineering-grid opacity-[0.03] pointer-events-none" />
@@ -202,5 +208,7 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
 
       </div>
     </footer>
+  ) : (
+    <footer className="bg-black h-32" />
   );
 }

@@ -3,6 +3,7 @@
 import React from 'react';
 import { ShieldCheck, Target, Users, HardHat, Eye, Award, CheckCircle, Zap } from 'lucide-react';
 import { motion } from 'motion/react';
+import Image from 'next/image';
 
 export default function AboutView() {
   const stats = [
@@ -61,9 +62,11 @@ export default function AboutView() {
           
           {/* Left Block photo */}
           <div className="lg:col-span-6 relative h-[400px] sm:h-[480px] rounded-lg overflow-hidden border border-[#e9e8e7]" id="about-brand-photo">
-            <img 
+            <Image
               src="https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80&w=800" 
-              alt="High-Voltage Switchyard Commissioning" 
+              alt="High-Voltage Switchyard Commissioning"
+              width={800}
+              height={480}
               className="w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-stone-900/10" />
