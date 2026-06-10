@@ -14,8 +14,13 @@ import {
   Calculator,
   Compass
 } from 'lucide-react';
+import type { Service } from '@/lib/cms';
 
-export default function ServicesView() {
+interface ServicesViewProps {
+  services: Service[];
+}
+
+export default function ServicesView({ services = [] }: ServicesViewProps) {
   // Calculator state
   const [loadKw, setLoadKw] = useState<number>(350);
   const [powerFactor, setPowerFactor] = useState<number>(0.85);
@@ -55,144 +60,64 @@ export default function ServicesView() {
           <div className="w-16 h-1 bg-[#785919] mx-auto mt-6 rounded-full" />
         </div>
 
-        {/* Dense Grid of 3 Core Services matching Image 1 exactly */}
+        {/* Services Grid - CMS Driven */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-24" id="services-mockup1-grid">
-          
-          {/* Card 1: Industrial Electrification */}
-          <div className="bg-white rounded-lg border border-[#e9e8e7] p-8 sm:p-10 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-            <div>
-              {/* Gold Icon Box */}
-              <div className="w-12 h-12 rounded-sm bg-[#fbf9f8] border border-[#eac076]/30 flex items-center justify-center text-[#785919] mb-8">
-                <Factory className="w-6 h-6" />
-              </div>
-              
-              <h2 className="font-display font-bold text-xl text-black tracking-tight mb-4">
-                Industrial Electrification
-              </h2>
-              
-              <p className="font-sans text-sm text-[#444748] leading-relaxed mb-8">
-                Complete heavy-duty electrical systems tailored for manufacturing plants, automotive lines, chemical units, and metallurgy hubs to rigorous safety parameters.
-              </p>
-
-              {/* Checklist items with gold geometric square motifs */}
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-none bg-[#785919] mt-2 shrink-0" />
-                  <span className="font-display text-xs lg:text-sm font-semibold text-stone-900 tracking-wide">
-                    HT Substations & Transformer Installation
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-none bg-[#785919] mt-2 shrink-0" />
-                  <span className="font-display text-xs lg:text-sm font-semibold text-stone-900 tracking-wide">
-                    Heavy Load Balancing & Sectional Distribution
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-none bg-[#785919] mt-2 shrink-0" />
-                  <span className="font-display text-xs lg:text-sm font-semibold text-stone-900 tracking-wide">
-                    DG Sets Sync & Emergency Busbars integration
-                  </span>
-                </li>
-              </ul>
+          {services.length === 0 ? (
+            <div className="col-span-full text-center py-12 text-gray-500">
+              <p className="font-display text-sm">No services available</p>
             </div>
-            
-            <div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between text-xs font-display font-bold text-[#785919]">
-              <span>STATUS: OFF-GRID & HYBRID</span>
-              <span>100% REGULATED</span>
-            </div>
-          </div>
+          ) : (
+            services.map((service) => {
+              // Map icon names to components
+              const iconMap: Record<string, React.ReactNode> = {
+                'Factory': <Factory className="w-6 h-6" />,
+                'Building2': <Building2 className="w-6 h-6" />,
+                'Zap': <Zap className="w-6 h-6" />,
+                'Cpu': <Cpu className="w-6 h-6" />
+              };
 
-          {/* Card 2: Commercial Infrastructure */}
-          <div className="bg-white rounded-lg border border-[#e9e8e7] p-8 sm:p-10 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-            <div>
-              {/* Gold Icon Box */}
-              <div className="w-12 h-12 rounded-sm bg-[#fbf9f8] border border-[#eac076]/30 flex items-center justify-center text-[#785919] mb-8">
-                <Building2 className="w-6 h-6" />
-              </div>
-              
-              <h2 className="font-display font-bold text-xl text-black tracking-tight mb-4">
-                Commercial Infrastructure
-              </h2>
-              
-              <p className="font-sans text-sm text-[#444748] leading-relaxed mb-8">
-                Expert blueprinting, execution, and lighting management for modern IT Parks, luxury hospitality towers, shopping terminals, and premium workspaces.
-              </p>
+              return (
+                <motion.div
+                  key={service.id}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="bg-white rounded-lg border border-[#e9e8e7] p-8 sm:p-10 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+                >
+                  <div>
+                    {/* Icon Box */}
+                    <div className="w-12 h-12 rounded-sm bg-[#fbf9f8] border border-[#eac076]/30 flex items-center justify-center text-[#785919] mb-8">
+                      {iconMap[service.icon] || iconMap['Factory']}
+                    </div>
+                    
+                    <h2 className="font-display font-bold text-xl text-black tracking-tight mb-4">
+                      {service.title}
+                    </h2>
+                    
+                    <p className="font-sans text-sm text-[#444748] leading-relaxed mb-8">
+                      {service.description}
+                    </p>
 
-              {/* Checklist items */}
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-none bg-[#785919] mt-2 shrink-0" />
-                  <span className="font-display text-xs lg:text-sm font-semibold text-stone-900 tracking-wide">
-                    Energy-Efficient Lighting Design & BMS Control
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-none bg-[#785919] mt-2 shrink-0" />
-                  <span className="font-display text-xs lg:text-sm font-semibold text-stone-900 tracking-wide">
-                    Microprocessor-based Fire Detection & Alarms
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-none bg-[#785919] mt-2 shrink-0" />
-                  <span className="font-display text-xs lg:text-sm font-semibold text-stone-900 tracking-wide">
-                    HVAC Heavy Drive Support & Starters
-                  </span>
-                </li>
-              </ul>
-            </div>
-            
-            <div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between text-xs font-display font-bold text-[#785919]">
-              <span>STATUS: BMS INTEGRATED</span>
-              <span>ISO CERTIFIED</span>
-            </div>
-          </div>
-
-          {/* Card 3: Specialized Solutions */}
-          <div className="bg-white rounded-lg border border-[#e9e8e7] p-8 sm:p-10 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
-            <div>
-              {/* Gold Icon Box */}
-              <div className="w-12 h-12 rounded-sm bg-[#fbf9f8] border border-[#eac076]/30 flex items-center justify-center text-[#785919] mb-8">
-                <Zap className="w-6 h-6" />
-              </div>
-              
-              <h2 className="font-display font-bold text-xl text-black tracking-tight mb-4">
-                Specialized Solutions
-              </h2>
-              
-              <p className="font-sans text-sm text-[#444748] leading-relaxed mb-8">
-                State-of-the-art power safety audits, power factor optimization schedules, and underground distribution cabling laying works.
-              </p>
-
-              {/* Checklist items */}
-              <ul className="space-y-4">
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-none bg-[#785919] mt-2 shrink-0" />
-                  <span className="font-display text-xs lg:text-sm font-semibold text-stone-900 tracking-wide">
-                    Power Factor Corrector Audits & Overhauls
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-none bg-[#785919] mt-2 shrink-0" />
-                  <span className="font-display text-xs lg:text-sm font-semibold text-stone-900 tracking-wide">
-                    110kV+ Specialized Underground Trench Cable
-                  </span>
-                </li>
-                <li className="flex items-start gap-3">
-                  <div className="w-2 h-2 rounded-none bg-[#785919] mt-2 shrink-0" />
-                  <span className="font-display text-xs lg:text-sm font-semibold text-stone-900 tracking-wide">
-                    Predictive Thermo Diagnostic Maintenance
-                  </span>
-                </li>
-              </ul>
-            </div>
-            
-            <div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between text-xs font-display font-bold text-[#785919]">
-              <span>STATUS: AUDIT REGISTERED</span>
-              <span>100% RELIABLE</span>
-            </div>
-          </div>
-
+                    {/* Features List */}
+                    <ul className="space-y-4">
+                      {service.features.map((feature, idx) => (
+                        <li key={idx} className="flex items-start gap-3">
+                          <div className="w-2 h-2 rounded-none bg-[#785919] mt-2 shrink-0" />
+                          <span className="font-display text-xs lg:text-sm font-semibold text-stone-900 tracking-wide">
+                            {feature}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  <div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between text-xs font-display font-bold text-[#785919]">
+                    <span>STATUS: {service.status}</span>
+                    <span>{service.certification}</span>
+                  </div>
+                </motion.div>
+              );
+            })
+          )}
         </div>
 
         {/* Interactive Element: Electrical Load Estimate Calculator */}
