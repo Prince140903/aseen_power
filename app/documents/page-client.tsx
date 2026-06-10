@@ -30,12 +30,20 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
   const handleUnlock = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setPasswordError('');
     
     try {
-      const res = await fetch('/api/content/settings');
-      const settings = await res.json();
+      // Fetch settings from CMS
+      const res = await fetch('/api/cms/settings');
+      const { settings } = await res.json();
       
-      if (password === settings.security.documentAccessPassword) {
+      if (!settings || !settings.document_access_password) {
+        setPasswordError('Unable to verify password. Please contact support.');
+        return;
+      }
+
+      // Check password
+      if (password === settings.document_access_password) {
         setIsUnlocked(true);
         localStorage.setItem('docsUnlocked', 'true');
         setPassword('');
@@ -45,27 +53,38 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
         setPassword('');
       }
     } catch (error) {
+      console.error('Error verifying password:', error);
       setPasswordError('Error verifying password. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
+  const handleLogout = () => {
+    setIsUnlocked(false);
+    localStorage.removeItem('docsUnlocked');
+    setPassword('');
+    setPasswordError('');
+  };
+
   const handleDocumentView = async (docId: string) => {
     setDownloadingId(docId);
     
     try {
+      const res = await fetch('/api/cms/settings');
+      const { settings } = await res.json();
+
       const response = await fetch('/api/documents/download', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           documentId: docId,
-          password: password
+          password: settings.document_access_password
         })
       });
 
       if (!response.ok) {
-        setPasswordError('Access denied. Session may have expired.');
+        setPasswordError('Access denied or document not found.');
         return;
       }
 
@@ -73,15 +92,11 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
       const url = window.URL.createObjectURL(blob);
       window.open(url, '_blank');
     } catch (error) {
-      setPasswordError('Error accessing document');
+      console.error('Error accessing document:', error);
+      setPasswordError('Error accessing document. Please try again.');
     } finally {
       setDownloadingId(null);
     }
-  };
-
-  const handleLogout = () => {
-    setIsUnlocked(false);
-    localStorage.removeItem('docsUnlocked');
   };
 
   return (
@@ -133,7 +148,7 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 "
                       >
                         {showPassword ? <EyeOff size={18} /> : <EyeIcon size={18} />}
                       </button>
@@ -149,7 +164,7 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-[#785919] hover:bg-black disabled:bg-gray-400 text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-colors duration-300 cursor-pointer flex items-center justify-center gap-2"
+                    className="w-full bg-[#785919] hover:bg-black disabled:bg-gray-400 text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-colors duration-300  flex items-center justify-center gap-2"
                   >
                     {loading ? (
                       <>
@@ -190,7 +205,7 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="px-4 py-2 bg-white border border-[#e9e8e7] text-black font-display text-xs font-bold tracking-widest uppercase rounded-sm hover:bg-gray-50 transition-colors cursor-pointer"
+                  className="px-4 py-2 bg-white border border-[#e9e8e7] text-black font-display text-xs font-bold tracking-widest uppercase rounded-sm hover:bg-gray-50 transition-colors "
                 >
                   LOCK
                 </button>
@@ -230,7 +245,7 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
                       <button
                         onClick={() => handleDocumentView(doc.id)}
                         disabled={downloadingId === doc.id}
-                        className="inline-flex items-center gap-2 mt-6 pt-6 border-t border-gray-100 text-[#785919] hover:text-black disabled:text-gray-400 font-display text-xs font-bold tracking-widest uppercase transition-colors cursor-pointer group/btn disabled:cursor-not-allowed"
+                        className="inline-flex items-center gap-2 mt-6 pt-6 border-t border-gray-100 text-[#785919] hover:text-black disabled:text-gray-400 font-display text-xs font-bold tracking-widest uppercase transition-colors  group/btn disabled:cursor-not-allowed"
                       >
                         {downloadingId === doc.id ? (
                           <>

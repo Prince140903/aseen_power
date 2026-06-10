@@ -171,7 +171,7 @@ export default function AdminGalleryTab() {
               setIsAdding(true);
               resetForm();
             }}
-            className="flex items-center gap-2 bg-[#785919] text-white px-4 py-3 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors cursor-pointer"
+            className="flex items-center gap-2 bg-[#785919] text-white px-4 py-3 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors "
           >
             <Plus size={16} />
             ADD IMAGE
@@ -229,7 +229,7 @@ export default function AdminGalleryTab() {
               <select
                 value={formData.category || 'Industrial'}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919] cursor-pointer"
+                className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919] "
               >
                 <option>Industrial</option>
                 <option>Commercial</option>
@@ -246,7 +246,7 @@ export default function AdminGalleryTab() {
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919] file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-bold file:bg-[#785919] file:text-white hover:file:bg-black cursor-pointer"
+              className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919] file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-bold file:bg-[#785919] file:text-white hover:file:bg-black "
             />
             {selectedImage && (
               <p className="text-xs text-green-600 mt-2 flex items-center gap-1">
@@ -285,7 +285,7 @@ export default function AdminGalleryTab() {
             <button
               onClick={handleSave}
               disabled={uploading}
-              className="flex items-center gap-2 bg-[#785919] text-white px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 bg-[#785919] text-white px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors  disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {uploading ? (
                 <>
@@ -306,7 +306,7 @@ export default function AdminGalleryTab() {
                 resetForm();
               }}
               disabled={uploading}
-              className="flex items-center gap-2 bg-gray-200 text-black px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-gray-300 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 bg-gray-200 text-black px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-gray-300 transition-colors  disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <X size={16} />
               CANCEL
@@ -349,13 +349,13 @@ export default function AdminGalleryTab() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => startEdit(image)}
-                      className="p-1 text-[#785919] hover:bg-yellow-50 rounded-sm transition-colors cursor-pointer"
+                      className="p-1 text-[#785919] hover:bg-yellow-50 rounded-sm transition-colors "
                     >
                       <Edit2 size={14} />
                     </button>
                     <button
                       onClick={() => handleDelete(image.id)}
-                      className="p-1 text-red-500 hover:bg-red-50 rounded-sm transition-colors cursor-pointer"
+                      className="p-1 text-red-500 hover:bg-red-50 rounded-sm transition-colors "
                     >
                       <Trash2 size={14} />
                     </button>

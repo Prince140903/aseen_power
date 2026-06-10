@@ -1,6 +1,7 @@
 import type {Metadata} from 'next';
 import { Inter, IBM_Plex_Sans } from 'next/font/google';
 import './globals.css'; // Global styles
+import { PremiumCursor } from '@/components/interactions/PremiumCursor';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -22,6 +23,7 @@ export default function RootLayout({children}: {children: React.ReactNode}) {
   return (
     <html lang="en" className={`${inter.variable} ${ibmPlexSans.variable}`} suppressHydrationWarning>
       <body className="bg-[#fbf9f8] text-[#1b1c1c] antialiased min-h-screen" suppressHydrationWarning>
+        <PremiumCursor />
         {children}
       </body>
     </html>

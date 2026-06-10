@@ -2,6 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
+import { ScrollReveal } from '@/components/animations/ScrollReveal';
+import { StaggerContainer, StaggerItem } from '@/components/animations/StaggerContainer';
+import { ClientsCarousel } from '@/components/ClientsCarousel';
 import { 
   ShieldCheck, 
   Settings, 
@@ -102,14 +105,14 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
               <button
                 onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                className="w-full sm:w-auto bg-[#785919] hover:bg-black text-white font-display text-xs tracking-widest font-bold uppercase py-4 px-8 rounded-sm transition-all duration-300 shadow-xl hover:shadow-2xl border border-[#785919] cursor-pointer"
+                className="w-full sm:w-auto bg-[#785919] hover:bg-black text-white font-display text-xs tracking-widest font-bold uppercase py-4 px-8 rounded-sm transition-all duration-300 shadow-xl hover:shadow-2xl border border-[#785919] "
                 id="hero-view-services"
               >
                 VIEW OUR SERVICES
               </button>
               <button
                 onClick={() => { setActiveTab('projects'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                className="w-full sm:w-auto hover:bg-white/10 text-white font-display text-xs tracking-widest font-bold uppercase py-4 px-8 rounded-sm transition-all duration-300 border border-white/40 cursor-pointer"
+                className="w-full sm:w-auto hover:bg-white/10 text-white font-display text-xs tracking-widest font-bold uppercase py-4 px-8 rounded-sm transition-all duration-300 border border-white/40 "
                 id="hero-explore-projects"
               >
                 EXPLORE PROJECTS
@@ -122,7 +125,7 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
       {/* 2. VALUE PROPS SECTION - WHY ASEEN POWER? */}
       <section className="py-20 bg-[#fbf9f8] border-b border-[#e9e8e7]">
         <div className="max-w-[1280px] mx-auto px-6">
-          <div className="text-center mb-16">
+          <ScrollReveal variant="fadeUp" className="text-center mb-16">
             <h2 className="font-display text-xs tracking-[0.25em] font-extrabold text-[#785919] uppercase mb-3">
               Institutional Credence
             </h2>
@@ -130,55 +133,79 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
               WHY ASEEN POWER?
             </h3>
             <div className="w-12 h-1 bg-[#785919] mx-auto mt-4 rounded-full" />
-          </div>
+          </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Box 1: Expertise */}
-            <div className="bg-white p-8 sm:p-10 rounded-lg border border-[#e9e8e7] flex flex-col items-center text-center transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1">
-              <div className="w-14 h-14 rounded-full bg-[#fbf9f8] border border-[#eac076]/30 flex items-center justify-center mb-6">
-                <Award className="w-6 h-6 text-[#785919]" />
-              </div>
-              <h4 className="font-display font-bold text-lg text-black mb-3">
-                Unmatched Expertise
-              </h4>
-              <p className="font-sans text-sm text-[#444748] leading-relaxed">
-                {"Aseen's 20+ years"} of collective engineering experience across varied sectors.
-              </p>
-            </div>
+            <StaggerItem>
+              <motion.div 
+                className="bg-white p-8 sm:p-10 rounded-lg border border-[#e9e8e7] flex flex-col items-center text-center transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 "
+                whileHover={{ y: -4 }}
+              >
+                <motion.div 
+                  className="w-14 h-14 rounded-full bg-[#fbf9f8] border border-[#eac076]/30 flex items-center justify-center mb-6"
+                  whileHover={{ scale: 1.1, backgroundColor: '#eac076' }}
+                >
+                  <Award className="w-6 h-6 text-[#785919]" />
+                </motion.div>
+                <h4 className="font-display font-bold text-lg text-black mb-3">
+                  Unmatched Expertise
+                </h4>
+                <p className="font-sans text-sm text-[#444748] leading-relaxed">
+                  {"Aseen's 20+ years"} of collective engineering experience across varied sectors.
+                </p>
+              </motion.div>
+            </StaggerItem>
 
             {/* Box 2: Reliable Solutions */}
-            <div className="bg-white p-8 sm:p-10 rounded-lg border border-[#e9e8e7] flex flex-col items-center text-center transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1">
-              <div className="w-14 h-14 rounded-full bg-[#fbf9f8] border border-[#eac076]/30 flex items-center justify-center mb-6">
-                <Settings className="w-6 h-6 text-[#785919]" />
-              </div>
-              <h4 className="font-display font-bold text-lg text-black mb-3">
-                Reliable Solutions
-              </h4>
-              <p className="font-sans text-sm text-[#444748] leading-relaxed">
-                Turnkey HT Substations, Heavy Industrial cabling, and scalable electrical infrastructure designed securely.
-              </p>
-            </div>
+            <StaggerItem>
+              <motion.div 
+                className="bg-white p-8 sm:p-10 rounded-lg border border-[#e9e8e7] flex flex-col items-center text-center transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 "
+                whileHover={{ y: -4 }}
+              >
+                <motion.div 
+                  className="w-14 h-14 rounded-full bg-[#fbf9f8] border border-[#eac076]/30 flex items-center justify-center mb-6"
+                  whileHover={{ scale: 1.1, backgroundColor: '#eac076' }}
+                >
+                  <Settings className="w-6 h-6 text-[#785919]" />
+                </motion.div>
+                <h4 className="font-display font-bold text-lg text-black mb-3">
+                  Reliable Solutions
+                </h4>
+                <p className="font-sans text-sm text-[#444748] leading-relaxed">
+                  Turnkey HT Substations, Heavy Industrial cabling, and scalable electrical infrastructure designed securely.
+                </p>
+              </motion.div>
+            </StaggerItem>
 
             {/* Box 3: Safety & Quality */}
-            <div className="bg-white p-8 sm:p-10 rounded-lg border border-[#e9e8e7] flex flex-col items-center text-center transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1">
-              <div className="w-14 h-14 rounded-full bg-[#fbf9f8] border border-[#eac076]/30 flex items-center justify-center mb-6">
-                <ShieldCheck className="w-6 h-6 text-[#785919]" />
-              </div>
-              <h4 className="font-display font-bold text-lg text-black mb-3">
-                Safety & Quality
-              </h4>
-              <p className="font-sans text-sm text-[#444748] leading-relaxed">
-                Consulted to the highest standard with ISO certified compliance processes and 100% incident-free history.
-              </p>
-            </div>
-          </div>
+            <StaggerItem>
+              <motion.div 
+                className="bg-white p-8 sm:p-10 rounded-lg border border-[#e9e8e7] flex flex-col items-center text-center transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1 "
+                whileHover={{ y: -4 }}
+              >
+                <motion.div 
+                  className="w-14 h-14 rounded-full bg-[#fbf9f8] border border-[#eac076]/30 flex items-center justify-center mb-6"
+                  whileHover={{ scale: 1.1, backgroundColor: '#eac076' }}
+                >
+                  <ShieldCheck className="w-6 h-6 text-[#785919]" />
+                </motion.div>
+                <h4 className="font-display font-bold text-lg text-black mb-3">
+                  Safety & Quality
+                </h4>
+                <p className="font-sans text-sm text-[#444748] leading-relaxed">
+                  Consulted to the highest standard with ISO certified compliance processes and 100% incident-free history.
+                </p>
+              </motion.div>
+            </StaggerItem>
+          </StaggerContainer>
         </div>
       </section>
 
       {/* 3. CORE SERVICES WITH GOLD ACCENT BORDERS */}
       <section className="py-24 bg-white border-b border-[#e9e8e7]">
         <div className="max-w-[1280px] mx-auto px-6">
-          <div className="text-center mb-16">
+          <ScrollReveal variant="fadeUp" className="text-center mb-16">
             <h2 className="font-display text-xs tracking-[0.25em] font-extrabold text-[#785919] uppercase mb-3">
               Capabilities Statement
             </h2>
@@ -186,129 +213,147 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
               OUR CORE SERVICES
             </h3>
             <div className="w-12 h-1 bg-[#785919] mx-auto mt-4 rounded-full" />
-          </div>
+          </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Service 1 */}
-            <div 
-              onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-display text-xs font-semibold tracking-wider text-secondary">01 / CONTRACTING</span>
-                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-secondary group-hover:translate-x-1 transition-all" />
+            <StaggerItem>
+              <motion.div 
+                onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 "
+                whileHover={{ y: -4 }}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="font-display text-xs font-semibold tracking-wider text-secondary">01 / CONTRACTING</span>
+                    <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-secondary group-hover:translate-x-1 transition-all" />
+                  </div>
+                  <h4 className="font-display font-bold text-lg text-black mb-3">Industrial Electrification</h4>
+                  <p className="font-sans text-sm text-[#444748] leading-relaxed">
+                    HT Substations, Government Submissions, and custom Panel Fabrication for heavy manufacturing plants and automotive facilities.
+                  </p>
                 </div>
-                <h4 className="font-display font-bold text-lg text-black mb-3">Industrial Electrification</h4>
-                <p className="font-sans text-sm text-[#444748] leading-relaxed">
-                  HT Substations, Government Submissions, and custom Panel Fabrication for heavy manufacturing plants and automotive facilities.
-                </p>
-              </div>
-              <div className="pt-6 mt-6 border-t border-gray-200/60 flex items-center text-xs font-display font-semibold text-[#785919]">
-                EXPLORE TECHNICAL SPECIFICATIONS
-              </div>
-            </div>
+                <div className="pt-6 mt-6 border-t border-gray-200/60 flex items-center text-xs font-display font-semibold text-[#785919]">
+                  EXPLORE TECHNICAL SPECIFICATIONS
+                </div>
+              </motion.div>
+            </StaggerItem>
 
             {/* Service 2 */}
-            <div 
-              onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-display text-xs font-semibold tracking-wider text-secondary">02 / INFRASTRUCTURE</span>
-                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-secondary group-hover:translate-x-1 transition-all" />
+            <StaggerItem>
+              <motion.div 
+                onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 "
+                whileHover={{ y: -4 }}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="font-display text-xs font-semibold tracking-wider text-secondary">02 / INFRASTRUCTURE</span>
+                    <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-secondary group-hover:translate-x-1 transition-all" />
+                  </div>
+                  <h4 className="font-display font-bold text-lg text-black mb-3">Commercial Infrastructure</h4>
+                  <p className="font-sans text-sm text-[#444748] leading-relaxed">
+                    Complete turnkey electrical engineering works for corporate headquarters, star hotels, shopping centers, and retail malls.
+                  </p>
                 </div>
-                <h4 className="font-display font-bold text-lg text-black mb-3">Commercial Infrastructure</h4>
-                <p className="font-sans text-sm text-[#444748] leading-relaxed">
-                  Complete turnkey electrical engineering works for corporate headquarters, star hotels, shopping centers, and retail malls.
-                </p>
-              </div>
-              <div className="pt-6 mt-6 border-t border-gray-200/60 flex items-center text-xs font-display font-semibold text-[#785919]">
-                EXPLORE TECHNICAL SPECIFICATIONS
-              </div>
-            </div>
+                <div className="pt-6 mt-6 border-t border-gray-200/60 flex items-center text-xs font-display font-semibold text-[#785919]">
+                  EXPLORE TECHNICAL SPECIFICATIONS
+                </div>
+              </motion.div>
+            </StaggerItem>
 
             {/* Service 3 */}
-            <div 
-              onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-display text-xs font-semibold tracking-wider text-secondary">03 / HIGH REQUISITIONS</span>
-                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-secondary group-hover:translate-x-1 transition-all" />
+            <StaggerItem>
+              <motion.div 
+                onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 "
+                whileHover={{ y: -4 }}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="font-display text-xs font-semibold tracking-wider text-secondary">03 / HIGH REQUISITIONS</span>
+                    <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-secondary group-hover:translate-x-1 transition-all" />
+                  </div>
+                  <h4 className="font-display font-bold text-lg text-black mb-3">Specialized Solutions</h4>
+                  <p className="font-sans text-sm text-[#444748] leading-relaxed">
+                    High-capacity underground cable laying, comprehensive power quality audits, and automated energy efficiency integration.
+                  </p>
                 </div>
-                <h4 className="font-display font-bold text-lg text-black mb-3">Specialized Solutions</h4>
-                <p className="font-sans text-sm text-[#444748] leading-relaxed">
-                  High-capacity underground cable laying, comprehensive power quality audits, and automated energy efficiency integration.
-                </p>
-              </div>
-              <div className="pt-6 mt-6 border-t border-gray-200/60 flex items-center text-xs font-display font-semibold text-[#785919]">
-                EXPLORE TECHNICAL SPECIFICATIONS
-              </div>
-            </div>
+                <div className="pt-6 mt-6 border-t border-gray-200/60 flex items-center text-xs font-display font-semibold text-[#785919]">
+                  EXPLORE TECHNICAL SPECIFICATIONS
+                </div>
+              </motion.div>
+            </StaggerItem>
 
             {/* Service 4 */}
-            <div 
-              onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-display text-xs font-semibold tracking-wider text-secondary">04 / MANUFACTURING</span>
-                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-secondary group-hover:translate-x-1 transition-all" />
+            <StaggerItem>
+              <motion.div 
+                onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 "
+                whileHover={{ y: -4 }}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="font-display text-xs font-semibold tracking-wider text-secondary">04 / MANUFACTURING</span>
+                    <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-secondary group-hover:translate-x-1 transition-all" />
+                  </div>
+                  <h4 className="font-display font-bold text-lg text-black mb-3">Panel Manufacturing</h4>
+                  <p className="font-sans text-sm text-[#444748] leading-relaxed">
+                    In-house specialized design and fabrication of heavy LT panels, AMF units, and microprocessor-controlled APFC panels.
+                  </p>
                 </div>
-                <h4 className="font-display font-bold text-lg text-black mb-3">Panel Manufacturing</h4>
-                <p className="font-sans text-sm text-[#444748] leading-relaxed">
-                  In-house specialized design and fabrication of heavy LT panels, AMF units, and microprocessor-controlled APFC panels.
-                </p>
-              </div>
-              <div className="pt-6 mt-6 border-t border-gray-200/60 flex items-center text-xs font-display font-semibold text-[#785919]">
-                EXPLORE TECHNICAL SPECIFICATIONS
-              </div>
-            </div>
+                <div className="pt-6 mt-6 border-t border-gray-200/60 flex items-center text-xs font-display font-semibold text-[#785919]">
+                  EXPLORE TECHNICAL SPECIFICATIONS
+                </div>
+              </motion.div>
+            </StaggerItem>
 
             {/* Service 5 */}
-            <div 
-              onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-display text-xs font-semibold tracking-wider text-secondary">05 / GREEN INTEGRATION</span>
-                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-secondary group-hover:translate-x-1 transition-all" />
+            <StaggerItem>
+              <motion.div 
+                onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 "
+                whileHover={{ y: -4 }}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="font-display text-xs font-semibold tracking-wider text-secondary">05 / GREEN INTEGRATION</span>
+                    <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-secondary group-hover:translate-x-1 transition-all" />
+                  </div>
+                  <h4 className="font-display font-bold text-lg text-black mb-3">Renewable Integration</h4>
+                  <p className="font-sans text-sm text-[#444748] leading-relaxed">
+                    Solar farm electrical infrastructure, substation retrofits, grid-interfaced synchronization, and sustainable utility setups.
+                  </p>
                 </div>
-                <h4 className="font-display font-bold text-lg text-black mb-3">Renewable Integration</h4>
-                <p className="font-sans text-sm text-[#444748] leading-relaxed">
-                  Solar farm electrical infrastructure, substation retrofits, grid-interfaced synchronization, and sustainable utility setups.
-                </p>
-              </div>
-              <div className="pt-6 mt-6 border-t border-gray-200/60 flex items-center text-xs font-display font-semibold text-[#785919]">
-                EXPLORE TECHNICAL SPECIFICATIONS
-              </div>
-            </div>
+                <div className="pt-6 mt-6 border-t border-gray-200/60 flex items-center text-xs font-display font-semibold text-[#785919]">
+                  EXPLORE TECHNICAL SPECIFICATIONS
+                </div>
+              </motion.div>
+            </StaggerItem>
 
             {/* Service 6 */}
-            <div 
-              onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 cursor-pointer"
-            >
-              <div>
-                <div className="flex items-center justify-between mb-6">
-                  <span className="font-display text-xs font-semibold tracking-wider text-secondary">06 / COMPREHENSIVE CARE</span>
-                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-secondary group-hover:translate-x-1 transition-all" />
+            <StaggerItem>
+              <motion.div 
+                onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                className="group bg-[#fbf9f8] p-8 rounded-lg border-l-4 border-[#785919] border-t border-b border-r flex flex-col justify-between hover:bg-white hover:border-[#785919]/50 hover:shadow-md transition-all duration-300 "
+                whileHover={{ y: -4 }}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-6">
+                    <span className="font-display text-xs font-semibold tracking-wider text-secondary">06 / COMPREHENSIVE CARE</span>
+                    <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-secondary group-hover:translate-x-1 transition-all" />
+                  </div>
+                  <h4 className="font-display font-bold text-lg text-black mb-3">Maintenance & AMC</h4>
+                  <p className="font-sans text-sm text-[#444748] leading-relaxed">
+                    Rigorous annual maintenance contract (AMC) scopes and 24/7 technical hotline dispatch for optimal industrial uptime.
+                  </p>
                 </div>
-                <h4 className="font-display font-bold text-lg text-black mb-3">Maintenance & AMC</h4>
-                <p className="font-sans text-sm text-[#444748] leading-relaxed">
-                  Rigorous annual maintenance contract (AMC) scopes and 24/7 technical hotline dispatch for optimal industrial uptime.
-                </p>
-              </div>
-              <div className="pt-6 mt-6 border-t border-gray-200/60 flex items-center text-xs font-display font-semibold text-[#785919]">
-                EXPLORE TECHNICAL SPECIFICATIONS
-              </div>
-            </div>
-          </div>
+                <div className="pt-6 mt-6 border-t border-gray-200/60 flex items-center text-xs font-display font-semibold text-[#785919]">
+                  EXPLORE TECHNICAL SPECIFICATIONS
+                </div>
+              </motion.div>
+            </StaggerItem>
+          </StaggerContainer>
         </div>
       </section>
 
@@ -330,7 +375,7 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
             {/* Card 1 */}
             <div 
               onClick={() => { setActiveTab('projects'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="relative h-72 rounded-lg overflow-hidden group cursor-pointer shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              className="relative h-72 rounded-lg overflow-hidden group  shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
               <div 
                 className="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-300"
@@ -350,7 +395,7 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
             {/* Card 2 */}
             <div 
               onClick={() => { setActiveTab('projects'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="relative h-72 rounded-lg overflow-hidden group cursor-pointer shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              className="relative h-72 rounded-lg overflow-hidden group  shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
               <div 
                 className="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-300"
@@ -370,7 +415,7 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
             {/* Card 3 */}
             <div 
               onClick={() => { setActiveTab('projects'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="relative h-72 rounded-lg overflow-hidden group cursor-pointer shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              className="relative h-72 rounded-lg overflow-hidden group  shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
               <div 
                 className="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-300"
@@ -405,7 +450,7 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
               </p>
               <button 
                 onClick={() => { setActiveTab('projects'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                className="font-display text-xs tracking-widest font-bold uppercase text-[#eac076] hover:text-white mt-8 inline-flex items-center gap-2 group cursor-pointer"
+                className="font-display text-xs tracking-widest font-bold uppercase text-[#eac076] hover:text-white mt-8 inline-flex items-center gap-2 group "
               >
                 VIEW DETAILED PORTFOLIO
                 <ArrowUpRight size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -586,7 +631,7 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
                   {/* Submit buttons */}
                   <button
                     type="submit"
-                    className="w-full bg-[#1b1c1c] hover:bg-[#785919] text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                    className="w-full bg-[#1b1c1c] hover:bg-[#785919] text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 "
                     id="lead-submit-btn"
                   >
                     GET A CONSULTATION
@@ -598,6 +643,9 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
           </div>
         </div>
       </section>
+
+      {/* 6. CLIENTS CAROUSEL SECTION */}
+      <ClientsCarousel />
     </div>
   ) : (
     <div className="relative" id="home-view-container" style={{ minHeight: '100vh' }} />

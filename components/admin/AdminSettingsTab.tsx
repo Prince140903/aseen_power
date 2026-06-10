@@ -450,7 +450,7 @@ export default function AdminSettingsTab() {
       >
         <button
           onClick={handleSave}
-          className="flex items-center gap-2 bg-[#785919] text-white px-8 py-3 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors cursor-pointer shadow-md"
+          className="flex items-center gap-2 bg-[#785919] text-white px-8 py-3 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors  shadow-md"
         >
           <Save size={18} />
           SAVE ALL SETTINGS

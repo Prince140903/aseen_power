@@ -137,7 +137,7 @@ export default function AdminServicesTab() {
               setIsAdding(true);
               resetForm();
             }}
-            className="flex items-center gap-2 bg-[#785919] text-white px-4 py-3 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors cursor-pointer"
+            className="flex items-center gap-2 bg-[#785919] text-white px-4 py-3 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors "
           >
             <Plus size={16} />
             ADD SERVICE
@@ -195,7 +195,7 @@ export default function AdminServicesTab() {
               <select
                 value={formData.icon || 'Factory'}
                 onChange={(e) => setFormData({ ...formData, icon: e.target.value })}
-                className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919] cursor-pointer"
+                className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919] "
               >
                 <option>Factory</option>
                 <option>Building2</option>
@@ -264,7 +264,7 @@ export default function AdminServicesTab() {
           <div className="flex gap-3">
             <button
               onClick={handleSave}
-              className="flex items-center gap-2 bg-[#785919] text-white px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors cursor-pointer"
+              className="flex items-center gap-2 bg-[#785919] text-white px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors "
             >
               <Save size={16} />
               SAVE
@@ -275,7 +275,7 @@ export default function AdminServicesTab() {
                 setEditingId(null);
                 resetForm();
               }}
-              className="flex items-center gap-2 bg-gray-200 text-black px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-gray-300 transition-colors cursor-pointer"
+              className="flex items-center gap-2 bg-gray-200 text-black px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-gray-300 transition-colors "
             >
               <X size={16} />
               CANCEL
@@ -307,13 +307,13 @@ export default function AdminServicesTab() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => startEdit(service)}
-                    className="p-2 text-[#785919] hover:bg-yellow-50 rounded-sm transition-colors cursor-pointer"
+                    className="p-2 text-[#785919] hover:bg-yellow-50 rounded-sm transition-colors "
                   >
                     <Edit2 size={16} />
                   </button>
                   <button
                     onClick={() => handleDelete(service.id)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-sm transition-colors cursor-pointer"
+                    className="p-2 text-red-500 hover:bg-red-50 rounded-sm transition-colors "
                   >
                     <Trash2 size={16} />
                   </button>

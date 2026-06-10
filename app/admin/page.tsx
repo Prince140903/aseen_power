@@ -41,8 +41,10 @@ export default function AdminPage() {
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simple password check - in production, this should be more secure
-    if (adminPassword === 'admin@aseen2026') {
+    // Use environment variable if available, otherwise fallback to hardcoded value
+    const validPassword = process.env.ADMIN_PASSWORD || 'admin@aseen2026';
+    
+    if (adminPassword === validPassword) {
       setIsAuthenticated(true);
       localStorage.setItem('adminAuth', 'true');
       setAdminPassword('');
@@ -99,7 +101,7 @@ export default function AdminPage() {
 
             <button
               type="submit"
-              className="w-full bg-[#785919] hover:bg-black text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-colors duration-300 cursor-pointer"
+              className="w-full bg-[#785919] hover:bg-black text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-colors duration-300"
             >
               ACCESS ADMIN PANEL
             </button>
@@ -156,7 +158,7 @@ export default function AdminPage() {
 
         <button
           onClick={handleLogout}
-          className="w-full px-4 py-3 bg-white/10 hover:bg-red-500/20 text-red-400 rounded-sm transition-colors flex items-center gap-2 font-display text-sm font-semibold justify-center cursor-pointer"
+          className="w-full px-4 py-3 bg-white/10 hover:bg-red-500/20 text-red-400 rounded-sm transition-colors flex items-center gap-2 font-display text-sm font-semibold justify-center "
         >
           <LogOut size={18} />
           LOGOUT

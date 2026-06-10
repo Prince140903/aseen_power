@@ -7,9 +7,13 @@ import Footer from '@/components/Footer';
 import HomeView from '@/components/HomeView';
 import ServicesView from '@/components/ServicesView';
 import ProjectsView from '@/components/ProjectsView';
+import ClientsView from '@/components/ClientsView';
 import AboutView from '@/components/AboutView';
 import ContactView from '@/components/ContactView';
-import { X, CheckCircle } from 'lucide-react';
+import { ScrollProgress } from '@/components/interactions/ScrollProgress';
+import { BackToTop } from '@/components/interactions/BackToTop';
+import { X, CheckCircle, AlertCircle, Loader } from 'lucide-react';
+import { initializeEmailJS, sendQuoteEmail, validateEmail } from '@/lib/emailjs';
 import type { Service, Project } from '@/lib/cms';
 
 interface PageClientProps {
@@ -31,20 +35,70 @@ export default function PageClient({ services = [], projects = [] }: PageClientP
     details: ''
   });
   const [quoteSubmitted, setQuoteSubmitted] = useState(false);
+  const [quoteLoading, setQuoteLoading] = useState(false);
+  const [quoteError, setQuoteError] = useState<string | null>(null);
 
   // Scroll to top on active tab changes - only after hydration
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'instant' as any });
   }, [activeTab]);
 
-  const handleQuoteSubmit = (e: React.FormEvent) => {
+  // Initialize EmailJS on component mount
+  useEffect(() => {
+    initializeEmailJS();
+  }, []);
+
+  const handleQuoteSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setQuoteSubmitted(true);
-    setTimeout(() => {
-      setQuoteSubmitted(false);
-      setIsQuoteDrawerOpen(false);
-      setQuoteFormData({ name: '', email: '', company: '', projectScope: 'HT Substation 33KV', details: '' });
-    }, 4500);
+    setQuoteError(null);
+
+    // Validate form data
+    if (!quoteFormData.name.trim()) {
+      setQuoteError('Please enter your name');
+      return;
+    }
+
+    if (!validateEmail(quoteFormData.email)) {
+      setQuoteError('Please enter a valid email address');
+      return;
+    }
+
+    if (!quoteFormData.details.trim()) {
+      setQuoteError('Please provide project scope details');
+      return;
+    }
+
+    setQuoteLoading(true);
+
+    try {
+      // Send email via EmailJS
+      const emailSent = await sendQuoteEmail(quoteFormData);
+
+      if (!emailSent) {
+        setQuoteError('Failed to send quote request. Please try again or contact us directly.');
+        return;
+      }
+
+      // Also submit to backend for logging
+      await fetch('/api/forms/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(quoteFormData)
+      }).catch(err => console.error('Backend logging failed:', err));
+
+      setQuoteSubmitted(true);
+      setTimeout(() => {
+        setQuoteSubmitted(false);
+        setIsQuoteDrawerOpen(false);
+        setQuoteFormData({ name: '', email: '', company: '', projectScope: 'HT Substation 33KV', details: '' });
+        setQuoteError(null);
+      }, 4500);
+    } catch (error) {
+      console.error('Error submitting quote:', error);
+      setQuoteError('An unexpected error occurred. Please try again.');
+    } finally {
+      setQuoteLoading(false);
+    }
   };
 
   const renderActiveView = () => {
@@ -55,6 +109,8 @@ export default function PageClient({ services = [], projects = [] }: PageClientP
         return <ServicesView services={services} />;
       case 'projects':
         return <ProjectsView projects={projects} />;
+      case 'clients':
+        return <ClientsView />;
       case 'about':
         return <AboutView />;
       case 'contact':
@@ -66,6 +122,9 @@ export default function PageClient({ services = [], projects = [] }: PageClientP
 
   return (
     <div className="flex flex-col min-h-screen bg-[#fbf9f8]" id="master-page-layout">
+      <ScrollProgress />
+      <BackToTop />
+      
       {/* GLOBAL HEADER */}
       <Header 
         activeTab={activeTab} 
@@ -104,7 +163,7 @@ export default function PageClient({ services = [], projects = [] }: PageClientP
               animate={{ opacity: 0.6 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsQuoteDrawerOpen(false)}
-              className="fixed inset-0 bg-stone-950 z-[100] cursor-pointer"
+              className="fixed inset-0 bg-stone-950 z-[100]"
               id="drawer-backdrop"
             />
 
@@ -130,7 +189,7 @@ export default function PageClient({ services = [], projects = [] }: PageClientP
                   </div>
                   <button 
                     onClick={() => setIsQuoteDrawerOpen(false)}
-                    className="p-2 text-stone-400 hover:text-black transition-colors rounded-sm hover:bg-stone-50 cursor-pointer"
+                    className="p-2 text-stone-400 hover:text-black transition-colors rounded-sm hover:bg-stone-50"
                     id="close-quote-drawer"
                   >
                     <X size={20} />
@@ -155,85 +214,106 @@ export default function PageClient({ services = [], projects = [] }: PageClientP
                     </p>
                   </motion.div>
                 ) : (
-                  <form onSubmit={handleQuoteSubmit} className="space-y-5">
-                    
-                    {/* Name input */}
-                    <div className="flex flex-col">
-                      <label className="font-display text-[9px] tracking-widest font-extrabold text-[#444748] uppercase mb-1.5">Your Name *</label>
-                      <input 
-                        type="text" 
-                        required
-                        value={quoteFormData.name}
-                        onChange={(e) => setQuoteFormData(prev => ({ ...prev, name: e.target.value }))}
-                        placeholder="John Doe"
-                        className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-xs text-black placeholder:text-gray-400"
-                      />
-                    </div>
-
-                    {/* Email input */}
-                    <div className="flex flex-col">
-                      <label className="font-display text-[9px] tracking-widest font-extrabold text-[#444748] uppercase mb-1.5">Business Email *</label>
-                      <input 
-                        type="email" 
-                        required
-                        value={quoteFormData.email}
-                        onChange={(e) => setQuoteFormData(prev => ({ ...prev, email: e.target.value }))}
-                        placeholder="john@company.com"
-                        className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-xs text-black placeholder:text-gray-400"
-                      />
-                    </div>
-
-                    {/* Company input */}
-                    <div className="flex flex-col">
-                      <label className="font-display text-[9px] tracking-widest font-extrabold text-[#444748] uppercase mb-1.5">Company Name</label>
-                      <input 
-                        type="text" 
-                        value={quoteFormData.company}
-                        onChange={(e) => setQuoteFormData(prev => ({ ...prev, company: e.target.value }))}
-                        placeholder="Engineering Corp Ltd"
-                        className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-xs text-black placeholder:text-gray-400"
-                      />
-                    </div>
-
-                    {/* Scope type list selector */}
-                    <div className="flex flex-col">
-                      <label className="font-display text-[9px] tracking-widest font-extrabold text-[#444748] uppercase mb-1.5">Electrical Scope *</label>
-                      <select 
-                        value={quoteFormData.projectScope}
-                        onChange={(e) => setQuoteFormData(prev => ({ ...prev, projectScope: e.target.value }))}
-                        className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-3 py-3 font-sans text-xs text-black cursor-pointer"
+                  <>
+                    {quoteError && (
+                      <motion.div 
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-sm mb-5"
+                        id="quote-error-alert"
                       >
-                        <option>HT Substation 33KV / 11KV Setup</option>
-                        <option>Commercial Grid Cabling & Distribution</option>
-                        <option>In-house Custom LT Panel Fabrication</option>
-                        <option>Underground Cabling Laying Trench</option>
-                        <option>Microprocessor APFC Audit & Support</option>
-                      </select>
-                    </div>
+                        <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                        <p className="font-sans text-xs text-red-700">{quoteError}</p>
+                      </motion.div>
+                    )}
 
-                    {/* Description Details textarea */}
-                    <div className="flex flex-col">
-                      <label className="font-display text-[9px] tracking-widest font-extrabold text-[#444748] uppercase mb-1.5">Project Scope / Load Rating Details *</label>
-                      <textarea 
-                        required
-                        value={quoteFormData.details}
-                        onChange={(e) => setQuoteFormData(prev => ({ ...prev, details: e.target.value }))}
-                        placeholder="Define load rating, kVA capacity parameters, location..."
-                        rows={4}
-                        className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-xs text-black placeholder:text-gray-400 resize-none"
-                      />
-                    </div>
+                    <form onSubmit={handleQuoteSubmit} className="space-y-5">
+                      
+                      {/* Name input */}
+                      <div className="flex flex-col">
+                        <label className="font-display text-[9px] tracking-widest font-extrabold text-[#444748] uppercase mb-1.5">Your Name *</label>
+                        <input 
+                          type="text" 
+                          required
+                          disabled={quoteLoading}
+                          value={quoteFormData.name}
+                          onChange={(e) => setQuoteFormData(prev => ({ ...prev, name: e.target.value }))}
+                          placeholder="John Doe"
+                          className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-xs text-black placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                        />
+                      </div>
 
-                    {/* Submit button */}
-                    <button
-                      type="submit"
-                      className="w-full bg-[#785919] hover:bg-black text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
-                      id="drawer-cabinet-submit-btn"
-                    >
-                      TRANSMIT SPEC SHEET
-                    </button>
+                      {/* Email input */}
+                      <div className="flex flex-col">
+                        <label className="font-display text-[9px] tracking-widest font-extrabold text-[#444748] uppercase mb-1.5">Business Email *</label>
+                        <input 
+                          type="email" 
+                          required
+                          disabled={quoteLoading}
+                          value={quoteFormData.email}
+                          onChange={(e) => setQuoteFormData(prev => ({ ...prev, email: e.target.value }))}
+                          placeholder="john@company.com"
+                          className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-xs text-black placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                        />
+                      </div>
 
-                  </form>
+                      {/* Company input */}
+                      <div className="flex flex-col">
+                        <label className="font-display text-[9px] tracking-widest font-extrabold text-[#444748] uppercase mb-1.5">Company Name</label>
+                        <input 
+                          type="text" 
+                          disabled={quoteLoading}
+                          value={quoteFormData.company}
+                          onChange={(e) => setQuoteFormData(prev => ({ ...prev, company: e.target.value }))}
+                          placeholder="Engineering Corp Ltd"
+                          className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-xs text-black placeholder:text-gray-400 disabled:opacity-50 disabled:cursor-not-allowed"
+                        />
+                      </div>
+
+                      {/* Scope type list selector */}
+                      <div className="flex flex-col">
+                        <label className="font-display text-[9px] tracking-widest font-extrabold text-[#444748] uppercase mb-1.5">Electrical Scope *</label>
+                        <select 
+                          disabled={quoteLoading}
+                          value={quoteFormData.projectScope}
+                          onChange={(e) => setQuoteFormData(prev => ({ ...prev, projectScope: e.target.value }))}
+                          className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-3 py-3 font-sans text-xs text-black disabled:opacity-50 disabled:cursor-not-allowed"
+                        >
+                          <option>HT Substation 33KV / 11KV Setup</option>
+                          <option>Commercial Grid Cabling & Distribution</option>
+                          <option>In-house Custom LT Panel Fabrication</option>
+                          <option>Underground Cabling Laying Trench</option>
+                          <option>Microprocessor APFC Audit & Support</option>
+                        </select>
+                      </div>
+
+                      {/* Description Details textarea */}
+                      <div className="flex flex-col">
+                        <label className="font-display text-[9px] tracking-widest font-extrabold text-[#444748] uppercase mb-1.5">Project Scope / Load Rating Details *</label>
+                        <textarea 
+                          required
+                          disabled={quoteLoading}
+                          value={quoteFormData.details}
+                          onChange={(e) => setQuoteFormData(prev => ({ ...prev, details: e.target.value }))}
+                          placeholder="Define load rating, kVA capacity parameters, location..."
+                          rows={4}
+                          className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-xs text-black placeholder:text-gray-400 resize-none disabled:opacity-50 disabled:cursor-not-allowed"
+                        />
+                      </div>
+
+                      {/* Submit button */}
+                      <button
+                        type="submit"
+                        disabled={quoteLoading}
+                        className="w-full bg-[#785919] hover:bg-black text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                        id="drawer-cabinet-submit-btn"
+                      >
+                        {quoteLoading && <Loader className="w-4 h-4 animate-spin" />}
+                        {quoteLoading ? 'SUBMITTING...' : 'TRANSMIT SPEC SHEET'}
+                      </button>
+
+                    </form>
+                  </>
                 )}
               </div>
 
@@ -258,7 +338,7 @@ export default function PageClient({ services = [], projects = [] }: PageClientP
               animate={{ opacity: 0.5 }}
               exit={{ opacity: 0 }}
               onClick={() => setPolicyTopic(null)}
-              className="fixed inset-0 bg-stone-950 z-[120] cursor-pointer"
+              className="fixed inset-0 bg-stone-950 z-[120]"
               id="policy-backdrop"
             />
 
@@ -279,7 +359,7 @@ export default function PageClient({ services = [], projects = [] }: PageClientP
                 </div>
                 <button 
                   onClick={() => setPolicyTopic(null)}
-                  className="p-1.5 text-stone-400 hover:text-black transition-colors rounded-sm hover:bg-stone-100 cursor-pointer"
+                  className="p-1.5 text-stone-400 hover:text-black transition-colors rounded-sm hover:bg-stone-100"
                   id="close-policy-modal"
                 >
                   <X size={16} />

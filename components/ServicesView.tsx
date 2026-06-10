@@ -14,6 +14,8 @@ import {
   Calculator,
   Compass
 } from 'lucide-react';
+import { ScrollReveal } from '@/components/animations/ScrollReveal';
+import { StaggerContainer, StaggerItem } from '@/components/animations/StaggerContainer';
 import type { Service } from '@/lib/cms';
 
 interface ServicesViewProps {
@@ -46,8 +48,8 @@ export default function ServicesView({ services = [] }: ServicesViewProps) {
     <div className="bg-[#fbf9f8] min-h-screen py-16 sm:py-24" id="services-view-root">
       <div className="max-w-[1280px] mx-auto px-6">
         
-        {/* Section Heading matching Image 1 */}
-        <div className="text-center max-w-3xl mx-auto mb-20">
+        {/* Section Heading */}
+        <ScrollReveal variant="fadeUp" className="text-center max-w-3xl mx-auto mb-20">
           <span className="font-display text-xs tracking-[0.3em] font-extrabold text-[#785919] uppercase block mb-3">
             TECHNICAL COGNIZANCE
           </span>
@@ -58,10 +60,10 @@ export default function ServicesView({ services = [] }: ServicesViewProps) {
             We provide turnkey electrical engineering and high-voltage contracting solutions tailored with extreme precision for high-stakes industrial complexes, utility grids, and commercial real estate.
           </p>
           <div className="w-16 h-1 bg-[#785919] mx-auto mt-6 rounded-full" />
-        </div>
+        </ScrollReveal>
 
         {/* Services Grid - CMS Driven */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-24" id="services-mockup1-grid">
+        <StaggerContainer className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-24" id="services-mockup1-grid">
           {services.length === 0 ? (
             <div className="col-span-full text-center py-12 text-gray-500">
               <p className="font-display text-sm">No services available</p>
@@ -77,57 +79,71 @@ export default function ServicesView({ services = [] }: ServicesViewProps) {
               };
 
               return (
-                <motion.div
-                  key={service.id}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-white rounded-lg border border-[#e9e8e7] p-8 sm:p-10 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
-                >
-                  <div>
-                    {/* Icon Box */}
-                    <div className="w-12 h-12 rounded-sm bg-[#fbf9f8] border border-[#eac076]/30 flex items-center justify-center text-[#785919] mb-8">
-                      {iconMap[service.icon] || iconMap['Factory']}
+                <StaggerItem key={service.id}>
+                  <motion.div
+                    className="bg-white rounded-lg border border-[#e9e8e7] p-8 sm:p-10 shadow-sm hover:shadow-md transition-all flex flex-col justify-between h-full  group"
+                    whileHover={{ y: -4, boxShadow: '0 16px 32px rgba(0, 0, 0, 0.1)' }}
+                  >
+                    <div>
+                      {/* Icon Box */}
+                      <motion.div 
+                        className="w-12 h-12 rounded-sm bg-[#fbf9f8] border border-[#eac076]/30 flex items-center justify-center text-[#785919] mb-8"
+                        whileHover={{ scale: 1.1, backgroundColor: '#eac076', color: 'white' }}
+                      >
+                        {iconMap[service.icon] || iconMap['Factory']}
+                      </motion.div>
+                      
+                      <h2 className="font-display font-bold text-xl text-black tracking-tight mb-4 group-hover:text-[#785919] transition-colors">
+                        {service.title}
+                      </h2>
+                      
+                      <p className="font-sans text-sm text-[#444748] leading-relaxed mb-8">
+                        {service.description}
+                      </p>
+
+                      {/* Features List */}
+                      <ul className="space-y-4">
+                        {service.features.map((feature, idx) => (
+                          <motion.li 
+                            key={idx} 
+                            className="flex items-start gap-3"
+                            initial={{ opacity: 0, x: -10 }}
+                            whileHover={{ x: 4 }}
+                          >
+                            <div className="w-2 h-2 rounded-none bg-[#785919] mt-2 shrink-0" />
+                            <span className="font-display text-xs lg:text-sm font-semibold text-stone-900 tracking-wide">
+                              {feature}
+                            </span>
+                          </motion.li>
+                        ))}
+                      </ul>
                     </div>
                     
-                    <h2 className="font-display font-bold text-xl text-black tracking-tight mb-4">
-                      {service.title}
-                    </h2>
-                    
-                    <p className="font-sans text-sm text-[#444748] leading-relaxed mb-8">
-                      {service.description}
-                    </p>
-
-                    {/* Features List */}
-                    <ul className="space-y-4">
-                      {service.features.map((feature, idx) => (
-                        <li key={idx} className="flex items-start gap-3">
-                          <div className="w-2 h-2 rounded-none bg-[#785919] mt-2 shrink-0" />
-                          <span className="font-display text-xs lg:text-sm font-semibold text-stone-900 tracking-wide">
-                            {feature}
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between text-xs font-display font-bold text-[#785919]">
-                    <span>STATUS: {service.status}</span>
-                    <span>{service.certification}</span>
-                  </div>
-                </motion.div>
+                    <div className="mt-8 pt-6 border-t border-gray-100 flex items-center justify-between text-xs font-display font-bold text-[#785919]">
+                      <span>STATUS: {service.status}</span>
+                      <span>{service.certification}</span>
+                    </div>
+                  </motion.div>
+                </StaggerItem>
               );
             })
           )}
-        </div>
+        </StaggerContainer>
 
         {/* Interactive Element: Electrical Load Estimate Calculator */}
-        <div className="bg-[#1b1c1c] text-white p-8 sm:p-12 rounded-lg border border-[#785919]/20 shadow-xl relative overflow-hidden" id="substation-calculator-box">
+        <ScrollReveal variant="scaleIn" className="bg-[#1b1c1c] text-white p-8 sm:p-12 rounded-lg border border-[#785919]/20 shadow-xl relative overflow-hidden" id="substation-calculator-box">
           <div className="absolute inset-0 engineering-grid opacity-[0.03]" />
           
           <div className="relative z-10 flex flex-col lg:flex-row gap-12 items-center">
             
             {/* Left side: description */}
-            <div className="lg:w-1/2 flex flex-col space-y-4">
+            <motion.div 
+              className="lg:w-1/2 flex flex-col space-y-4"
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.6 }}
+            >
               <div className="inline-flex items-center gap-2 text-[#eac076]">
                 <Calculator className="w-5 h-5" />
                 <span className="font-display text-xs font-bold tracking-widest uppercase">ENGINEERING ESTIMATES HELPER</span>
@@ -141,17 +157,30 @@ export default function ServicesView({ services = [] }: ServicesViewProps) {
               <div className="p-4 bg-white/5 border border-white/10 rounded-sm mt-4 text-[11px] font-mono text-gray-400">
                 Formula: kVA = (Connected kW &divide; Power Factor) &times; Safety Factor Headroom multiplier
               </div>
-            </div>
+            </motion.div>
 
             {/* Right side: working range calculations */}
-            <div className="lg:w-1/2 w-full bg-white text-black p-6 sm:p-8 rounded-sm shrink-0 shadow-lg border-l-4 border-[#785919]">
+            <motion.div 
+              className="lg:w-1/2 w-full bg-white text-black p-6 sm:p-8 rounded-sm shrink-0 shadow-lg border-l-4 border-[#785919]"
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 0.6, delay: 0.1 }}
+            >
               <div className="space-y-5">
                 
                 {/* Connected Load slider */}
                 <div className="flex flex-col">
                   <div className="flex justify-between items-center mb-2">
                     <span className="font-display text-[10px] tracking-wider font-extrabold text-stone-500 uppercase">ANTICIPATED LOAD (kW)</span>
-                    <span className="font-mono text-xs font-bold text-[#785919]">{loadKw} kW</span>
+                    <motion.span 
+                      className="font-mono text-xs font-bold text-[#785919]"
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 0.3 }}
+                      key={loadKw}
+                    >
+                      {loadKw} kW
+                    </motion.span>
                   </div>
                   <input 
                     type="range" 
@@ -160,7 +189,7 @@ export default function ServicesView({ services = [] }: ServicesViewProps) {
                     step={10} 
                     value={loadKw}
                     onChange={(e) => setLoadKw(parseInt(e.target.value))}
-                    className="w-full accent-[#785919] cursor-pointer"
+                    className="w-full accent-[#785919] "
                   />
                   <div className="flex justify-between text-[9px] font-mono text-stone-400 mt-1">
                     <span>50 kW</span>
@@ -176,7 +205,7 @@ export default function ServicesView({ services = [] }: ServicesViewProps) {
                     <select 
                       value={powerFactor} 
                       onChange={(e) => setPowerFactor(parseFloat(e.target.value))}
-                      className="w-full px-3 py-2 bg-stone-50 border border-stone-200 focus:outline-none focus:border-[#785919] font-mono text-xs cursor-pointer"
+                      className="w-full px-3 py-2 bg-stone-50 border border-stone-200 focus:outline-none focus:border-[#785919] font-mono text-xs  hover:bg-stone-100 transition-colors"
                     >
                       <option value={0.75}>0.75 (Uncompensated Inductive)</option>
                       <option value={0.80}>0.80 (Standard Inductive)</option>
@@ -191,7 +220,7 @@ export default function ServicesView({ services = [] }: ServicesViewProps) {
                     <select 
                       value={safetyMargin} 
                       onChange={(e) => setSafetyMargin(parseInt(e.target.value))}
-                      className="w-full px-3 py-2 bg-stone-50 border border-stone-200 focus:outline-none focus:border-[#785919] font-mono text-xs cursor-pointer"
+                      className="w-full px-3 py-2 bg-stone-50 border border-stone-200 focus:outline-none focus:border-[#785919] font-mono text-xs  hover:bg-stone-100 transition-colors"
                     >
                       <option value={10}>10% Headroom</option>
                       <option value={15}>15% Headroom</option>
@@ -206,27 +235,46 @@ export default function ServicesView({ services = [] }: ServicesViewProps) {
                 <div className="pt-4 border-t border-stone-100 flex flex-col space-y-3 bg-stone-50 p-4 rounded-sm">
                   <div className="flex justify-between items-center text-xs">
                     <span className="font-display text-[10px] tracking-wider font-extrabold text-stone-500 uppercase">CALCULATED ENVELOPE</span>
-                    <span className="font-mono font-bold text-black text-sm">{calculatedKVA} kVA</span>
+                    <motion.span 
+                      className="font-mono font-bold text-black text-sm"
+                      animate={{ scale: [1, 1.05, 1] }}
+                      transition={{ duration: 0.3 }}
+                      key={calculatedKVA}
+                    >
+                      {calculatedKVA} kVA
+                    </motion.span>
                   </div>
                   
                   <div className="flex justify-between items-center text-xs">
                     <span className="font-display text-[10px] tracking-wider font-extrabold text-stone-500 uppercase">APFC CORRECTION REQUIRED</span>
-                    <span className="font-mono font-bold text-[#785919] text-xs">{suggestedAPFC} kVAR</span>
+                    <motion.span 
+                      className="font-mono font-bold text-[#785919] text-xs"
+                      animate={{ scale: [1, 1.05, 1] }}
+                      transition={{ duration: 0.3 }}
+                      key={suggestedAPFC}
+                    >
+                      {suggestedAPFC} kVAR
+                    </motion.span>
                   </div>
 
                   <div className="pt-2 border-t border-stone-200">
                     <span className="font-display text-[9px] font-bold text-gray-400 block tracking-widest uppercase mb-1">SUGGESTED EQUIPMENT CONFIG</span>
-                    <span className="font-display font-bold text-xs text-stone-900 block bg-[#eac076]/15 py-1.5 px-3 rounded-sm border border-[#eac076]/20">
+                    <motion.span 
+                      className="font-display font-bold text-xs text-stone-900 block bg-[#eac076]/15 py-1.5 px-3 rounded-sm border border-[#eac076]/20"
+                      animate={{ backgroundColor: ['rgba(234, 192, 118, 0.15)', 'rgba(234, 192, 118, 0.25)', 'rgba(234, 192, 118, 0.15)'] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                      key={suggestedTransformer}
+                    >
                       {suggestedTransformer}
-                    </span>
+                    </motion.span>
                   </div>
                 </div>
 
               </div>
-            </div>
+            </motion.div>
 
           </div>
-        </div>
+        </ScrollReveal>
 
       </div>
     </div>

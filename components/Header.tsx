@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useScrollPosition } from '@/hooks/use-scroll-position';
 
 interface HeaderProps {
   activeTab: string;
@@ -13,49 +14,74 @@ interface HeaderProps {
 export default function Header({ activeTab, setActiveTab, onRequestQuote }: HeaderProps) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const { scrollY } = useScrollPosition();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
+  // Determine if we should show solid background (scrolled past hero)
+  const shouldShowSolidBg = scrollY > 100;
+
   const navItems = [
     { id: 'home', label: 'HOME' },
     { id: 'services', label: 'SERVICES' },
     { id: 'projects', label: 'PROJECTS' },
+    { id: 'clients', label: 'CLIENTS' },
     { id: 'about', label: 'ABOUT US' },
     { id: 'contact', label: 'CONTACT' },
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md border-b border-[#e9e8e7] transition-all duration-300">
+    <motion.header 
+      className="sticky top-0 z-50 w-full border-b transition-all duration-300"
+      animate={{
+        backgroundColor: shouldShowSolidBg ? 'rgba(255, 255, 255, 0.98)' : 'rgba(27, 28, 28, 0.85)',
+        borderColor: shouldShowSolidBg ? '#faf9f7' : 'rgba(120, 89, 25, 0.3)',
+        backdropFilter: shouldShowSolidBg ? 'blur(12px)' : 'blur(8px)',
+        boxShadow: shouldShowSolidBg ? '0 2px 12px rgba(0, 0, 0, 0.06)' : 'none'
+      }}
+      transition={{ duration: 0.3, ease: 'easeOut' }}
+    >
       <div className="max-w-[1280px] mx-auto px-6 h-20 sm:h-24 flex items-center justify-between">
         {mounted && (
           <>
             {/* Brand Logo - Stacked or Single Line Hybrid (Highly Institutional) */}
-            <button 
+            <motion.button 
               onClick={() => { setActiveTab('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="flex flex-col items-start justify-center text-left group cursor-pointer focus:outline-none"
+              className="flex flex-col items-start justify-center text-left group focus:outline-none"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               id="header-brand-logo"
             >
-              <span className="font-display font-extrabold text-xl sm:text-2xl tracking-tighter text-black leading-none group-hover:text-secondary transition-colors duration-200">
+              <motion.span 
+                className="font-display font-extrabold text-xl sm:text-2xl tracking-tighter leading-none group-hover:text-[#785919] transition-colors duration-200"
+                animate={{ color: shouldShowSolidBg ? '#1b1c1c' : '#ffffff' }}
+                transition={{ duration: 0.3 }}
+              >
                 ASEEN
-              </span>
-              <span className="font-display font-semibold text-xs sm:text-sm tracking-[0.3em] text-secondary leading-none mt-1">
+              </motion.span>
+              <span className="font-display font-semibold text-xs sm:text-sm tracking-[0.3em] text-[#785919] leading-none mt-1">
                 POWER
               </span>
-            </button>
+            </motion.button>
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8 lg:space-x-12">
               {navItems.map((item) => (
-                <button
+                <motion.button
                   key={item.id}
                   onClick={() => setActiveTab(item.id)}
-                  className={`relative font-display text-xs lg:text-sm font-semibold tracking-widest py-2 transition-colors duration-200 cursor-pointer ${
-                    activeTab === item.id 
-                      ? 'text-black' 
-                      : 'text-[#444748] hover:text-black'
-                  }`}
+                  className="relative font-display text-xs lg:text-sm font-semibold tracking-widest py-2 transition-all duration-200"
+                  animate={{
+                    color: shouldShowSolidBg 
+                      ? (activeTab === item.id ? '#1b1c1c' : '#666766')
+                      : (activeTab === item.id ? '#ffffff' : '#cccccc')
+                  }}
+                  whileHover={{ 
+                    color: shouldShowSolidBg ? '#1b1c1c' : '#ffffff'
+                  }}
+                  transition={{ duration: 0.2 }}
                   id={`nav-link-${item.id}`}
                 >
                   {item.label}
@@ -66,39 +92,51 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
-                </button>
+                </motion.button>
               ))}
             </nav>
 
             {/* CTA Request Quote */}
             <div className="hidden md:block">
-              <button
+              <motion.button
                 onClick={onRequestQuote}
-                className="group inline-flex items-center justify-center bg-[#785919] hover:bg-black text-white font-display text-xs tracking-widest font-bold uppercase py-3.5 px-6 rounded-sm transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                className="group inline-flex items-center justify-center bg-[#785919] hover:bg-black text-white font-display text-xs tracking-widest font-bold uppercase py-3.5 px-6 rounded-sm transition-all duration-300 shadow-md hover:shadow-lg active:translate-y-0 "
+                whileHover={{ y: -2, boxShadow: '0 12px 24px rgba(120, 89, 25, 0.2)' }}
+                whileTap={{ y: 0 }}
                 id="header-cta-quote"
               >
                 REQUEST A QUOTE
-                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" />
-              </button>
+                <motion.div
+                  className="ml-2"
+                  animate={{ x: [0, 4, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <ArrowRight className="w-4 h-4" />
+                </motion.div>
+              </motion.button>
             </div>
 
             {/* Mobile Hamburger Menu Switch */}
             <div className="md:hidden flex items-center gap-4">
-              <button
+              <motion.button
                 onClick={onRequestQuote}
-                className="bg-[#785919] text-white p-2 text-[10px] font-bold tracking-wider rounded-sm uppercase px-3"
+                className="bg-[#785919] text-white p-2 text-[10px] font-bold tracking-wider rounded-sm uppercase px-3 hover:bg-black transition-colors"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 id="mobile-quote-btn"
               >
                 QUOTE
-              </button>
-              <button
+              </motion.button>
+              <motion.button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 text-black hover:text-secondary transition-colors focus:outline-none"
+                className="p-2 text-black hover:text-[#785919] transition-colors focus:outline-none"
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
                 aria-label="Toggle Menu"
                 id="mobile-menu-hamburger"
               >
                 {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-              </button>
+              </motion.button>
             </div>
           </>
         )}
@@ -116,35 +154,43 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
             id="mobile-nav-panel"
           >
             <div className="px-6 py-6 space-y-4 flex flex-col">
-              {navItems.map((item) => (
-                <button
+              {navItems.map((item, idx) => (
+                <motion.button
                   key={item.id}
                   onClick={() => {
                     setActiveTab(item.id);
                     setIsMobileMenuOpen(false);
                   }}
-                  className={`text-left font-display text-sm font-bold tracking-widest py-3 border-b border-[#f5f3f3] last:border-b-0 ${
-                    activeTab === item.id ? 'text-[#785919] pl-2 border-l-2 border-[#785919]' : 'text-[#1b1c1c]'
+                  className={`text-left font-display text-sm font-bold tracking-widest py-3 border-b border-[#f5f3f3] last:border-b-0 transition-colors ${
+                    activeTab === item.id ? 'text-[#785919] pl-2 border-l-2 border-[#785919]' : 'text-[#1b1c1c] hover:text-[#785919]'
                   }`}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.05 }}
                   id={`mobile-nav-link-${item.id}`}
                 >
                   {item.label}
-                </button>
+                </motion.button>
               ))}
-              <button
+              <motion.button
                 onClick={() => {
                   setIsMobileMenuOpen(false);
                   onRequestQuote();
                 }}
-                className="w-full text-center bg-black hover:bg-secondary text-white font-display text-sm tracking-widest font-bold py-4 rounded-sm mt-4 transition-all"
+                className="w-full text-center bg-black hover:bg-[#785919] text-white font-display text-sm tracking-widest font-bold py-4 rounded-sm mt-4 transition-all"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
                 id="mobile-nav-cta"
               >
                 REQUEST A QUOTE
-              </button>
+              </motion.button>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 }

@@ -48,7 +48,7 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
             <div className="flex items-center gap-3 pt-2">
               <button 
                 onClick={() => openPolicyModal('Corporate Certifications')}
-                className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#785919]/20 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#eac076] transition-all cursor-pointer"
+                className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#785919]/20 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#eac076] transition-all "
                 title="SGS Quality Assured"
                 id="footer-social-shield"
               >
@@ -56,7 +56,7 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
               </button>
               <button 
                 onClick={() => openPolicyModal('National Registration')}
-                className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#785919]/20 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#eac076] transition-all cursor-pointer"
+                className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#785919]/20 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#eac076] transition-all "
                 title="Licensed Government Contractor"
                 id="footer-social-globe"
               >
@@ -64,7 +64,7 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
               </button>
               <button 
                 onClick={() => openPolicyModal('External Credentials')}
-                className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#785919]/20 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#eac076] transition-all cursor-pointer"
+                className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#785919]/20 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#eac076] transition-all "
                 title="Aseen Engineering Directory"
                 id="footer-social-external"
               >
@@ -82,7 +82,7 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
               <li>
                 <button 
                   onClick={() => handleQuickLink('services')} 
-                  className="hover:text-[#eac076] transition-colors cursor-pointer block"
+                  className="hover:text-[#eac076] transition-colors  block"
                 >
                   Core Services
                 </button>
@@ -90,7 +90,7 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
               <li>
                 <button 
                   onClick={() => handleQuickLink('projects')} 
-                  className="hover:text-[#eac076] transition-colors cursor-pointer block"
+                  className="hover:text-[#eac076] transition-colors  block"
                 >
                   Project Gallery
                 </button>
@@ -98,7 +98,7 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
               <li>
                 <button 
                   onClick={() => handleQuickLink('about')} 
-                  className="hover:text-[#eac076] transition-colors cursor-pointer block"
+                  className="hover:text-[#eac076] transition-colors  block"
                 >
                   Safety Standards
                 </button>
@@ -106,7 +106,7 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
               <li>
                 <button 
                   onClick={() => handleQuickLink('contact')} 
-                  className="hover:text-[#eac076] transition-colors cursor-pointer block"
+                  className="hover:text-[#eac076] transition-colors  block"
                 >
                   Contact Us
                 </button>
@@ -123,7 +123,7 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
               <li>
                 <button 
                   onClick={() => openPolicyModal('Privacy Policy')} 
-                  className="hover:text-[#eac076] transition-colors cursor-pointer block"
+                  className="hover:text-[#eac076] transition-colors  block"
                 >
                   PRIVACY POLICY
                 </button>
@@ -131,7 +131,7 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
               <li>
                 <button 
                   onClick={() => openPolicyModal('Terms of Service')} 
-                  className="hover:text-[#eac076] transition-colors cursor-pointer block"
+                  className="hover:text-[#eac076] transition-colors  block"
                 >
                   TERMS OF SERVICE
                 </button>
@@ -139,7 +139,7 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
               <li>
                 <button 
                   onClick={() => openPolicyModal('Cookie Policy')} 
-                  className="hover:text-[#eac076] transition-colors cursor-pointer block"
+                  className="hover:text-[#eac076] transition-colors  block"
                 >
                   COOKIE POLICY
                 </button>
@@ -147,7 +147,7 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
               <li>
                 <button 
                   onClick={() => openPolicyModal('Sitemap')} 
-                  className="hover:text-[#eac076] transition-colors cursor-pointer block"
+                  className="hover:text-[#eac076] transition-colors  block"
                 >
                   SITEMAP
                 </button>
@@ -169,7 +169,7 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
             {/* Visual technical mini-map vector element from Image 2 */}
             <div 
               onClick={() => handleQuickLink('contact')}
-              className="group relative h-28 w-full border border-white/10 rounded-sm bg-stone-900 overflow-hidden cursor-pointer flex items-center justify-center"
+              className="group relative h-28 w-full border border-white/10 rounded-sm bg-stone-900 overflow-hidden  flex items-center justify-center"
               id="footer-location-mini-map"
             >
               <div className="absolute inset-0 engineering-grid opacity-[0.14] group-hover:scale-105 transition-transform duration-300 pointer-events-none" />

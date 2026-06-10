@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { 
   Phone, 
@@ -12,8 +12,11 @@ import {
   Map, 
   Sparkles, 
   Lock,
-  ChevronRight
+  ChevronRight,
+  AlertCircle,
+  Loader
 } from 'lucide-react';
+import { initializeEmailJS, sendContactEmail, validateEmail } from '@/lib/emailjs';
 
 export default function ContactView() {
   const [formData, setFormData] = useState({
@@ -26,28 +29,78 @@ export default function ContactView() {
     message: ''
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
+
+  useEffect(() => {
+    initializeEmailJS();
+  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    if (formError) setFormError(null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setFormSubmitted(true);
-    setTimeout(() => {
-      setFormSubmitted(false);
-      setFormData({
-        fullName: '',
-        company: '',
-        emailAddress: '',
-        phone: '',
-        projectCategory: 'Industrial Substation Setup',
-        urgency: 'Medium - within 3 months',
-        message: ''
-      });
-    }, 6000);
+    setFormError(null);
+
+    // Validation
+    if (!formData.fullName.trim()) {
+      setFormError('Please enter your full name');
+      return;
+    }
+
+    if (!validateEmail(formData.emailAddress)) {
+      setFormError('Please enter a valid email address');
+      return;
+    }
+
+    if (!formData.message.trim() || formData.message.trim().length < 10) {
+      setFormError('Please provide project details (at least 10 characters)');
+      return;
+    }
+
+    setFormLoading(true);
+
+    try {
+      // Send email via EmailJS
+      const emailSent = await sendContactEmail(formData);
+
+      if (!emailSent) {
+        setFormError('Failed to send contact form. Please try again or contact us directly.');
+        return;
+      }
+
+      // Also submit to backend for logging
+      await fetch('/api/forms/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      }).catch(err => console.error('Backend logging failed:', err));
+
+      setFormSubmitted(true);
+      setTimeout(() => {
+        setFormSubmitted(false);
+        setFormData({
+          fullName: '',
+          company: '',
+          emailAddress: '',
+          phone: '',
+          projectCategory: 'Industrial Substation Setup',
+          urgency: 'Medium - within 3 months',
+          message: ''
+        });
+        setFormError(null);
+      }, 6000);
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      setFormError('An unexpected error occurred. Please try again.');
+    } finally {
+      setFormLoading(false);
+    }
   };
 
   const faqs = [
@@ -86,7 +139,7 @@ export default function ContactView() {
         {/* Top block: Contact info cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16" id="contact-quickcontacts-grid">
           
-          <a href="tel:+912224567890" className="bg-white p-6 rounded-lg border border-[#e9e8e7] hover:border-[#785919] hover:shadow-xs transition-colors cursor-pointer text-left block">
+          <a href="tel:+912224567890" className="bg-white p-6 rounded-lg border border-[#e9e8e7] hover:border-[#785919] hover:shadow-xs transition-colors  text-left block">
             <span className="w-8 h-8 rounded-sm bg-[#785919]/5 border border-[#785919]/15 flex items-center justify-center text-[#785919] mb-4">
               <Phone className="w-4 h-4" />
             </span>
@@ -95,7 +148,7 @@ export default function ContactView() {
             <span className="text-[10px] text-gray-400 block mt-2 font-mono">Mon-Sat: 9AM - 6PM IST</span>
           </a>
 
-          <a href="mailto:projects@aseenpower.com" className="bg-white p-6 rounded-lg border border-[#e9e8e7] hover:border-[#785919] hover:shadow-xs transition-colors cursor-pointer text-left block">
+          <a href="mailto:projects@aseenpower.com" className="bg-white p-6 rounded-lg border border-[#e9e8e7] hover:border-[#785919] hover:shadow-xs transition-colors  text-left block">
             <span className="w-8 h-8 rounded-sm bg-[#785919]/5 border border-[#785919]/15 flex items-center justify-center text-[#785919] mb-4">
               <Mail className="w-4 h-4" />
             </span>
@@ -162,130 +215,153 @@ export default function ContactView() {
                 </div>
               </motion.div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-6">
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {/* Full Name */}
+              <>
+                {formError && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="flex items-start gap-3 p-4 bg-red-50 border border-red-200 rounded-sm mb-6"
+                    id="contact-error-alert"
+                  >
+                    <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                    <p className="font-sans text-xs text-red-700">{formError}</p>
+                  </motion.div>
+                )}
+
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {/* Full Name */}
+                    <div className="flex flex-col">
+                      <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] uppercase mb-2">FULL NAME *</label>
+                      <input 
+                        type="text" 
+                        name="fullName"
+                        value={formData.fullName}
+                        onChange={handleInputChange}
+                        placeholder="John Doe"
+                        required
+                        disabled={formLoading}
+                        className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-sm text-black placeholder:text-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      />
+                    </div>
+
+                    {/* Company */}
+                    <div className="flex flex-col">
+                      <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] uppercase mb-2">COMPANY / ORGANISATION</label>
+                      <input 
+                        type="text" 
+                        name="company"
+                        value={formData.company}
+                        onChange={handleInputChange}
+                        placeholder="Infrastructure Group"
+                        disabled={formLoading}
+                        className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-sm text-black placeholder:text-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {/* Email */}
+                    <div className="flex flex-col">
+                      <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] uppercase mb-2">EMAIL ADDRESS *</label>
+                      <input 
+                        type="email" 
+                        name="emailAddress"
+                        value={formData.emailAddress}
+                        onChange={handleInputChange}
+                        placeholder="john@company.com"
+                        required
+                        disabled={formLoading}
+                        className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-sm text-black placeholder:text-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      />
+                    </div>
+
+                    {/* Phone */}
+                    <div className="flex flex-col">
+                      <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] uppercase mb-2">TELEPHONE</label>
+                      <input 
+                        type="tel" 
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        placeholder="+91 98765 43210"
+                        disabled={formLoading}
+                        className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-sm text-black placeholder:text-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {/* Category Selection */}
+                    <div className="flex flex-col">
+                      <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] uppercase mb-2">PROJECT CATEGORY</label>
+                      <select 
+                        name="projectCategory"
+                        value={formData.projectCategory}
+                        onChange={handleInputChange}
+                        disabled={formLoading}
+                        className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-sm text-black  transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <option>Industrial Substation Setup</option>
+                        <option>Commercial Substation Setup</option>
+                        <option>Power Factor correction / Audit</option>
+                        <option>Underground Cable laying loop</option>
+                        <option>Long term AMC & Maintenance Contracts</option>
+                      </select>
+                    </div>
+
+                    {/* Urgency selection */}
+                    <div className="flex flex-col">
+                      <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] uppercase mb-2">TIMELINE URGENCY</label>
+                      <select  
+                        name="urgency"
+                        value={formData.urgency}
+                        onChange={handleInputChange}
+                        disabled={formLoading}
+                        className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-sm text-black  transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        <option>High - immediate (within 1 month)</option>
+                        <option>Medium - within 3 months</option>
+                        <option>Low - planning stage (3-6 months)</option>
+                        <option>Periodic budget bidding</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Message */}
                   <div className="flex flex-col">
-                    <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] uppercase mb-2">FULL NAME *</label>
-                    <input 
-                      type="text" 
-                      name="fullName"
-                      value={formData.fullName}
+                    <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] uppercase mb-2">SCOPE BRIEF & REQUIREMENTS *</label>
+                    <textarea 
+                      name="message"
+                      value={formData.message}
                       onChange={handleInputChange}
-                      placeholder="John Doe"
+                      placeholder="Provide transformer capacities, load details, locations coordinates if any..."
                       required
-                      className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-sm text-black placeholder:text-gray-400 transition-colors"
+                      disabled={formLoading}
+                      rows={4}
+                      className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-sm text-black placeholder:text-gray-400 resize-none transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                   </div>
 
-                  {/* Company */}
-                  <div className="flex flex-col">
-                    <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] uppercase mb-2">COMPANY / ORGANISATION</label>
-                    <input 
-                      type="text" 
-                      name="company"
-                      value={formData.company}
-                      onChange={handleInputChange}
-                      placeholder="Infrastructure Group"
-                      className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-sm text-black placeholder:text-gray-400 transition-colors"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {/* Email */}
-                  <div className="flex flex-col">
-                    <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] uppercase mb-2">EMAIL ADDRESS *</label>
-                    <input 
-                      type="email" 
-                      name="emailAddress"
-                      value={formData.emailAddress}
-                      onChange={handleInputChange}
-                      placeholder="john@company.com"
-                      required
-                      className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-sm text-black placeholder:text-gray-400 transition-colors"
-                    />
+                  <div className="flex items-center gap-2 text-[11px] font-sans text-gray-400 leading-none">
+                    <Lock size={12} className="text-stone-400" />
+                    Your configurations are safeguarded under strict NDA frameworks.
                   </div>
 
-                  {/* Phone */}
-                  <div className="flex flex-col">
-                    <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] uppercase mb-2">TELEPHONE</label>
-                    <input 
-                      type="tel" 
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      placeholder="+91 98765 43210"
-                      className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-sm text-black placeholder:text-gray-400 transition-colors"
-                    />
-                  </div>
-                </div>
+                  {/* Get consultation button */}
+                  <button
+                    type="submit"
+                    disabled={formLoading}
+                    className="w-full bg-[#1b1c1c] hover:bg-[#785919] text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-all duration-300 shadow-md hover:shadow-lg  disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    id="contact-large-submit-btn"
+                  >
+                    {formLoading && <Loader className="w-4 h-4 animate-spin" />}
+                    {formLoading ? 'SUBMITTING...' : 'GET A CONSULTATION'}
+                  </button>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  {/* Category Selection */}
-                  <div className="flex flex-col">
-                    <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] uppercase mb-2">PROJECT CATEGORY</label>
-                    <select 
-                      name="projectCategory"
-                      value={formData.projectCategory}
-                      onChange={handleInputChange}
-                      className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-sm text-black cursor-pointer transition-colors"
-                    >
-                      <option>Industrial Substation Setup</option>
-                      <option>Commercial Substation Setup</option>
-                      <option>Power Factor correction / Audit</option>
-                      <option>Underground Cable laying loop</option>
-                      <option>Long term AMC & Maintenance Contracts</option>
-                    </select>
-                  </div>
-
-                  {/* Urgency selection */}
-                  <div className="flex flex-col">
-                    <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] uppercase mb-2">TIMELINE URGENCY</label>
-                    <select  
-                      name="urgency"
-                      value={formData.urgency}
-                      onChange={handleInputChange}
-                      className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-sm text-black cursor-pointer transition-colors"
-                    >
-                      <option>High - immediate (within 1 month)</option>
-                      <option>Medium - within 3 months</option>
-                      <option>Low - planning stage (3-6 months)</option>
-                      <option>Periodic budget bidding</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* Message */}
-                <div className="flex flex-col">
-                  <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] uppercase mb-2">SCOPE BRIEF & REQUIREMENTS *</label>
-                  <textarea 
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    placeholder="Provide transformer capacities, load details, locations coordinates if any..."
-                    required
-                    rows={4}
-                    className="w-full bg-stone-50 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm px-4 py-3 font-sans text-sm text-black placeholder:text-gray-400 resize-none transition-colors"
-                  />
-                </div>
-
-                <div className="flex items-center gap-2 text-[11px] font-sans text-gray-400 leading-none">
-                  <Lock size={12} className="text-stone-400" />
-                  Your configurations are safeguarded under strict NDA frameworks.
-                </div>
-
-                {/* Get consultation button */}
-                <button
-                  type="submit"
-                  className="w-full bg-[#1b1c1c] hover:bg-[#785919] text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-all duration-300 shadow-md hover:shadow-lg cursor-pointer"
-                  id="contact-large-submit-btn"
-                >
-                  GET A CONSULTATION
-                </button>
-
-              </form>
+                </form>
+              </>
             )}
           </div>
 

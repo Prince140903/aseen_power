@@ -168,7 +168,7 @@ export default function AdminDocumentsTab() {
               setIsAdding(true);
               resetForm();
             }}
-            className="flex items-center gap-2 bg-[#785919] text-white px-4 py-3 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors cursor-pointer"
+            className="flex items-center gap-2 bg-[#785919] text-white px-4 py-3 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors "
           >
             <Plus size={16} />
             ADD DOCUMENT
@@ -241,7 +241,7 @@ export default function AdminDocumentsTab() {
                 type="file"
                 accept=".pdf"
                 onChange={handleFileChange}
-                className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919] file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-bold file:bg-[#785919] file:text-white hover:file:bg-black cursor-pointer"
+                className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919] file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-bold file:bg-[#785919] file:text-white hover:file:bg-black "
               />
             </div>
             {selectedFile && (
@@ -270,7 +270,7 @@ export default function AdminDocumentsTab() {
             <button
               onClick={handleSave}
               disabled={uploading}
-              className="flex items-center gap-2 bg-[#785919] text-white px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 bg-[#785919] text-white px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors  disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {uploading ? (
                 <>
@@ -291,7 +291,7 @@ export default function AdminDocumentsTab() {
                 resetForm();
               }}
               disabled={uploading}
-              className="flex items-center gap-2 bg-gray-200 text-black px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-gray-300 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 bg-gray-200 text-black px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-gray-300 transition-colors  disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <X size={16} />
               CANCEL
@@ -325,13 +325,13 @@ export default function AdminDocumentsTab() {
                 <div className="flex gap-2">
                   <button
                     onClick={() => startEdit(document)}
-                    className="p-2 text-[#785919] hover:bg-yellow-50 rounded-sm transition-colors cursor-pointer"
+                    className="p-2 text-[#785919] hover:bg-yellow-50 rounded-sm transition-colors "
                   >
                     <Edit2 size={16} />
                   </button>
                   <button
                     onClick={() => handleDelete(document.id)}
-                    className="p-2 text-red-500 hover:bg-red-50 rounded-sm transition-colors cursor-pointer"
+                    className="p-2 text-red-500 hover:bg-red-50 rounded-sm transition-colors "
                   >
                     <Trash2 size={16} />
                   </button>
