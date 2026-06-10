@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
 
     // Verify password
     const settings = await getSettings();
-    if (password !== settings.security.documentAccessPassword) {
+    if (password !== settings.document_access_password) {
       return NextResponse.json(
         { error: 'Invalid password' },
         { status: 401 }
@@ -48,9 +48,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Extract filename from fileUrl (should be just the filename)
+    // Extract filename from file_url (should be just the filename)
     // Security: Only allow downloads from a specific documents directory
-    const fileName = path.basename(document.fileUrl);
+    const fileName = path.basename(document.file_url);
     
     // Prevent directory traversal attacks
     if (fileName.includes('..') || fileName.includes('/') || fileName.includes('\\')) {
