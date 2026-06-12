@@ -116,14 +116,14 @@ function getDefaultSettings(): Settings {
     contact_email: 'contact@aseenpower.com',
     contact_phone: '+91 22 1234 5678',
     contact_address: 'Aseen Tower, BKC Phase II, Mumbai, Maharashtra 400051 India',
-    business_registration: 'MH-CIV-1002-HVC',
-    document_access_password: 'aseenpower2026',
+    contact_business_registration: 'MH-CIV-1002-HVC',
+    security_document_access_password: 'aseenpower2026',
     social_linkedin: 'https://linkedin.com/company/aseen-power',
     social_twitter: 'https://twitter.com/aseenpower',
     social_facebook: 'https://facebook.com/aseenpower',
-    footer_description: 'Since 1998, Aseen Power has been at the forefront of electrical engineering, delivering excellence in high-voltage infrastructure, commissioning transmission substations, and scalable industrial power designs across India.',
+    footer_company_description: 'Since 1998, Aseen Power has been at the forefront of electrical engineering, delivering excellence in high-voltage infrastructure, commissioning transmission substations, and scalable industrial power designs across India.',
     footer_year_founded: 1998,
-    footer_copyright: '© 2026 Aseen Power. All rights reserved. Engineering Excellence Since 1998.',
+    footer_copyright_text: '© 2026 Aseen Power. All rights reserved. Engineering Excellence Since 1998.',
     created_at: new Date().toISOString(),
     updated_at: new Date().toISOString()
   };

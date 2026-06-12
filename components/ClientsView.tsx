@@ -133,8 +133,8 @@ export default function ClientsView() {
                       <Image
                         src={client.logo}
                         alt={client.name}
-                        width={100}
-                        height={70}
+                        width={200}
+                        height={200}
                         className="object-contain max-w-[85%] max-h-[70px] filter grayscale group-hover:grayscale-0 transition-all duration-300"
                         onError={(e) => {
                           const img = e.target as HTMLImageElement;
@@ -179,11 +179,10 @@ export default function ClientsView() {
               <motion.button
                 key={index}
                 onClick={() => goToSlide(index * 5)}
-                className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 cursor-pointer ${
-                  Math.floor(currentIndex / 5) === index
+                className={`h-1.5 sm:h-2 rounded-full transition-all duration-300 cursor-pointer ${Math.floor(currentIndex / 5) === index
                     ? 'bg-[#785919] w-6 sm:w-8'
                     : 'bg-[#e9e8e7] hover:bg-[#c4c7c7] w-1.5 sm:w-2'
-                }`}
+                  }`}
                 whileHover={{ scale: 1.2 }}
                 aria-label={`Go to slide ${index + 1}`}
               />

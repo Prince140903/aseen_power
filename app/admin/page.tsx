@@ -129,7 +129,7 @@ export default function AdminPage() {
       <motion.aside
         initial={{ x: -250 }}
         animate={{ x: 0 }}
-        className="w-64 bg-black text-white p-6 fixed left-0 top-0 bottom-0 z-50 overflow-y-auto hidden lg:flex flex-col"
+        className="w-64 bg-black text-white p-6 fixed left-0 top-0 bottom-0 z-40 overflow-y-auto hidden lg:flex flex-col"
       >
         <div className="mb-8">
           <h1 className="font-display font-extrabold text-xl tracking-tight text-white">ASEEN</h1>

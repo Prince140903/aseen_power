@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useScrollPosition } from '@/hooks/use-scroll-position';
@@ -33,10 +34,10 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
   ];
 
   return (
-    <motion.header 
+    <motion.header
       className="sticky top-0 z-50 w-full border-b transition-all duration-300"
       animate={{
-        backgroundColor: shouldShowSolidBg ? 'rgba(255, 255, 255, 0.98)' : 'rgba(27, 28, 28, 0.85)',
+        backgroundColor: shouldShowSolidBg ? 'rgba(255, 255, 255, 0.98)' : 'rgba(22, 35, 44, 1.0)',
         borderColor: shouldShowSolidBg ? '#faf9f7' : 'rgba(120, 89, 25, 0.3)',
         backdropFilter: shouldShowSolidBg ? 'blur(12px)' : 'blur(8px)',
         boxShadow: shouldShowSolidBg ? '0 2px 12px rgba(0, 0, 0, 0.06)' : 'none'
@@ -46,24 +47,37 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
       <div className="max-w-[1280px] mx-auto px-6 h-20 sm:h-24 flex items-center justify-between">
         {mounted && (
           <>
-            {/* Brand Logo - Stacked or Single Line Hybrid (Highly Institutional) */}
-            <motion.button 
+            {/* Brand Logo - Icon + Text */}
+            <motion.button
               onClick={() => { setActiveTab('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-              className="flex flex-col items-start justify-center text-left group focus:outline-none"
+              className="flex items-center justify-center text-left group focus:outline-none gap-3"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
               id="header-brand-logo"
             >
-              <motion.span 
-                className="font-display font-extrabold text-xl sm:text-2xl tracking-tighter leading-none group-hover:text-[#785919] transition-colors duration-200"
-                animate={{ color: shouldShowSolidBg ? '#1b1c1c' : '#ffffff' }}
-                transition={{ duration: 0.3 }}
-              >
-                ASEEN
-              </motion.span>
-              <span className="font-display font-semibold text-xs sm:text-sm tracking-[0.3em] text-[#785919] leading-none mt-1">
-                POWER
-              </span>
+              <Image
+                src="/assets/energy.png"
+                alt="Aseen Power"
+                width={40}
+                height={40}
+                className="w-9 h-9 sm:w-10 sm:h-10 object-contain flex-shrink-0 transition-all duration-300"
+                style={{
+                  filter: shouldShowSolidBg ? 'none' : 'brightness(0) invert(1)',
+                }}
+                priority
+              />
+              <div className="flex flex-col items-start justify-center">
+                <motion.span
+                  className="font-display font-extrabold text-xl sm:text-2xl tracking-tighter leading-none group-hover:text-[#785919] transition-colors duration-200"
+                  animate={{ color: shouldShowSolidBg ? '#1b1c1c' : '#ffffff' }}
+                  transition={{ duration: 0.3 }}
+                >
+                  ASEEN
+                </motion.span>
+                <span className="font-display font-semibold text-xs sm:text-sm tracking-[0.3em] text-[#785919] leading-none mt-1">
+                  POWER
+                </span>
+              </div>
             </motion.button>
 
             {/* Desktop Navigation */}
@@ -74,11 +88,11 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
                   onClick={() => setActiveTab(item.id)}
                   className="relative font-display text-xs lg:text-sm font-semibold tracking-widest py-2 transition-all duration-200"
                   animate={{
-                    color: shouldShowSolidBg 
+                    color: shouldShowSolidBg
                       ? (activeTab === item.id ? '#1b1c1c' : '#666766')
                       : (activeTab === item.id ? '#ffffff' : '#cccccc')
                   }}
-                  whileHover={{ 
+                  whileHover={{
                     color: shouldShowSolidBg ? '#1b1c1c' : '#ffffff'
                   }}
                   transition={{ duration: 0.2 }}
@@ -86,7 +100,7 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
                 >
                   {item.label}
                   {activeTab === item.id && (
-                    <motion.div 
+                    <motion.div
                       layoutId="activeIndicator"
                       className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#785919]"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
@@ -161,9 +175,8 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
                     setActiveTab(item.id);
                     setIsMobileMenuOpen(false);
                   }}
-                  className={`text-left font-display text-sm font-bold tracking-widest py-3 border-b border-[#f5f3f3] last:border-b-0 transition-colors ${
-                    activeTab === item.id ? 'text-[#785919] pl-2 border-l-2 border-[#785919]' : 'text-[#1b1c1c] hover:text-[#785919]'
-                  }`}
+                  className={`text-left font-display text-sm font-bold tracking-widest py-3 border-b border-[#f5f3f3] last:border-b-0 transition-colors ${activeTab === item.id ? 'text-[#785919] pl-2 border-l-2 border-[#785919]' : 'text-[#1b1c1c] hover:text-[#785919]'
+                    }`}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: idx * 0.05 }}

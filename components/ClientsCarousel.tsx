@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
-import { motion } from 'motion/react';
+import React, { useEffect, useState, useRef } from 'react';
+import { motion, useAnimationControls } from 'motion/react';
 import Image from 'next/image';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 
@@ -12,10 +12,11 @@ interface Client {
 }
 
 export function ClientsCarousel() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAutoPlay, setIsAutoPlay] = useState(true);
-  const [isMobile, setIsMobile] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const controls = useAnimationControls();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [trackWidth, setTrackWidth] = useState(0);
 
   const clients: Client[] = [
     { id: '1', name: 'Raymond Realty', logo: '/assets/clients/raymond.png' },
@@ -36,39 +37,55 @@ export function ClientsCarousel() {
     { id: '16', name: 'Saifee Burhani', logo: '/assets/clients/Saifee.png' },
   ];
 
-  // Detect mobile and hydration
+  // Duplicate clients for seamless infinite loop
+  const duplicatedClients = [...clients, ...clients];
+
+  // Hydration safety
   useEffect(() => {
     setMounted(true);
-    const checkMobile = () => setIsMobile(window.innerWidth < 768);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  // Auto-play carousel
+  // Measure the track to calculate animation distance
   useEffect(() => {
-    if (!isAutoPlay || !mounted) return;
+    if (!mounted || !containerRef.current) return;
 
-    const interval = setInterval(() => {
-      setCurrentIndex(prev => (prev + 1) % clients.length);
-    }, 3500); // Auto-scroll every 3.5 seconds
+    const measure = () => {
+      const track = containerRef.current?.firstElementChild as HTMLElement;
+      if (track) {
+        // Half the total width (one full set of clients)
+        setTrackWidth(track.scrollWidth / 2);
+      }
+    };
 
-    return () => clearInterval(interval);
-  }, [isAutoPlay, clients.length, mounted]);
+    measure();
+    window.addEventListener('resize', measure);
+    return () => window.removeEventListener('resize', measure);
+  }, [mounted]);
 
-  const getVisibleClients = () => {
-    const clientsPerView = isMobile ? 2 : 6; // 2 on mobile, 6 on desktop
-    const visible = [];
-    for (let i = 0; i < clientsPerView; i++) {
-      visible.push(clients[(currentIndex + i) % clients.length]);
+  // Run infinite scroll animation
+  useEffect(() => {
+    if (!mounted || trackWidth === 0) return;
+
+    if (isPaused) {
+      controls.stop();
+      return;
     }
-    return visible;
-  };
 
-  const clientsPerView = isMobile ? 2 : 6;
-  const percentPerClient = 100 / clientsPerView;
+    // Calculate duration: ~30s for a full cycle of the single set
+    const duration = Math.max(25, trackWidth / 60); // speed: 60px/s, minimum 25s
 
-  if (!mounted) return null; // Prevent hydration mismatch
+    controls.start({
+      x: -trackWidth,
+      transition: {
+        duration,
+        ease: 'linear',
+        repeat: Infinity,
+        repeatType: 'loop',
+      },
+    });
+  }, [mounted, trackWidth, isPaused, controls]);
+
+  if (!mounted) return null;
 
   return (
     <section className="py-12 sm:py-16 bg-[#fbf9f8] border-t border-b border-[#e9e8e7]">
@@ -82,20 +99,23 @@ export function ClientsCarousel() {
           </p>
         </ScrollReveal>
 
-        {/* Auto-scrolling carousel */}
-        <div className="overflow-hidden rounded-lg">
+        {/* Infinite auto-scrolling marquee */}
+        <div
+          ref={containerRef}
+          className="overflow-hidden rounded-lg"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+        >
           <motion.div
-            className={`flex gap-3 sm:gap-6`}
-            animate={{ x: -currentIndex * (percentPerClient + (isMobile ? 1.5 : 2.4)) + '%' }}
-            transition={{ duration: 0.8, ease: 'easeInOut' }}
-            onMouseEnter={() => setIsAutoPlay(false)}
-            onMouseLeave={() => setIsAutoPlay(true)}
+            className="flex gap-3 sm:gap-6"
+            animate={controls}
+            initial={{ x: 0 }}
           >
-            {getVisibleClients().map((client, index) => (
+            {duplicatedClients.map((client, index) => (
               <motion.div
                 key={`${client.id}-${index}`}
-                className={`flex-shrink-0 ${isMobile ? 'w-1/2' : 'w-1/6'} min-h-[80px] sm:min-h-[100px] flex items-center justify-center`}
-                whileHover={{ y: -2 }}
+                className="flex-shrink-0 w-[calc(50%-0.375rem)] sm:w-[calc(16.666%-1.25rem)] min-h-[80px] sm:min-h-[100px] flex items-center justify-center"
+                whileHover={{ y: -2, scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
                 <div className="w-full h-full bg-white border border-[#e9e8e7] rounded flex items-center justify-center p-2 sm:p-3 hover:border-[#785919]/20 hover:shadow-sm transition-all duration-300 group">
@@ -123,23 +143,13 @@ export function ClientsCarousel() {
           </motion.div>
         </div>
 
-        {/* Progress indicators */}
+        {/* Decorative gradient fade on edges
         <div className="flex justify-center gap-1 sm:gap-1.5 mt-6 sm:mt-8">
-          {Array.from({ length: Math.ceil(clients.length / clientsPerView) }).map((_, index) => (
-            <motion.div
-              key={index}
-              className={`h-1 rounded-full transition-all duration-300 cursor-pointer ${
-                index === Math.floor(currentIndex / clientsPerView)
-                  ? 'bg-[#785919]' 
-                  : 'bg-[#e9e8e7]'
-              }`}
-              animate={{ 
-                width: index === Math.floor(currentIndex / clientsPerView) ? 24 : 4 
-              }}
-              onClick={() => setCurrentIndex(index * clientsPerView)}
-            />
+          <div className="h-1 w-6 rounded-full bg-[#785919]" />
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="h-1 w-1 rounded-full bg-[#e9e8e7]" />
           ))}
-        </div>
+        </div> */}
       </div>
     </section>
   );

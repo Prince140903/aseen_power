@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
 import { Lock, Eye, EyeOff, Eye as EyeIcon, FileText, AlertCircle, CheckCircle, Loader } from 'lucide-react';
 import Header from '@/components/Header';
@@ -12,6 +13,7 @@ interface DocumentsPageWrapperProps {
 }
 
 export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWrapperProps) {
+  const router = useRouter();
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [password, setPassword] = useState('');
   const [passwordError, setPasswordError] = useState('');
@@ -31,19 +33,19 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
     e.preventDefault();
     setLoading(true);
     setPasswordError('');
-    
+
     try {
-      // Fetch settings from CMS
-      const res = await fetch('/api/cms/settings');
+      // Fetch settings from CMS (no cache to get latest password)
+      const res = await fetch('/api/cms/settings', { cache: 'no-store' });
       const { settings } = await res.json();
-      
-      if (!settings || !settings.document_access_password) {
+
+      if (!settings || !settings.security_document_access_password) {
         setPasswordError('Unable to verify password. Please contact support.');
         return;
       }
 
       // Check password
-      if (password === settings.document_access_password) {
+      if (password === settings.security_document_access_password) {
         setIsUnlocked(true);
         localStorage.setItem('docsUnlocked', 'true');
         setPassword('');
@@ -69,9 +71,9 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
 
   const handleDocumentView = async (docId: string) => {
     setDownloadingId(docId);
-    
+
     try {
-      const res = await fetch('/api/cms/settings');
+      const res = await fetch('/api/cms/settings', { cache: 'no-store' });
       const { settings } = await res.json();
 
       const response = await fetch('/api/documents/download', {
@@ -79,7 +81,7 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           documentId: docId,
-          password: settings.document_access_password
+          password: settings.security_document_access_password
         })
       });
 
@@ -101,7 +103,12 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
 
   return (
     <div className="flex flex-col min-h-screen bg-[#fbf9f8]">
-      <Header activeTab={activeTab} setActiveTab={setActiveTab} onRequestQuote={() => {}} />
+      <Header activeTab={activeTab} setActiveTab={(tab) => {
+        setActiveTab(tab);
+        if (tab !== 'documents') {
+          router.push(`/#${tab}`);
+        }
+      }} onRequestQuote={() => { }} />
 
       <main className="flex-1">
         {!isUnlocked ? (
@@ -280,7 +287,10 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
         )}
       </main>
 
-      <Footer setActiveTab={setActiveTab} openPolicyModal={() => {}} />
+      <Footer setActiveTab={(tab) => {
+        setActiveTab(tab);
+        router.push(`/#${tab}`);
+      }} openPolicyModal={() => { }} />
     </div>
   );
 }

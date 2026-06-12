@@ -24,6 +24,16 @@
   --color-outline-variant: #c4c7c7;
 }
 
+/* Disable default cursor pointer globally */
+* {
+  cursor: none !important;
+}
+
+/* Allow normal cursor for inputs and textareas in admin */
+input, textarea, select {
+  cursor: text;
+}
+
 /* Custom engineering blueprint/technical motifs CSS */
 .engineering-grid {
   background-size: 40px 40px;
