@@ -1,25 +1,23 @@
-import fs from 'fs';
-import path from 'path';
 import { NextRequest, NextResponse } from 'next/server';
 import { getDocuments, getSettings } from '@/lib/cms';
 
 /**
  * Secure document download endpoint
  * 
- * This endpoint serves documents securely without exposing them publicly.
- * Documents are stored in a non-public directory and served through this API.
+ * Fetches documents from Supabase Storage and serves them securely.
  * 
  * Usage: POST /api/documents/download
  * Body: {
  *   documentId: string,
- *   password: string
+ *   password: string,
+ *   mode?: 'view' | 'download'  // defaults to 'view'
  * }
  */
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { documentId, password } = body;
+    const { documentId, password, mode = 'view' } = body;
 
     if (!documentId || !password) {
       return NextResponse.json(
@@ -48,48 +46,34 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Extract filename from file_url (should be just the filename)
-    // Security: Only allow downloads from a specific documents directory
-    const fileName = path.basename(document.file_url);
-
-    // Prevent directory traversal attacks
-    if (fileName.includes('..') || fileName.includes('/') || fileName.includes('\\')) {
+    if (!document.file_url) {
       return NextResponse.json(
-        { error: 'Invalid file path' },
-        { status: 400 }
-      );
-    }
-
-    // Store documents in a private directory (not in public)
-    const documentsDir = path.join(process.cwd(), 'private-documents');
-    const filePath = path.join(documentsDir, fileName);
-
-    // Verify the file exists and is within the documents directory
-    const realPath = path.resolve(filePath);
-    const realDocsDir = path.resolve(documentsDir);
-
-    if (!realPath.startsWith(realDocsDir)) {
-      return NextResponse.json(
-        { error: 'Invalid file path' },
-        { status: 400 }
-      );
-    }
-
-    if (!fs.existsSync(filePath)) {
-      return NextResponse.json(
-        { error: 'File not found' },
+        { error: 'Document has no file attached' },
         { status: 404 }
       );
     }
 
-    // Read file
-    const fileBuffer = fs.readFileSync(filePath);
+    // Fetch the file from Supabase Storage (file_url is a public URL)
+    const fileResponse = await fetch(document.file_url);
 
-    // Return as PDF with appropriate headers
+    if (!fileResponse.ok) {
+      console.error('Failed to fetch document from storage:', fileResponse.status);
+      return NextResponse.json(
+        { error: 'Failed to retrieve document file' },
+        { status: 502 }
+      );
+    }
+
+    const fileBuffer = Buffer.from(await fileResponse.arrayBuffer());
+    const contentType = fileResponse.headers.get('content-type') || 'application/pdf';
+    const contentDisposition = mode === 'download'
+      ? `attachment; filename="${encodeURIComponent(document.title || 'document')}.pdf"`
+      : `inline; filename="${encodeURIComponent(document.title || 'document')}.pdf"`;
+
     return new NextResponse(fileBuffer, {
       headers: {
-        'Content-Type': 'application/pdf',
-        'Content-Disposition': `inline; filename="${fileName}"`,
+        'Content-Type': contentType,
+        'Content-Disposition': contentDisposition,
         'Cache-Control': 'no-cache, no-store, must-revalidate',
         'Pragma': 'no-cache',
         'Expires': '0'

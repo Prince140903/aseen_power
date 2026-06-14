@@ -2,6 +2,8 @@ import PageClient from './page-client';
 import { getServices, getProjects } from '@/lib/cms';
 import { getDocuments } from '@/lib/cms';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   // Load CMS data server-side
   const services = await getServices();
