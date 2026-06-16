@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Menu, X, ArrowRight } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useScrollPosition } from '@/hooks/use-scroll-position';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 interface HeaderProps {
   activeTab: string;
@@ -68,13 +69,13 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
               />
               <div className="flex flex-col items-start justify-center">
                 <motion.span
-                  className="font-display font-extrabold text-xl sm:text-2xl tracking-tighter leading-none group-hover:text-[#785919] transition-colors duration-200"
+                  className="font-display font-extrabold text-xl sm:text-2xl tracking-tighter leading-none group-hover:text-[#785919] dark:group-hover:text-[#eac076] transition-colors duration-200"
                   animate={{ color: shouldShowSolidBg ? '#1b1c1c' : '#ffffff' }}
                   transition={{ duration: 0.3 }}
                 >
                   ASEEN
                 </motion.span>
-                <span className="font-display font-semibold text-xs sm:text-sm tracking-[0.3em] text-[#785919] leading-none mt-1">
+                <span className="font-display font-semibold text-xs sm:text-sm tracking-[0.3em] text-[#785919] dark:text-[#eac076] leading-none mt-1">
                   POWER
                 </span>
               </div>
@@ -102,7 +103,7 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
                   {activeTab === item.id && (
                     <motion.div
                       layoutId="activeIndicator"
-                      className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#785919]"
+                      className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#785919] dark:bg-[#eac076]"
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                     />
                   )}
@@ -110,11 +111,12 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
               ))}
             </nav>
 
-            {/* CTA Request Quote */}
-            <div className="hidden md:block">
+            {/* Theme Toggle + CTA Request Quote */}
+            <div className="hidden md:flex items-center gap-3">
+              <ThemeToggle />
               <motion.button
                 onClick={onRequestQuote}
-                className="group inline-flex items-center justify-center bg-[#785919] hover:bg-black text-white font-display text-xs tracking-widest font-bold uppercase py-3.5 px-6 rounded-sm transition-all duration-300 shadow-md hover:shadow-lg active:translate-y-0 "
+                className="group inline-flex items-center justify-center bg-[#785919] dark:bg-[#eac076] dark:text-black hover:bg-black dark:hover:bg-white text-white font-display text-xs tracking-widest font-bold uppercase py-3.5 px-6 rounded-sm transition-all duration-300 shadow-md hover:shadow-lg active:translate-y-0 "
                 whileHover={{ y: -2, boxShadow: '0 12px 24px rgba(120, 89, 25, 0.2)' }}
                 whileTap={{ y: 0 }}
                 id="header-cta-quote"
@@ -130,11 +132,12 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
               </motion.button>
             </div>
 
-            {/* Mobile Hamburger Menu Switch */}
-            <div className="md:hidden flex items-center gap-4">
+            {/* Mobile ThemeToggle + Hamburger Menu Switch */}
+            <div className="md:hidden flex items-center gap-3">
+              <ThemeToggle />
               <motion.button
                 onClick={onRequestQuote}
-                className="bg-[#785919] text-white p-2 text-[10px] font-bold tracking-wider rounded-sm uppercase px-3 hover:bg-black transition-colors"
+                className="bg-[#785919] dark:bg-[#eac076] dark:text-black text-white p-2 text-[10px] font-bold tracking-wider rounded-sm uppercase px-3 hover:bg-black dark:hover:bg-white transition-colors"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 id="mobile-quote-btn"
@@ -143,7 +146,7 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
               </motion.button>
               <motion.button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 text-black hover:text-[#785919] transition-colors focus:outline-none"
+                className="p-2 text-black dark:text-white hover:text-[#785919] dark:hover:text-[#eac076] transition-colors focus:outline-none"
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 aria-label="Toggle Menu"
@@ -164,7 +167,7 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: 'easeInOut' }}
-            className="md:hidden border-t border-[#e9e8e7] bg-white overflow-hidden shadow-xl"
+            className="md:hidden border-t border-[#e9e8e7] dark:border-[#3a3d45] bg-white dark:bg-[#1a1c22] overflow-hidden shadow-xl"
             id="mobile-nav-panel"
           >
             <div className="px-6 py-6 space-y-4 flex flex-col">
@@ -175,7 +178,7 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
                     setActiveTab(item.id);
                     setIsMobileMenuOpen(false);
                   }}
-                  className={`text-left font-display text-sm font-bold tracking-widest py-3 border-b border-[#f5f3f3] last:border-b-0 transition-colors ${activeTab === item.id ? 'text-[#785919] pl-2 border-l-2 border-[#785919]' : 'text-[#1b1c1c] hover:text-[#785919]'
+                  className={`text-left font-display text-sm font-bold tracking-widest py-3 border-b border-[#f5f3f3] dark:border-[#2a2c35] last:border-b-0 transition-colors ${activeTab === item.id ? 'text-[#785919] dark:text-[#eac076] pl-2 border-l-2 border-[#785919] dark:border-[#eac076]' : 'text-[#1b1c1c] dark:text-[#e8e6e3] hover:text-[#785919] dark:hover:text-[#eac076]'
                     }`}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -190,7 +193,7 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
                   setIsMobileMenuOpen(false);
                   onRequestQuote();
                 }}
-                className="w-full text-center bg-black hover:bg-[#785919] text-white font-display text-sm tracking-widest font-bold py-4 rounded-sm mt-4 transition-all"
+                className="w-full text-center bg-black dark:bg-white dark:text-black hover:bg-[#785919] dark:hover:bg-[#eac076] text-white font-display text-sm tracking-widest font-bold py-4 rounded-sm mt-4 transition-all"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 initial={{ opacity: 0 }}

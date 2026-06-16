@@ -124,16 +124,16 @@ export default function AdminSettingsTab() {
   };
 
   if (loading || !settings) {
-    return <div className="text-center py-12">Loading settings...</div>;
+    return <div className="text-center py-12 dark:text-[#b0b3b8]">Loading settings...</div>;
   }
 
   return (
     <div className="max-w-4xl mx-auto">
       <div className="mb-8">
-        <h2 className="font-display font-bold text-2xl text-black uppercase tracking-tight mb-1">
+        <h2 className="font-display font-bold text-2xl text-black dark:text-white uppercase tracking-tight mb-1">
           Settings
         </h2>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-gray-600 dark:text-[#b0b3b8]">
           Manage website information and security settings
         </p>
       </div>
@@ -141,7 +141,7 @@ export default function AdminSettingsTab() {
       {/* Loading State */}
       {loading && (
         <div className="flex items-center justify-center py-12">
-          <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#785919] border-t-transparent" />
+          <div className="animate-spin rounded-full h-8 w-8 border-2 border-[#785919] dark:border-[#eac076] border-t-transparent" />
         </div>
       )}
 
@@ -150,7 +150,7 @@ export default function AdminSettingsTab() {
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="p-4 rounded-sm border bg-red-50 border-red-200 text-red-700 flex items-center gap-2 mb-6"
+          className="p-4 rounded-sm border bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 flex items-center gap-2 mb-6"
         >
           <AlertCircle size={18} />
           Failed to load settings
@@ -165,8 +165,8 @@ export default function AdminSettingsTab() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             className={`p-4 rounded-sm border flex items-center gap-2 mb-6 ${message.includes("successfully")
-              ? "bg-green-50 border-green-200 text-green-700"
-              : "bg-red-50 border-red-200 text-red-700"
+              ? "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-700 dark:text-green-400"
+              : "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-700 dark:text-red-400"
               }`}
           >
             {message.includes("successfully") ? (
@@ -185,15 +185,15 @@ export default function AdminSettingsTab() {
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-white border border-[#e9e8e7] rounded-lg p-6 shadow-sm"
+            className="bg-white dark:bg-[#1a1c22] border border-[#e9e8e7] dark:border-[#3a3d45] rounded-lg p-6 shadow-sm"
           >
-            <h3 className="font-display font-bold text-lg mb-6 uppercase">
+            <h3 className="font-display font-bold text-lg mb-6 uppercase dark:text-white">
               Website Information
             </h3>
 
             <div className="space-y-6">
               <div>
-                <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">
+                <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">
                   Website Title
                 </label>
                 <input
@@ -205,12 +205,12 @@ export default function AdminSettingsTab() {
                       site: { ...settings.site, title: e.target.value },
                     })
                   }
-                  className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919]"
+                  className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                 />
               </div>
 
               <div>
-                <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">
+                <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">
                   Tagline
                 </label>
                 <input
@@ -222,12 +222,12 @@ export default function AdminSettingsTab() {
                       site: { ...settings.site, tagline: e.target.value },
                     })
                   }
-                  className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919]"
+                  className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                 />
               </div>
 
               <div>
-                <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">
+                <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">
                   Meta Description
                 </label>
                 <textarea
@@ -238,7 +238,7 @@ export default function AdminSettingsTab() {
                       site: { ...settings.site, description: e.target.value },
                     })
                   }
-                  className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919] font-sans text-sm"
+                  className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] font-sans text-sm bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                   rows={2}
                 />
               </div>
@@ -250,15 +250,15 @@ export default function AdminSettingsTab() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="bg-white border border-[#e9e8e7] rounded-lg p-6 shadow-sm"
+            className="bg-white dark:bg-[#1a1c22] border border-[#e9e8e7] dark:border-[#3a3d45] rounded-lg p-6 shadow-sm"
           >
-            <h3 className="font-display font-bold text-lg mb-6 uppercase">
+            <h3 className="font-display font-bold text-lg mb-6 uppercase dark:text-white">
               Contact Information
             </h3>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">
+                <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">
                   Email
                 </label>
                 <input
@@ -270,12 +270,12 @@ export default function AdminSettingsTab() {
                       contact: { ...settings.contact, email: e.target.value },
                     })
                   }
-                  className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919]"
+                  className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                 />
               </div>
 
               <div>
-                <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">
+                <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">
                   Phone
                 </label>
                 <input
@@ -287,13 +287,13 @@ export default function AdminSettingsTab() {
                       contact: { ...settings.contact, phone: e.target.value },
                     })
                   }
-                  className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919]"
+                  className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                 />
               </div>
             </div>
 
             <div className="mt-6">
-              <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">
+              <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">
                 Address
               </label>
               <textarea
@@ -304,13 +304,13 @@ export default function AdminSettingsTab() {
                     contact: { ...settings.contact, address: e.target.value },
                   })
                 }
-                className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919] font-sans text-sm"
+                className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] font-sans text-sm bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                 rows={2}
               />
             </div>
 
             <div className="mt-6">
-              <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">
+              <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">
                 Business Registration
               </label>
               <input
@@ -325,7 +325,7 @@ export default function AdminSettingsTab() {
                     },
                   })
                 }
-                className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919]"
+                className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
               />
             </div>
           </motion.div>
@@ -335,18 +335,18 @@ export default function AdminSettingsTab() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white border border-[#e9e8e7] rounded-lg p-6 shadow-sm"
+            className="bg-white dark:bg-[#1a1c22] border border-[#e9e8e7] dark:border-[#3a3d45] rounded-lg p-6 shadow-sm"
           >
-            <h3 className="font-display font-bold text-lg mb-4 uppercase text-red-900">
+            <h3 className="font-display font-bold text-lg mb-4 uppercase text-red-900 dark:text-red-400">
               Protected Document Access
             </h3>
-            <p className="text-sm text-red-800 mb-6">
+            <p className="text-sm text-red-800 dark:text-red-300 mb-6">
               Set the password that users will need to access protected
               documents.
             </p>
 
             <div>
-              <label className="block font-display text-xs font-bold text-red-900 uppercase mb-2">
+              <label className="block font-display text-xs font-bold text-red-900 dark:text-red-400 uppercase mb-2">
                 Document Access Password
               </label>
               <div className="relative">
@@ -362,17 +362,17 @@ export default function AdminSettingsTab() {
                       },
                     })
                   }
-                  className="w-full px-4 py-2 pr-12 border border-red-300 rounded-sm focus:outline-none focus:border-red-500"
+                  className="w-full px-4 py-2 pr-12 border border-red-300 dark:border-red-800 rounded-sm focus:outline-none focus:border-red-500 dark:focus:border-red-400 bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                 />
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-[#8b8e93] hover:text-gray-600 dark:hover:text-[#e8e6e3] transition-colors"
                 >
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </div>
-              <p className="text-xs text-red-700 mt-2">
+              <p className="text-xs text-red-700 dark:text-red-300 mt-2">
                 Users will need to enter this password to view protected
                 documents.
               </p>
@@ -384,15 +384,15 @@ export default function AdminSettingsTab() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="bg-white border border-[#e9e8e7] rounded-lg p-6 shadow-sm"
+            className="bg-white dark:bg-[#1a1c22] border border-[#e9e8e7] dark:border-[#3a3d45] rounded-lg p-6 shadow-sm"
           >
-            <h3 className="font-display font-bold text-lg mb-6 uppercase">
+            <h3 className="font-display font-bold text-lg mb-6 uppercase dark:text-white">
               Social Media
             </h3>
 
             <div className="space-y-4">
               <div>
-                <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">
+                <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">
                   LinkedIn URL
                 </label>
                 <input
@@ -404,12 +404,12 @@ export default function AdminSettingsTab() {
                       social: { ...settings.social, linkedin: e.target.value },
                     })
                   }
-                  className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919]"
+                  className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                 />
               </div>
 
               <div>
-                <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">
+                <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">
                   Twitter URL
                 </label>
                 <input
@@ -421,12 +421,12 @@ export default function AdminSettingsTab() {
                       social: { ...settings.social, twitter: e.target.value },
                     })
                   }
-                  className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919]"
+                  className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                 />
               </div>
 
               <div>
-                <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">
+                <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">
                   Facebook URL
                 </label>
                 <input
@@ -438,7 +438,7 @@ export default function AdminSettingsTab() {
                       social: { ...settings.social, facebook: e.target.value },
                     })
                   }
-                  className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919]"
+                  className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                 />
               </div>
             </div>
@@ -449,15 +449,15 @@ export default function AdminSettingsTab() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
-            className="bg-white border border-[#e9e8e7] rounded-lg p-6 shadow-sm"
+            className="bg-white dark:bg-[#1a1c22] border border-[#e9e8e7] dark:border-[#3a3d45] rounded-lg p-6 shadow-sm"
           >
-            <h3 className="font-display font-bold text-lg mb-6 uppercase">
+            <h3 className="font-display font-bold text-lg mb-6 uppercase dark:text-white">
               Footer Information
             </h3>
 
             <div className="space-y-6">
               <div>
-                <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">
+                <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">
                   Company Description
                 </label>
                 <textarea
@@ -471,14 +471,14 @@ export default function AdminSettingsTab() {
                       },
                     })
                   }
-                  className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919] font-sans text-sm"
+                  className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] font-sans text-sm bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                   rows={3}
                 />
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">
+                  <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">
                     Year Founded
                   </label>
                   <input
@@ -493,13 +493,13 @@ export default function AdminSettingsTab() {
                         },
                       })
                     }
-                    className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919]"
+                    className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">
+                <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">
                   Copyright Text
                 </label>
                 <input
@@ -514,7 +514,7 @@ export default function AdminSettingsTab() {
                       },
                     })
                   }
-                  className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919]"
+                  className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                 />
               </div>
             </div>
@@ -529,7 +529,7 @@ export default function AdminSettingsTab() {
           >
             <button
               onClick={handleSave}
-              className="flex items-center gap-2 bg-[#785919] text-white px-8 py-3 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors  shadow-md"
+              className="flex items-center gap-2 bg-[#785919] dark:bg-[#eac076] dark:text-black text-white px-8 py-3 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black dark:hover:bg-white transition-colors shadow-md"
             >
               <Save size={18} />
               SAVE ALL SETTINGS

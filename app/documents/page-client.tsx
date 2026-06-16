@@ -102,7 +102,7 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#fbf9f8]">
+    <div className="flex flex-col min-h-screen bg-[#fbf9f8] dark:bg-[#0f1115]">
       <Header activeTab={activeTab} setActiveTab={(tab) => {
         setActiveTab(tab);
         if (tab !== 'documents') {
@@ -117,27 +117,27 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="bg-white border border-[#e9e8e7] rounded-lg shadow-lg p-8 sm:p-12"
+                className="bg-white dark:bg-[#1a1c22] border border-[#e9e8e7] dark:border-[#3a3d45] rounded-lg shadow-lg p-8 sm:p-12"
               >
                 <div className="text-center mb-8">
-                  <div className="inline-block p-4 bg-[#785919]/10 rounded-full mb-4">
-                    <Lock size={40} className="text-[#785919]" />
+                  <div className="inline-block p-4 bg-[#785919]/10 dark:bg-[#eac076]/10 rounded-full mb-4">
+                    <Lock size={40} className="text-[#785919] dark:text-[#eac076]" />
                   </div>
-                  <h1 className="font-display font-bold text-2xl text-black uppercase tracking-tight mb-2">
+                  <h1 className="font-display font-bold text-2xl text-black dark:text-white uppercase tracking-tight mb-2">
                     Protected Documents
                   </h1>
-                  <p className="font-display text-xs text-[#785919] tracking-widest uppercase font-semibold">
+                  <p className="font-display text-xs text-[#785919] dark:text-[#eac076] tracking-widest uppercase font-semibold">
                     Secure Access Required
                   </p>
                 </div>
 
-                <p className="font-sans text-sm text-gray-600 text-center mb-8">
+                <p className="font-sans text-sm text-gray-600 dark:text-[#b0b3b8] text-center mb-8">
                   Access our certifications, credentials, and supporting documents. Enter the access password provided by our team.
                 </p>
 
                 <form onSubmit={handleUnlock} className="space-y-6">
                   <div className="flex flex-col">
-                    <label className="font-display text-[10px] tracking-widest font-extrabold text-stone-600 uppercase mb-2">
+                    <label className="font-display text-[10px] tracking-widest font-extrabold text-stone-600 dark:text-[#b0b3b8] uppercase mb-2">
                       Access Password
                     </label>
                     <div className="relative">
@@ -150,18 +150,18 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
                         }}
                         placeholder="Enter password"
                         disabled={loading}
-                        className="w-full px-4 py-3 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm bg-white font-sans text-sm pr-12 disabled:bg-gray-100"
+                        className="w-full px-4 py-3 border border-[#c4c7c7] dark:border-[#3a3d45] focus:border-[#785919] dark:focus:border-[#eac076] focus:outline-none rounded-sm bg-white dark:bg-[#12141a] dark:text-[#e8e6e3] font-sans text-sm pr-12 disabled:bg-gray-100 dark:disabled:bg-[#23252d]"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 "
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 dark:text-[#8b8e93] hover:text-gray-600 dark:hover:text-[#e8e6e3]"
                       >
                         {showPassword ? <EyeOff size={18} /> : <EyeIcon size={18} />}
                       </button>
                     </div>
                     {passwordError && (
-                      <p className="text-red-500 font-sans text-xs mt-2 flex items-center gap-1">
+                      <p className="text-red-500 dark:text-red-400 font-sans text-xs mt-2 flex items-center gap-1">
                         <AlertCircle size={14} />
                         {passwordError}
                       </p>
@@ -171,7 +171,7 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
                   <button
                     type="submit"
                     disabled={loading}
-                    className="w-full bg-[#785919] hover:bg-black disabled:bg-gray-400 text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-colors duration-300  flex items-center justify-center gap-2"
+                    className="w-full bg-[#785919] dark:bg-[#eac076] dark:text-black hover:bg-black dark:hover:bg-white disabled:bg-gray-400 dark:disabled:bg-[#3a3d45] text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-colors duration-300 flex items-center justify-center gap-2"
                   >
                     {loading ? (
                       <>
@@ -184,7 +184,7 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
                   </button>
                 </form>
 
-                <p className="text-center font-sans text-[11px] text-gray-400 mt-6 leading-relaxed">
+                <p className="text-center font-sans text-[11px] text-gray-400 dark:text-[#8b8e93] mt-6 leading-relaxed">
                   Documents are password-protected to ensure they reach authorized stakeholders only.
                 </p>
               </motion.div>
@@ -196,32 +196,32 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
               <div className="flex items-center justify-between mb-12">
                 <div>
                   <div className="flex items-center gap-2 mb-3">
-                    <div className="inline-block p-2 bg-emerald-100 rounded-sm">
-                      <CheckCircle size={20} className="text-emerald-600" />
+                    <div className="inline-block p-2 bg-emerald-100 dark:bg-emerald-900/30 rounded-sm">
+                      <CheckCircle size={20} className="text-emerald-600 dark:text-emerald-400" />
                     </div>
-                    <span className="font-display text-xs tracking-widest font-bold text-emerald-700 uppercase">
+                    <span className="font-display text-xs tracking-widest font-bold text-emerald-700 dark:text-emerald-400 uppercase">
                       UNLOCKED
                     </span>
                   </div>
-                  <h1 className="font-display font-bold text-3xl text-black uppercase tracking-tight">
+                  <h1 className="font-display font-bold text-3xl text-black dark:text-white uppercase tracking-tight">
                     Protected Documents
                   </h1>
-                  <p className="font-sans text-sm text-gray-600 mt-2">
+                  <p className="font-sans text-sm text-gray-600 dark:text-[#b0b3b8] mt-2">
                     Certifications, credentials, and supporting business documents
                   </p>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="px-4 py-2 bg-white border border-[#e9e8e7] text-black font-display text-xs font-bold tracking-widest uppercase rounded-sm hover:bg-gray-50 transition-colors "
+                  className="px-4 py-2 bg-white dark:bg-[#1a1c22] border border-[#e9e8e7] dark:border-[#3a3d45] text-black dark:text-[#e8e6e3] font-display text-xs font-bold tracking-widest uppercase rounded-sm hover:bg-gray-50 dark:hover:bg-[#23252d] transition-colors"
                 >
                   LOCK
                 </button>
               </div>
 
               {documents.length === 0 ? (
-                <div className="text-center py-16 bg-white border border-[#e9e8e7] rounded-lg">
-                  <FileText size={48} className="mx-auto text-gray-300 mb-4" />
-                  <p className="font-display text-sm text-gray-500 uppercase tracking-wide">
+                <div className="text-center py-16 bg-white dark:bg-[#1a1c22] border border-[#e9e8e7] dark:border-[#3a3d45] rounded-lg">
+                  <FileText size={48} className="mx-auto text-gray-300 dark:text-[#3a3d45] mb-4" />
+                  <p className="font-display text-sm text-gray-500 dark:text-[#b0b3b8] uppercase tracking-wide">
                     No documents available
                   </p>
                 </div>
@@ -233,17 +233,17 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className="bg-white border border-[#e9e8e7] rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow group"
+                      className="bg-white dark:bg-[#1a1c22] border border-[#e9e8e7] dark:border-[#3a3d45] rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow group"
                     >
                       <div className="flex items-start gap-4 mb-4">
-                        <div className="p-3 bg-[#785919]/10 rounded-sm group-hover:bg-[#785919]/20 transition-colors">
-                          <FileText size={24} className="text-[#785919]" />
+                        <div className="p-3 bg-[#785919]/10 dark:bg-[#eac076]/10 rounded-sm group-hover:bg-[#785919]/20 dark:group-hover:bg-[#eac076]/20 transition-colors">
+                          <FileText size={24} className="text-[#785919] dark:text-[#eac076]" />
                         </div>
                         <div className="flex-1">
-                          <h3 className="font-display font-bold text-base text-black mb-1 group-hover:text-[#785919] transition-colors">
+                          <h3 className="font-display font-bold text-base text-black dark:text-white mb-1 group-hover:text-[#785919] dark:group-hover:text-[#eac076] transition-colors">
                             {doc.title}
                           </h3>
-                          <p className="font-sans text-xs text-gray-500">
+                          <p className="font-sans text-xs text-gray-500 dark:text-[#8b8e93]">
                             {doc.description}
                           </p>
                         </div>
@@ -252,7 +252,7 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
                       <button
                         onClick={() => handleDocumentView(doc.id)}
                         disabled={downloadingId === doc.id}
-                        className="inline-flex items-center gap-2 mt-6 pt-6 border-t border-gray-100 text-[#785919] hover:text-black disabled:text-gray-400 font-display text-xs font-bold tracking-widest uppercase transition-colors  group/btn disabled:cursor-not-allowed"
+                        className="inline-flex items-center gap-2 mt-6 pt-6 border-t border-gray-100 dark:border-[#3a3d45] text-[#785919] dark:text-[#eac076] hover:text-black dark:hover:text-white disabled:text-gray-400 dark:disabled:text-[#8b8e93] font-display text-xs font-bold tracking-widest uppercase transition-colors group/btn disabled:cursor-not-allowed"
                       >
                         {downloadingId === doc.id ? (
                           <>
@@ -271,12 +271,12 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
                 </div>
               )}
 
-              <div className="mt-12 p-6 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="mt-12 p-6 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
                 <div className="flex gap-3">
-                  <Lock size={20} className="text-blue-600 shrink-0 mt-0.5" />
+                  <Lock size={20} className="text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-display font-bold text-sm text-blue-900 mb-1 uppercase">Confidential Access</h4>
-                    <p className="font-sans text-xs text-blue-800">
+                    <h4 className="font-display font-bold text-sm text-blue-900 dark:text-blue-300 mb-1 uppercase">Confidential Access</h4>
+                    <p className="font-sans text-xs text-blue-800 dark:text-blue-300">
                       These documents are secured and intended for authorized stakeholders only. By accessing this section, you acknowledge that you have received permission to view these materials.
                     </p>
                   </div>

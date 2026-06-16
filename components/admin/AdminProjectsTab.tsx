@@ -171,15 +171,15 @@ export default function AdminProjectsTab() {
   };
 
   if (loading) {
-    return <div className="text-center py-12">Loading projects...</div>;
+    return <div className="text-center py-12 dark:text-[#b0b3b8]">Loading projects...</div>;
   }
 
   return (
     <div className="max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h2 className="font-display font-bold text-2xl text-black uppercase tracking-tight mb-1">Projects</h2>
-          <p className="text-sm text-gray-600">Manage your portfolio and case studies</p>
+          <h2 className="font-display font-bold text-2xl text-black dark:text-white uppercase tracking-tight mb-1">Projects</h2>
+          <p className="text-sm text-gray-600 dark:text-[#b0b3b8]">Manage your portfolio and case studies</p>
         </div>
         {!isAdding && !editingId && (
           <button
@@ -187,7 +187,7 @@ export default function AdminProjectsTab() {
               setIsAdding(true);
               resetForm();
             }}
-            className="flex items-center gap-2 bg-[#785919] text-white px-4 py-3 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors "
+            className="flex items-center gap-2 bg-[#785919] dark:bg-[#eac076] dark:text-black text-white px-4 py-3 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black dark:hover:bg-white transition-colors"
           >
             <Plus size={16} />
             ADD PROJECT
@@ -204,8 +204,8 @@ export default function AdminProjectsTab() {
             exit={{ opacity: 0, y: -10 }}
             className={`p-4 rounded-sm border flex items-center gap-2 mb-6 ${
               message.includes('successfully')
-                ? 'bg-green-50 border-green-200 text-green-700'
-                : 'bg-red-50 border-red-200 text-red-700'
+                ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-700 dark:text-green-400'
+                : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-700 dark:text-red-400'
             }`}
           >
             {message.includes('successfully') ? (
@@ -223,29 +223,29 @@ export default function AdminProjectsTab() {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white border border-[#e9e8e7] rounded-lg p-6 mb-8 shadow-sm"
+          className="bg-white dark:bg-[#1a1c22] border border-[#e9e8e7] dark:border-[#3a3d45] rounded-lg p-6 mb-8 shadow-sm"
         >
-          <h3 className="font-display font-bold text-lg mb-6 uppercase">
+          <h3 className="font-display font-bold text-lg mb-6 uppercase dark:text-white">
             {editingId ? 'EDIT PROJECT' : 'ADD NEW PROJECT'}
           </h3>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div>
-              <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">Title *</label>
+              <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">Title *</label>
               <input
                 type="text"
                 value={formData.title || ''}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919]"
+                className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                 placeholder="Project title"
               />
             </div>
             <div>
-              <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">Category *</label>
+              <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">Category *</label>
               <select
                 value={formData.category || 'Industrial'}
                 onChange={(e) => setFormData({ ...formData, category: e.target.value as any })}
-                className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919] "
+                className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
               >
                 <option>Industrial</option>
                 <option>Commercial</option>
@@ -255,90 +255,90 @@ export default function AdminProjectsTab() {
           </div>
 
           <div className="mb-6">
-            <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">Location *</label>
+            <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">Location *</label>
             <input
               type="text"
               value={formData.location || ''}
               onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-              className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919]"
+              className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
               placeholder="City, State"
             />
           </div>
 
           <div className="mb-6">
-            <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">Description *</label>
+            <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">Description *</label>
             <textarea
               value={formData.description || ''}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919] font-sans text-sm"
+              className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] font-sans text-sm bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
               rows={3}
               placeholder="Project description"
             />
           </div>
 
           <div className="mb-6">
-            <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">
+            <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">
               Project Image {isAdding ? '*' : '(Optional to update)'}
             </label>
             <input
               type="file"
               accept="image/*"
               onChange={handleImageChange}
-              className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919] file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-bold file:bg-[#785919] file:text-white hover:file:bg-black "
+              className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-bold file:bg-[#785919] dark:file:bg-[#eac076] dark:file:text-black file:text-white hover:file:bg-black dark:hover:file:bg-white bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
             />
             {selectedImage && (
-              <p className="text-xs text-green-600 mt-2 flex items-center gap-1">
+              <p className="text-xs text-green-600 dark:text-green-400 mt-2 flex items-center gap-1">
                 <CheckCircle size={14} />
                 {selectedImage.name}
               </p>
             )}
             {editingId && formData.image_url && !selectedImage && (
-              <p className="text-xs text-gray-500 mt-2">Current image: stored in Supabase Storage</p>
+              <p className="text-xs text-gray-500 dark:text-[#b0b3b8] mt-2">Current image: stored in Supabase Storage</p>
             )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             <div>
-              <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">kVA Rating</label>
+              <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">kVA Rating</label>
               <input
                 type="text"
                 value={formData.kVA || ''}
                 onChange={(e) => setFormData({ ...formData, kVA: e.target.value })}
-                className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919]"
+                className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                 placeholder="e.g., 2,500 kVA"
               />
             </div>
             <div>
-              <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">Year</label>
+              <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">Year</label>
               <input
                 type="text"
                 value={formData.year || ''}
                 onChange={(e) => setFormData({ ...formData, year: e.target.value })}
-                className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919]"
+                className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                 placeholder="2024"
               />
             </div>
             <div>
-              <label className="block font-display text-xs font-bold text-stone-700 uppercase mb-2">Order</label>
+              <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">Order</label>
               <input
                 type="number"
                 value={formData.order || 0}
                 onChange={(e) => setFormData({ ...formData, order: parseInt(e.target.value) })}
-                className="w-full px-4 py-2 border border-[#c4c7c7] rounded-sm focus:outline-none focus:border-[#785919]"
+                className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                 placeholder="0"
               />
             </div>
           </div>
 
           <div className="mb-6">
-            <label className="flex items-center gap-3 ">
+            <label className="flex items-center gap-3 cursor-pointer">
               <input
                 type="checkbox"
                 checked={formData.featured || false}
                 onChange={(e) => setFormData({ ...formData, featured: e.target.checked })}
-                className="w-4 h-4 "
+                className="w-4 h-4 accent-[#785919] dark:accent-[#eac076]"
               />
-              <span className="font-display text-xs font-bold text-stone-700 uppercase">Mark as Featured Project</span>
+              <span className="font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase">Mark as Featured Project</span>
             </label>
           </div>
 
@@ -346,7 +346,7 @@ export default function AdminProjectsTab() {
             <button
               onClick={handleSave}
               disabled={uploading}
-              className="flex items-center gap-2 bg-[#785919] text-white px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black transition-colors  disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 bg-[#785919] dark:bg-[#eac076] dark:text-black text-white px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black dark:hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {uploading ? (
                 <>
@@ -367,7 +367,7 @@ export default function AdminProjectsTab() {
                 resetForm();
               }}
               disabled={uploading}
-              className="flex items-center gap-2 bg-gray-200 text-black px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-gray-300 transition-colors  disabled:opacity-50 disabled:cursor-not-allowed"
+              className="flex items-center gap-2 bg-gray-200 dark:bg-[#3a3d45] text-black dark:text-[#e8e6e3] px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-gray-300 dark:hover:bg-[#2a2c35] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <X size={16} />
               CANCEL
@@ -379,7 +379,7 @@ export default function AdminProjectsTab() {
       {/* Projects List */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {projects.length === 0 ? (
-          <div className="col-span-full text-center py-12 text-gray-500">
+          <div className="col-span-full text-center py-12 text-gray-500 dark:text-[#b0b3b8]">
             <p>No projects added yet. Click "Add Project" to get started.</p>
           </div>
         ) : (
@@ -389,9 +389,9 @@ export default function AdminProjectsTab() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white border border-[#e9e8e7] rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
+              className="bg-white dark:bg-[#1a1c22] border border-[#e9e8e7] dark:border-[#3a3d45] rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
             >
-              <div className="h-40 w-full overflow-hidden bg-gray-200">
+              <div className="h-40 w-full overflow-hidden bg-gray-200 dark:bg-[#23252d]">
                 {project.image_url && (
                   <img
                     src={project.image_url}
@@ -404,34 +404,34 @@ export default function AdminProjectsTab() {
               <div className="p-6">
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h3 className="font-display font-bold text-base text-black">{project.title}</h3>
+                    <h3 className="font-display font-bold text-base text-black dark:text-white">{project.title}</h3>
                     <div className="flex gap-2 mt-2">
-                      <span className="text-xs bg-[#785919] text-white px-2 py-1 rounded-sm">{project.category}</span>
+                      <span className="text-xs bg-[#785919] dark:bg-[#eac076] dark:text-black text-white px-2 py-1 rounded-sm">{project.category}</span>
                       {project.featured && (
-                        <span className="text-xs bg-yellow-100 text-yellow-800 px-2 py-1 rounded-sm font-bold">FEATURED</span>
+                        <span className="text-xs bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 px-2 py-1 rounded-sm font-bold">FEATURED</span>
                       )}
                     </div>
                   </div>
                   <div className="flex gap-2">
                     <button
                       onClick={() => startEdit(project)}
-                      className="p-2 text-[#785919] hover:bg-yellow-50 rounded-sm transition-colors "
+                      className="p-2 text-[#785919] dark:text-[#eac076] hover:bg-yellow-50 dark:hover:bg-[#23252d] rounded-sm transition-colors"
                     >
                       <Edit2 size={16} />
                     </button>
                     <button
                       onClick={() => handleDelete(project.id)}
-                      className="p-2 text-red-500 hover:bg-red-50 rounded-sm transition-colors "
+                      className="p-2 text-red-500 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-sm transition-colors"
                     >
                       <Trash2 size={16} />
                     </button>
                   </div>
                 </div>
 
-                <p className="text-xs text-gray-600 mb-3">{project.location}</p>
-                <p className="text-sm text-gray-600 mb-4">{project.description.substring(0, 100)}...</p>
+                <p className="text-xs text-gray-600 dark:text-[#b0b3b8] mb-3">{project.location}</p>
+                <p className="text-sm text-gray-600 dark:text-[#b0b3b8] mb-4">{project.description.substring(0, 100)}...</p>
 
-                <div className="flex justify-between text-xs text-gray-500">
+                <div className="flex justify-between text-xs text-gray-500 dark:text-[#8b8e93]">
                   <span>{project.kVA} | {project.year}</span>
                   <span>Order: {project.order}</span>
                 </div>

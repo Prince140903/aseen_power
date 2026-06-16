@@ -61,24 +61,24 @@ export default function AdminPage() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-[#fbf9f8] flex items-center justify-center px-4">
+      <div className="min-h-screen bg-[#fbf9f8] dark:bg-[#0f1115] flex items-center justify-center px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white border border-[#e9e8e7] rounded-lg shadow-lg p-8 w-full max-w-md"
+          className="bg-white dark:bg-[#1a1c22] border border-[#e9e8e7] dark:border-[#3a3d45] rounded-lg shadow-lg p-8 w-full max-w-md"
         >
           <div className="text-center mb-8">
-            <h1 className="font-display font-extrabold text-2xl text-black uppercase tracking-tight mb-2">
+            <h1 className="font-display font-extrabold text-2xl text-black dark:text-white uppercase tracking-tight mb-2">
               Aseen Power
             </h1>
-            <p className="font-display text-xs text-[#785919] tracking-widest uppercase font-semibold">
+            <p className="font-display text-xs text-[#785919] dark:text-[#eac076] tracking-widest uppercase font-semibold">
               Admin Control Panel
             </p>
           </div>
 
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="flex flex-col">
-              <label className="font-display text-[10px] tracking-widest font-extrabold text-stone-600 uppercase mb-2">
+              <label className="font-display text-[10px] tracking-widest font-extrabold text-stone-600 dark:text-[#b0b3b8] uppercase mb-2">
                 Admin Password
               </label>
               <input
@@ -89,10 +89,10 @@ export default function AdminPage() {
                   setPasswordError('');
                 }}
                 placeholder="Enter admin password"
-                className="w-full px-4 py-3 border border-[#c4c7c7] focus:border-[#785919] focus:outline-none rounded-sm bg-white font-sans text-sm"
+                className="w-full px-4 py-3 border border-[#c4c7c7] dark:border-[#3a3d45] focus:border-[#785919] dark:focus:border-[#eac076] focus:outline-none rounded-sm bg-white dark:bg-[#12141a] dark:text-[#e8e6e3] font-sans text-sm"
               />
               {passwordError && (
-                <p className="text-red-500 font-sans text-xs mt-2 flex items-center gap-1">
+                <p className="text-red-500 dark:text-red-400 font-sans text-xs mt-2 flex items-center gap-1">
                   <AlertCircle size={14} />
                   {passwordError}
                 </p>
@@ -101,13 +101,13 @@ export default function AdminPage() {
 
             <button
               type="submit"
-              className="w-full bg-[#785919] hover:bg-black text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-colors duration-300"
+              className="w-full bg-[#785919] dark:bg-[#eac076] dark:text-black hover:bg-black dark:hover:bg-white text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-colors duration-300"
             >
               ACCESS ADMIN PANEL
             </button>
           </form>
 
-          <p className="text-center font-sans text-[11px] text-gray-400 mt-6">
+          <p className="text-center font-sans text-[11px] text-gray-400 dark:text-[#8b8e93] mt-6">
             This area is for authorized administrators only.
           </p>
         </motion.div>
@@ -124,7 +124,7 @@ export default function AdminPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#fbf9f8] flex">
+    <div className="min-h-screen bg-[#fbf9f8] dark:bg-[#0f1115] flex">
       {/* Sidebar */}
       <motion.aside
         initial={{ x: -250 }}
@@ -217,7 +217,7 @@ export default function AdminPage() {
         </AnimatePresence>
 
         {/* Content Area */}
-        <main className="flex-1 p-6 sm:p-8 overflow-y-auto">
+        <main className="flex-1 p-6 sm:p-8 overflow-y-auto bg-[#fbf9f8] dark:bg-[#0f1115]">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTab}

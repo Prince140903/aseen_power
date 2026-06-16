@@ -88,13 +88,13 @@ export function ClientsCarousel() {
   if (!mounted) return null;
 
   return (
-    <section className="py-12 sm:py-16 bg-[#fbf9f8] border-t border-b border-[#e9e8e7]">
+    <section className="py-12 sm:py-16 bg-[#fbf9f8] dark:bg-[#0f1115] border-t border-b border-[#e9e8e7] dark:border-[#3a3d45]">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
         <ScrollReveal variant="fadeUp" className="text-center mb-8 sm:mb-12">
-          <h3 className="font-display text-xs tracking-[0.25em] font-extrabold text-[#785919] uppercase mb-2">
+          <h3 className="font-display text-xs tracking-[0.25em] font-extrabold text-[#785919] dark:text-[#eac076] uppercase mb-2">
             Trusted By Industry Leaders
           </h3>
-          <p className="font-sans text-xs sm:text-sm text-[#666766]">
+          <p className="font-sans text-xs sm:text-sm text-[#666766] dark:text-[#8b8e93]">
             Partnering with India's most respected enterprises
           </p>
         </ScrollReveal>
@@ -118,21 +118,21 @@ export function ClientsCarousel() {
                 whileHover={{ y: -2, scale: 1.02 }}
                 transition={{ duration: 0.2 }}
               >
-                <div className="w-full h-full bg-white border border-[#e9e8e7] rounded flex items-center justify-center p-2 sm:p-3 hover:border-[#785919]/20 hover:shadow-sm transition-all duration-300 group">
+                <div className="w-full h-full bg-white dark:bg-[#1a1c22] border border-[#e9e8e7] dark:border-[#3a3d45] rounded flex items-center justify-center p-2 sm:p-3 hover:border-[#785919]/20 dark:hover:border-[#eac076]/20 hover:shadow-sm transition-all duration-300 group">
                   <div className="relative w-full h-full flex items-center justify-center">
                     <Image
                       src={client.logo}
                       alt={client.name}
                       width={80}
                       height={50}
-                      className="object-contain max-w-[80%] max-h-[60px] filter grayscale group-hover:grayscale-0 transition-all duration-300"
+                      className="object-contain max-w-[80%] max-h-[60px] filter grayscale group-hover:grayscale-0 transition-all duration-300 dark:brightness-90 dark:group-hover:brightness-100"
                       priority={false}
                       onError={(e) => {
                         const img = e.target as HTMLImageElement;
                         img.style.display = 'none';
                         const placeholder = document.createElement('div');
                         placeholder.textContent = client.name;
-                        placeholder.className = 'font-display font-semibold text-[8px] sm:text-[9px] text-center text-[#999999] px-1 line-clamp-2';
+                        placeholder.className = 'font-display font-semibold text-[8px] sm:text-[9px] text-center text-[#999999] dark:text-[#8b8e93] px-1 line-clamp-2';
                         img.parentElement?.appendChild(placeholder);
                       }}
                     />

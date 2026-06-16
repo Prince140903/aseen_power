@@ -21,13 +21,13 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
   };
 
   return mounted ? (
-    <footer className="bg-black text-white py-16 lg:py-24 border-t-2 border-[#785919]/40 relative overflow-hidden">
+    <footer className="bg-black dark:bg-[#0a0b0e] text-white py-16 lg:py-24 border-t-2 border-[#785919]/40 dark:border-[#eac076]/30 relative overflow-hidden">
       {/* Subtle blueprints background grid overlay */}
       <div className="absolute inset-0 engineering-grid opacity-[0.03] pointer-events-none" />
 
       <div className="max-w-[1280px] mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16 pb-16 border-b border-white/10">
-          
+           
           {/* Column 1: Brand Credentials */}
           <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
             <div>
@@ -44,27 +44,27 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
               </p>
             </div>
             
-            {/* Social Link Badges - matching circles / dark style from Image 1 */}
+            {/* Social Link Badges */}
             <div className="flex items-center gap-3 pt-2">
-              <button 
+              <button
                 onClick={() => openPolicyModal('Corporate Certifications')}
-                className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#785919]/20 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#eac076] transition-all "
+                className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#785919]/20 dark:hover:bg-[#eac076]/20 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#eac076] transition-all "
                 title="SGS Quality Assured"
                 id="footer-social-shield"
               >
                 <Shield size={16} />
               </button>
-              <button 
+              <button
                 onClick={() => openPolicyModal('National Registration')}
-                className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#785919]/20 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#eac076] transition-all "
+                className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#785919]/20 dark:hover:bg-[#eac076]/20 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#eac076] transition-all "
                 title="Licensed Government Contractor"
                 id="footer-social-globe"
               >
                 <Globe size={16} />
               </button>
-              <button 
+              <button
                 onClick={() => openPolicyModal('External Credentials')}
-                className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#785919]/20 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#eac076] transition-all "
+                className="w-10 h-10 rounded-full bg-white/5 hover:bg-[#785919]/20 dark:hover:bg-[#eac076]/20 border border-white/10 flex items-center justify-center text-gray-400 hover:text-[#eac076] transition-all "
                 title="Aseen Engineering Directory"
                 id="footer-social-external"
               >
@@ -80,33 +80,33 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
             </h4>
             <ul className="space-y-4 font-display text-xs tracking-widest font-semibold text-gray-400">
               <li>
-                <button 
-                  onClick={() => handleQuickLink('services')} 
-                  className="hover:text-[#eac076] transition-colors  block"
+                <button
+                  onClick={() => handleQuickLink('services')}
+                  className="hover:text-[#eac076] transition-colors block"
                 >
                   Core Services
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => handleQuickLink('projects')} 
-                  className="hover:text-[#eac076] transition-colors  block"
+                <button
+                  onClick={() => handleQuickLink('projects')}
+                  className="hover:text-[#eac076] transition-colors block"
                 >
                   Project Gallery
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => handleQuickLink('about')} 
-                  className="hover:text-[#eac076] transition-colors  block"
+                <button
+                  onClick={() => handleQuickLink('about')}
+                  className="hover:text-[#eac076] transition-colors block"
                 >
                   Safety Standards
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => handleQuickLink('contact')} 
-                  className="hover:text-[#eac076] transition-colors  block"
+                <button
+                  onClick={() => handleQuickLink('contact')}
+                  className="hover:text-[#eac076] transition-colors block"
                 >
                   Contact Us
                 </button>
@@ -121,33 +121,33 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
             </h4>
             <ul className="space-y-4 font-display text-xs tracking-widest font-semibold text-gray-400">
               <li>
-                <button 
-                  onClick={() => openPolicyModal('Privacy Policy')} 
-                  className="hover:text-[#eac076] transition-colors  block"
+                <button
+                  onClick={() => openPolicyModal('Privacy Policy')}
+                  className="hover:text-[#eac076] transition-colors block"
                 >
                   PRIVACY POLICY
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => openPolicyModal('Terms of Service')} 
-                  className="hover:text-[#eac076] transition-colors  block"
+                <button
+                  onClick={() => openPolicyModal('Terms of Service')}
+                  className="hover:text-[#eac076] transition-colors block"
                 >
                   TERMS OF SERVICE
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => openPolicyModal('Cookie Policy')} 
-                  className="hover:text-[#eac076] transition-colors  block"
+                <button
+                  onClick={() => openPolicyModal('Cookie Policy')}
+                  className="hover:text-[#eac076] transition-colors block"
                 >
                   COOKIE POLICY
                 </button>
               </li>
               <li>
-                <button 
-                  onClick={() => openPolicyModal('Sitemap')} 
-                  className="hover:text-[#eac076] transition-colors  block"
+                <button
+                  onClick={() => openPolicyModal('Sitemap')}
+                  className="hover:text-[#eac076] transition-colors block"
                 >
                   SITEMAP
                 </button>
@@ -155,7 +155,7 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
             </ul>
           </div>
 
-          {/* Column 4: Highly Rendered Headquarters Location Block with Map Visualizer from Mockup 2 */}
+          {/* Column 4: Location */}
           <div className="lg:col-span-2 flex flex-col justify-between">
             <div>
               <h4 className="font-display text-xs tracking-[0.2em] font-bold text-white mb-6 uppercase">
@@ -166,24 +166,21 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
               </p>
             </div>
             
-            {/* Visual technical mini-map vector element from Image 2 */}
-            <div 
+            <div
               onClick={() => handleQuickLink('contact')}
-              className="group relative h-28 w-full border border-white/10 rounded-sm bg-stone-900 overflow-hidden  flex items-center justify-center"
+              className="group relative h-28 w-full border border-white/10 rounded-sm bg-stone-900 dark:bg-[#1a1c22] overflow-hidden flex items-center justify-center"
               id="footer-location-mini-map"
             >
               <div className="absolute inset-0 engineering-grid opacity-[0.14] group-hover:scale-105 transition-transform duration-300 pointer-events-none" />
               
-              {/* Symbolic stylized map lines */}
               <div className="absolute top-1/4 left-0 right-0 h-[1.5px] bg-secondary/15 rotate-12" />
               <div className="absolute top-2/3 left-0 right-0 h-[1.5px] bg-secondary/15 -rotate-6" />
               <div className="absolute top-0 bottom-0 left-1/3 w-[1.5px] bg-secondary/15 rotate-45" />
               <div className="absolute top-0 bottom-0 left-2/3 w-[1.5px] bg-secondary/15 -rotate-12" />
               
-              {/* Symbolic pin marker */}
               <div className="relative z-10 flex flex-col items-center">
                 <div className="w-3 h-3 bg-[#eac076] rounded-full animate-ping absolute" />
-                <div className="w-3 h-3 bg-[#785919] border border-white rounded-full relative" />
+                <div className="w-3 h-3 bg-[#785919] dark:bg-[#eac076] border border-white rounded-full relative" />
                 <span className="text-[9px] font-display font-bold tracking-widest text-[#eac076] mt-2 group-hover:text-white transition-colors">
                   BKC HQ, MUMBAI
                 </span>
@@ -209,6 +206,6 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
       </div>
     </footer>
   ) : (
-    <footer className="bg-black h-32" />
+    <footer className="bg-black dark:bg-[#0a0b0e] h-32" />
   );
 }

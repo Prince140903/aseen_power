@@ -97,7 +97,7 @@ export function PremiumCursor() {
           opacity: isClicking ? 0.5 : 1
         }}
         transition={{ duration: 0, type: 'tween' }}
-        className="fixed w-10 h-10 border-2 border-[#785919] rounded-full pointer-events-none z-[9999] opacity-0 mix-blend-mode-difference"
+        className="fixed w-10 h-10 border-2 border-[#785919] dark:border-[#eac076] rounded-full pointer-events-none z-[9999] opacity-0 mix-blend-mode-difference"
         style={{ mixBlendMode: 'difference' }}
       />
 
@@ -110,7 +110,7 @@ export function PremiumCursor() {
           scale: isHovering ? 2 : (isClicking ? 0.7 : 1)
         }}
         transition={{ duration: 0.15, type: 'tween' }}
-        className="fixed w-3 h-3 bg-[#785919] rounded-full pointer-events-none z-[9999]"
+        className="fixed w-3 h-3 bg-[#785919] dark:bg-[#eac076] rounded-full pointer-events-none z-[9999]"
         style={{ mixBlendMode: 'difference', filter: 'drop-shadow(0 0 6px rgba(255,255,255,0.7))' }}
       />
     </>
