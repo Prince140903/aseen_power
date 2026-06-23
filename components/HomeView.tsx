@@ -9,7 +9,8 @@ import {
   ShieldCheck, 
   Settings, 
   Award, 
-  ChevronRight, 
+  ChevronLeft,
+  ChevronRight,
   Phone, 
   Mail, 
   CheckCircle, 
@@ -22,6 +23,25 @@ import {
   Calendar,
   Layers
 } from 'lucide-react';
+
+const heroSlides = [
+  {
+    image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80&w=1800',
+    label: 'High-voltage transmission infrastructure'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=1800',
+    label: 'Industrial electrical engineering and commissioning'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&q=80&w=1800',
+    label: 'Renewable power and utility-scale energy systems'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&q=80&w=1800',
+    label: 'Commercial infrastructure power planning'
+  }
+];
 
 interface HomeViewProps {
   setActiveTab: (tab: string) => void;
@@ -39,10 +59,14 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [formError, setFormError] = useState('');
   const [ticketId, setTicketId] = useState<number>(1000);
-  const [mounted, setMounted] = useState(false);
-
+  const [activeHeroSlide, setActiveHeroSlide] = useState(0);
+ 
   useEffect(() => {
-    setMounted(true);
+    const slider = window.setInterval(() => {
+      setActiveHeroSlide(prev => (prev + 1) % heroSlides.length);
+    }, 4500);
+
+    return () => window.clearInterval(slider);
   }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -65,16 +89,23 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
     }, 5500);
   };
 
-  return mounted ? (
+  return (
     <div className="relative" id="home-view-container">
       {/* 1. IMMERSIVE HERO SECTION */}
       <section className="relative min-h-[85vh] flex items-center justify-center bg-stone-950 text-white overflow-hidden py-20 px-6">
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105 pointer-events-none filter brightness-50"
-          style={{ 
-            backgroundImage: `url('https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80&w=1600')` 
-          }}
-        />
+        <div className="absolute inset-0 pointer-events-none">
+          {heroSlides.map((slide, index) => (
+            <motion.div
+              key={slide.image}
+              aria-hidden={activeHeroSlide !== index}
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105 filter brightness-50"
+              style={{ backgroundImage: `url('${slide.image}')` }}
+              initial={false}
+              animate={{ opacity: activeHeroSlide === index ? 1 : 0 }}
+              transition={{ duration: 0.8, ease: 'easeInOut' }}
+            />
+          ))}
+        </div>
         <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-black/80 to-transparent z-10" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#785919]/10 dark:bg-[#eac076]/10 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-900/10 rounded-full blur-[120px] pointer-events-none" />
@@ -116,6 +147,36 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
               </button>
             </div>
           </motion.div>
+        </div>
+
+        <div className="absolute bottom-8 left-1/2 z-30 flex -translate-x-1/2 items-center gap-3 rounded-full border border-white/15 bg-black/25 px-4 py-2 backdrop-blur-md">
+          <button
+            type="button"
+            aria-label="Previous hero image"
+            onClick={() => setActiveHeroSlide(prev => (prev - 1 + heroSlides.length) % heroSlides.length)}
+            className="grid h-8 w-8 place-items-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/15"
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <div className="flex items-center gap-2">
+            {heroSlides.map((slide, index) => (
+              <button
+                key={slide.label}
+                type="button"
+                aria-label={`Show ${slide.label}`}
+                onClick={() => setActiveHeroSlide(index)}
+                className={`h-2 rounded-full transition-all duration-300 ${activeHeroSlide === index ? 'w-8 bg-[#eac076]' : 'w-2 bg-white/50 hover:bg-white/80'}`}
+              />
+            ))}
+          </div>
+          <button
+            type="button"
+            aria-label="Next hero image"
+            onClick={() => setActiveHeroSlide(prev => (prev + 1) % heroSlides.length)}
+            className="grid h-8 w-8 place-items-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/15"
+          >
+            <ChevronRight size={16} />
+          </button>
         </div>
       </section>
 
@@ -362,9 +423,7 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
       </section>
 
       {/* 6. CLIENTS CAROUSEL */}
-      <ClientsCarousel />
+      <ClientsCarousel onViewAll={() => { setActiveTab('clients'); window.scrollTo({ top: 0, behavior: 'smooth' }); }} />
     </div>
-  ) : (
-    <div className="relative" id="home-view-container" style={{ minHeight: '100vh' }} />
   );
 }

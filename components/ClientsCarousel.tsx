@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, useAnimationControls } from 'motion/react';
 import Image from 'next/image';
+import { ArrowRight } from 'lucide-react';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 
 interface Client {
@@ -11,9 +12,12 @@ interface Client {
   logo: string;
 }
 
-export function ClientsCarousel() {
+interface ClientsCarouselProps {
+  onViewAll?: () => void;
+}
+
+export function ClientsCarousel({ onViewAll }: ClientsCarouselProps) {
   const [isPaused, setIsPaused] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const controls = useAnimationControls();
   const containerRef = useRef<HTMLDivElement>(null);
   const [trackWidth, setTrackWidth] = useState(0);
@@ -40,14 +44,9 @@ export function ClientsCarousel() {
   // Duplicate clients for seamless infinite loop
   const duplicatedClients = [...clients, ...clients];
 
-  // Hydration safety
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   // Measure the track to calculate animation distance
   useEffect(() => {
-    if (!mounted || !containerRef.current) return;
+    if (!containerRef.current) return;
 
     const measure = () => {
       const track = containerRef.current?.firstElementChild as HTMLElement;
@@ -60,11 +59,11 @@ export function ClientsCarousel() {
     measure();
     window.addEventListener('resize', measure);
     return () => window.removeEventListener('resize', measure);
-  }, [mounted]);
+  }, []);
 
   // Run infinite scroll animation
   useEffect(() => {
-    if (!mounted || trackWidth === 0) return;
+    if (trackWidth === 0) return;
 
     if (isPaused) {
       controls.stop();
@@ -83,20 +82,30 @@ export function ClientsCarousel() {
         repeatType: 'loop',
       },
     });
-  }, [mounted, trackWidth, isPaused, controls]);
-
-  if (!mounted) return null;
+  }, [trackWidth, isPaused, controls]);
 
   return (
     <section className="py-12 sm:py-16 bg-[#fbf9f8] dark:bg-[#0f1115] border-t border-b border-[#e9e8e7] dark:border-[#3a3d45]">
       <div className="max-w-[1280px] mx-auto px-4 sm:px-6">
-        <ScrollReveal variant="fadeUp" className="text-center mb-8 sm:mb-12">
-          <h3 className="font-display text-xs tracking-[0.25em] font-extrabold text-[#785919] dark:text-[#eac076] uppercase mb-2">
-            Trusted By Industry Leaders
-          </h3>
-          <p className="font-sans text-xs sm:text-sm text-[#666766] dark:text-[#8b8e93]">
-            Partnering with India's most respected enterprises
-          </p>
+        <ScrollReveal variant="fadeUp" className="mb-8 flex flex-col items-center justify-between gap-4 text-center sm:mb-12 md:flex-row md:text-left">
+          <div>
+            <h3 className="font-display text-xs tracking-[0.25em] font-extrabold text-[#785919] dark:text-[#eac076] uppercase mb-2">
+              Trusted By Industry Leaders
+            </h3>
+            <p className="font-sans text-xs sm:text-sm text-[#666766] dark:text-[#8b8e93]">
+              Partnering with India's most respected enterprises
+            </p>
+          </div>
+          {onViewAll && (
+            <button
+              type="button"
+              onClick={onViewAll}
+              className="inline-flex items-center gap-2 rounded-full border border-[#785919]/20 bg-white px-5 py-2.5 font-display text-[10px] font-extrabold uppercase tracking-[0.22em] text-[#785919] shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[#785919] hover:bg-[#785919] hover:text-white dark:border-[#eac076]/25 dark:bg-[#1a1c22] dark:text-[#eac076] dark:hover:bg-[#eac076] dark:hover:text-black"
+            >
+              View All
+              <ArrowRight size={14} />
+            </button>
+          )}
         </ScrollReveal>
 
         {/* Infinite auto-scrolling marquee */}
