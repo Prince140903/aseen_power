@@ -17,8 +17,13 @@ import {
   Loader
 } from 'lucide-react';
 import { initializeEmailJS, sendContactEmail, validateEmail } from '@/lib/emailjs';
+import type { Settings } from '@/lib/cms';
 
-export default function ContactView() {
+interface ContactViewProps {
+  settings: Settings;
+}
+
+export default function ContactView({ settings }: ContactViewProps) {
   const [formData, setFormData] = useState({
     fullName: '',
     company: '',
@@ -136,21 +141,21 @@ export default function ContactView() {
         {/* Top block: Contact info cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16" id="contact-quickcontacts-grid">
            
-          <a href="tel:+912224567890" className="bg-white dark:bg-[#1a1c22] p-6 rounded-lg border border-[#e9e8e7] dark:border-[#3a3d45] hover:border-[#785919] dark:hover:border-[#eac076] hover:shadow-xs transition-colors text-left block">
+          <a href={`tel:${settings.contact_phone.replace(/[^+\d]/g, '')}`} className="bg-white dark:bg-[#1a1c22] p-6 rounded-lg border border-[#e9e8e7] dark:border-[#3a3d45] hover:border-[#785919] dark:hover:border-[#eac076] hover:shadow-xs transition-colors text-left block">
             <span className="w-8 h-8 rounded-sm bg-[#785919]/5 dark:bg-[#eac076]/10 border border-[#785919]/15 dark:border-[#eac076]/15 flex items-center justify-center text-[#785919] dark:text-[#eac076] mb-4">
               <Phone className="w-4 h-4" />
             </span>
             <h3 className="font-display font-bold text-sm text-stone-900 dark:text-white uppercase mb-1">Telephone Support</h3>
-            <p className="font-display font-semibold text-[#785919] dark:text-[#eac076] text-xs">+91 (22) 2456 7890</p>
+            <p className="font-display font-semibold text-[#785919] dark:text-[#eac076] text-xs">{settings.contact_phone}</p>
             <span className="text-[10px] text-gray-400 dark:text-[#8b8e93] block mt-2 font-mono">Mon-Sat: 9AM - 6PM IST</span>
           </a>
 
-          <a href="mailto:projects@aseenpower.com" className="bg-white dark:bg-[#1a1c22] p-6 rounded-lg border border-[#e9e8e7] dark:border-[#3a3d45] hover:border-[#785919] dark:hover:border-[#eac076] hover:shadow-xs transition-colors text-left block">
+          <a href={`mailto:${settings.contact_email}`} className="bg-white dark:bg-[#1a1c22] p-6 rounded-lg border border-[#e9e8e7] dark:border-[#3a3d45] hover:border-[#785919] dark:hover:border-[#eac076] hover:shadow-xs transition-colors text-left block">
             <span className="w-8 h-8 rounded-sm bg-[#785919]/5 dark:bg-[#eac076]/10 border border-[#785919]/15 dark:border-[#eac076]/15 flex items-center justify-center text-[#785919] dark:text-[#eac076] mb-4">
               <Mail className="w-4 h-4" />
             </span>
             <h3 className="font-display font-bold text-sm text-stone-900 dark:text-white uppercase mb-1">Email Coordinates</h3>
-            <p className="font-sans text-[#785919] dark:text-[#eac076] text-xs font-semibold">projects@aseenpower.com</p>
+            <p className="font-sans text-[#785919] dark:text-[#eac076] text-xs font-semibold">{settings.contact_email}</p>
             <span className="text-[10px] text-gray-400 dark:text-[#8b8e93] block mt-2 font-mono">Response within 12 hours</span>
           </a>
 
@@ -159,8 +164,8 @@ export default function ContactView() {
               <MapPin className="w-4 h-4" />
             </span>
             <h3 className="font-display font-bold text-sm text-stone-900 dark:text-white uppercase mb-1">HQ Office Tower</h3>
-            <p className="font-sans text-stone-600 dark:text-[#b0b3b8] text-xs">BKC Phase II, Mumbai</p>
-            <span className="text-[10px] text-gray-400 dark:text-[#8b8e93] block mt-2 font-mono">Aseen Tower, Maharashtra</span>
+            <p className="font-sans text-stone-600 dark:text-[#b0b3b8] text-xs">{settings.contact_address}</p>
+            <span className="text-[10px] text-gray-400 dark:text-[#8b8e93] block mt-2 font-mono">{settings.contact_business_registration}</span>
           </div>
 
           <div className="bg-white dark:bg-[#1a1c22] p-6 rounded-lg border border-[#e9e8e7] dark:border-[#3a3d45] text-left block">
@@ -371,10 +376,10 @@ export default function ContactView() {
                   OFFICIAL COORDINATES
                 </span>
                 <h3 className="font-display font-extrabold text-lg text-white mb-2 uppercase">
-                  Aseen Tower, BKC Phase II, Mumbai
+                  {settings.site_title}
                 </h3>
                 <p className="font-sans text-[11px] text-gray-300 max-w-xs leading-relaxed">
-                  Bandra Kurla Complex Phase II, Mumbai, Maharashtra 400051 India
+                  {settings.contact_address}
                 </p>
               </div>
 

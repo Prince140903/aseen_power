@@ -425,10 +425,13 @@ export async function getSettings(): Promise<Settings | null> {
 
 export async function updateSettings(updates: Partial<Settings>): Promise<Settings | null> {
   try {
+    const { id: _id, created_at: _createdAt, updated_at: _updatedAt, ...safeUpdates } = updates;
+
     // Try to find existing settings row
     const { data: existingRows, error: selectError } = await supabase
       .from('settings')
-      .select('id');
+      .select('id')
+      .limit(1);
 
     if (selectError) throw selectError;
 
@@ -436,7 +439,7 @@ export async function updateSettings(updates: Partial<Settings>): Promise<Settin
       // Update existing row
       const { data, error } = await supabase
         .from('settings')
-        .update(updates)
+        .update(safeUpdates)
         .eq('id', existingRows[0].id)
         .select()
         .single();
@@ -444,10 +447,12 @@ export async function updateSettings(updates: Partial<Settings>): Promise<Settin
       if (error) throw error;
       return data;
     } else {
-      // Create new row (omit id so Supabase generates a UUID)
+      // Create new row (omit id/timestamps so Supabase defaults can apply)
       const defaults = getDefaultSettings();
-      const insertData = { ...defaults, ...updates };
+      const insertData = { ...defaults, ...safeUpdates };
       delete (insertData as Record<string, unknown>).id;
+      delete (insertData as Record<string, unknown>).created_at;
+      delete (insertData as Record<string, unknown>).updated_at;
 
       const { data, error } = await supabase
         .from('settings')

@@ -1,14 +1,16 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Mail, Phone, MapPin, ExternalLink, Globe, Shield } from 'lucide-react';
+import { ExternalLink, Globe, Shield } from 'lucide-react';
+import type { Settings } from '@/lib/cms';
 
 interface FooterProps {
   setActiveTab: (tab: string) => void;
   openPolicyModal: (topic: string) => void;
+  settings: Settings;
 }
 
-export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
+export default function Footer({ setActiveTab, openPolicyModal, settings }: FooterProps) {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -33,14 +35,14 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
             <div>
               <div className="flex flex-col mb-4">
                 <span className="font-display font-extrabold text-2xl tracking-tighter text-white">
-                  ASEEN
+                  {settings.site_title}
                 </span>
                 <span className="font-display font-semibold text-xs tracking-[0.3em] text-[#eac076] mt-1">
-                  POWER
+                  {settings.site_tagline}
                 </span>
               </div>
               <p className="text-gray-400 font-sans text-sm leading-relaxed max-w-sm mt-3">
-                Since 1998, Aseen Power has been at the forefront of electrical engineering, delivering excellence in high-voltage infrastructure, commissioning transmission substations, and scalable industrial power designs across India.
+                {settings.footer_company_description}
               </p>
             </div>
             
@@ -162,7 +164,7 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
                 LOCATION
               </h4>
               <p className="text-gray-400 font-sans text-xs leading-relaxed mb-4">
-                Aseen Tower, BKC Phase II, Mumbai, Maharashtra 400051 India
+                {settings.contact_address}
               </p>
             </div>
             
@@ -193,7 +195,7 @@ export default function Footer({ setActiveTab, openPolicyModal }: FooterProps) {
         {/* Footer Bottom copyright area */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-1 text-center sm:text-left">
           <p className="text-gray-500 font-sans text-[11px] tracking-wide">
-            &copy; 2026 Aseen Power. All rights reserved. Engineering Excellence Since 1998.
+            {settings.footer_copyright_text}
           </p>
           <div className="flex items-center gap-6">
             <span className="text-gray-500 font-sans text-[11px] flex items-center gap-1.5">

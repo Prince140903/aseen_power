@@ -1,3 +1,4 @@
+import { revalidatePath } from 'next/cache';
 import { NextRequest, NextResponse } from 'next/server';
 import {
   getSettings,
@@ -37,6 +38,9 @@ export async function PUT(request: NextRequest) {
         { status: 500 }
       );
     }
+
+    revalidatePath('/');
+    revalidatePath('/documents');
 
     return NextResponse.json(settings);
   } catch (error) {

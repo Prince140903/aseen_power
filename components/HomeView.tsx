@@ -5,7 +5,8 @@ import { motion } from 'motion/react';
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { StaggerContainer, StaggerItem } from '@/components/animations/StaggerContainer';
 import { ClientsCarousel } from '@/components/ClientsCarousel';
-import { 
+import type { Settings as CmsSettings } from '@/lib/cms';
+import {
   ShieldCheck, 
   Settings, 
   Award, 
@@ -46,9 +47,10 @@ const heroSlides = [
 interface HomeViewProps {
   setActiveTab: (tab: string) => void;
   onRequestQuote: () => void;
+  settings: CmsSettings;
 }
 
-export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps) {
+export default function HomeView({ setActiveTab, onRequestQuote, settings }: HomeViewProps) {
   // Lead form state
   const [formData, setFormData] = useState({
     fullName: '',
@@ -127,7 +129,7 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-stone-100 to-[#eac076]">Industry & Commerce.</span>
             </h1>
             <p className="font-sans text-sm sm:text-base md:text-lg text-gray-300 max-w-2xl leading-relaxed mb-10">
-              Expert Licensed Electrical Contractors. Delivering critical high-voltage infrastructure projects on time, within budget, and to the highest safety standards since 1998.
+              {settings.site_description}
             </p>
 
             <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
@@ -355,22 +357,22 @@ export default function HomeView({ setActiveTab, onRequestQuote }: HomeViewProps
                 Consult with our specialized electrical engineering team today. We provide highly detailed technical feasibility studies, load requirements, grid synchronization calculations, and accurate project estimates for large-scale industrial and commercial ventures.
               </p>
               <div className="space-y-6 pt-4">
-                <a href="tel:+912224567890" className="group flex items-center gap-4 hover:translate-x-1 transition-transform" id="direct-call">
+                <a href={`tel:${settings.contact_phone.replace(/[^+\d]/g, '')}`} className="group flex items-center gap-4 hover:translate-x-1 transition-transform" id="direct-call">
                   <div className="w-12 h-12 rounded-sm bg-[#fbf9f8] dark:bg-[#23252d] border border-[#e9e8e7] dark:border-[#3a3d45] flex items-center justify-center text-[#785919] dark:text-[#eac076] group-hover:bg-[#785919] dark:group-hover:bg-[#eac076] group-hover:text-white dark:group-hover:text-black transition-colors">
                     <Phone className="w-5 h-5" />
                   </div>
                   <div>
                     <span className="font-display text-[10px] font-bold text-gray-400 dark:text-[#8b8e93] tracking-wider uppercase block">Call Us</span>
-                    <span className="font-display font-bold text-sm tracking-wide text-black dark:text-white group-hover:text-[#785919] dark:group-hover:text-[#eac076] transition-colors">+91 (22) 2456 7890</span>
+                    <span className="font-display font-bold text-sm tracking-wide text-black dark:text-white group-hover:text-[#785919] dark:group-hover:text-[#eac076] transition-colors">{settings.contact_phone}</span>
                   </div>
                 </a>
-                <a href="mailto:projects@aseenpower.com" className="group flex items-center gap-4 hover:translate-x-1 transition-transform" id="direct-email">
+                <a href={`mailto:${settings.contact_email}`} className="group flex items-center gap-4 hover:translate-x-1 transition-transform" id="direct-email">
                   <div className="w-12 h-12 rounded-sm bg-[#fbf9f8] dark:bg-[#23252d] border border-[#e9e8e7] dark:border-[#3a3d45] flex items-center justify-center text-[#785919] dark:text-[#eac076] group-hover:bg-[#785919] dark:group-hover:bg-[#eac076] group-hover:text-white dark:group-hover:text-black transition-colors">
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
                     <span className="font-display text-[10px] font-bold text-gray-400 dark:text-[#8b8e93] tracking-wider uppercase block">Email</span>
-                    <span className="font-sans text-sm font-semibold tracking-wide text-black dark:text-white group-hover:text-[#785919] dark:group-hover:text-[#eac076] transition-colors">projects@aseenpower.com</span>
+                    <span className="font-sans text-sm font-semibold tracking-wide text-black dark:text-white group-hover:text-[#785919] dark:group-hover:text-[#eac076] transition-colors">{settings.contact_email}</span>
                   </div>
                 </a>
               </div>

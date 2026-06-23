@@ -14,14 +14,15 @@ import { ScrollProgress } from '@/components/interactions/ScrollProgress';
 import { BackToTop } from '@/components/interactions/BackToTop';
 import { X, CheckCircle, AlertCircle, Loader } from 'lucide-react';
 import { initializeEmailJS, sendQuoteEmail, validateEmail } from '@/lib/emailjs';
-import type { Service, Project } from '@/lib/cms';
+import type { Service, Project, Settings } from '@/lib/cms';
 
 interface PageClientProps {
   services: Service[];
   projects: Project[];
+  settings: Settings;
 }
 
-export default function PageClient({ services = [], projects = [] }: PageClientProps) {
+export default function PageClient({ services = [], projects = [], settings }: PageClientProps) {
   const [activeTab, setActiveTab] = useState<string>('home');
   const [isQuoteDrawerOpen, setIsQuoteDrawerOpen] = useState(false);
   const [policyTopic, setPolicyTopic] = useState<string | null>(null);
@@ -30,6 +31,7 @@ export default function PageClient({ services = [], projects = [] }: PageClientP
   const [quoteFormData, setQuoteFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     company: '',
     projectScope: 'HT Substation 33KV',
     details: ''
@@ -90,7 +92,7 @@ export default function PageClient({ services = [], projects = [] }: PageClientP
       setTimeout(() => {
         setQuoteSubmitted(false);
         setIsQuoteDrawerOpen(false);
-        setQuoteFormData({ name: '', email: '', company: '', projectScope: 'HT Substation 33KV', details: '' });
+        setQuoteFormData({ name: '', email: '', phone: '', company: '', projectScope: 'HT Substation 33KV', details: '' });
         setQuoteError(null);
       }, 4500);
     } catch (error) {
@@ -104,7 +106,7 @@ export default function PageClient({ services = [], projects = [] }: PageClientP
   const renderActiveView = () => {
     switch (activeTab) {
       case 'home':
-        return <HomeView setActiveTab={setActiveTab} onRequestQuote={() => setIsQuoteDrawerOpen(true)} />;
+        return <HomeView setActiveTab={setActiveTab} onRequestQuote={() => setIsQuoteDrawerOpen(true)} settings={settings} />;
       case 'services':
         return <ServicesView services={services} />;
       case 'projects':
@@ -114,9 +116,9 @@ export default function PageClient({ services = [], projects = [] }: PageClientP
       case 'about':
         return <AboutView />;
       case 'contact':
-        return <ContactView />;
+        return <ContactView settings={settings} />;
       default:
-        return <HomeView setActiveTab={setActiveTab} onRequestQuote={() => setIsQuoteDrawerOpen(true)} />;
+        return <HomeView setActiveTab={setActiveTab} onRequestQuote={() => setIsQuoteDrawerOpen(true)} settings={settings} />;
     }
   };
 
@@ -148,9 +150,10 @@ export default function PageClient({ services = [], projects = [] }: PageClientP
       </main>
 
       {/* GLOBAL FOOTER */}
-      <Footer 
-        setActiveTab={setActiveTab} 
-        openPolicyModal={(topic) => setPolicyTopic(topic)} 
+      <Footer
+        setActiveTab={setActiveTab}
+        openPolicyModal={(topic) => setPolicyTopic(topic)}
+        settings={settings}
       />
 
       {/* 1. SIDE DRAWER COMPONENT: SLIDING TECHNICAL REQUEST FOR QUOTATIONS */}
@@ -253,6 +256,19 @@ export default function PageClient({ services = [], projects = [] }: PageClientP
                           value={quoteFormData.email}
                           onChange={(e) => setQuoteFormData(prev => ({ ...prev, email: e.target.value }))}
                           placeholder="john@company.com"
+                          className="w-full bg-stone-50 dark:bg-[#23252d] border border-[#c4c7c7] dark:border-[#3a3d45] focus:border-[#785919] dark:focus:border-[#eac076] focus:outline-none rounded-sm px-4 py-3 font-sans text-xs text-black dark:text-[#e8e6e3] placeholder:text-gray-400 dark:placeholder:text-[#8b8e93] disabled:opacity-50 disabled:cursor-not-allowed"
+                        />
+                      </div>
+
+                      {/* Phone input */}
+                      <div className="flex flex-col">
+                        <label className="font-display text-[9px] tracking-widest font-extrabold text-[#444748] dark:text-[#b0b3b8] uppercase mb-1.5">Phone Number</label>
+                        <input
+                          type="tel"
+                          disabled={quoteLoading}
+                          value={quoteFormData.phone}
+                          onChange={(e) => setQuoteFormData(prev => ({ ...prev, phone: e.target.value }))}
+                          placeholder="+91 98765 43210"
                           className="w-full bg-stone-50 dark:bg-[#23252d] border border-[#c4c7c7] dark:border-[#3a3d45] focus:border-[#785919] dark:focus:border-[#eac076] focus:outline-none rounded-sm px-4 py-3 font-sans text-xs text-black dark:text-[#e8e6e3] placeholder:text-gray-400 dark:placeholder:text-[#8b8e93] disabled:opacity-50 disabled:cursor-not-allowed"
                         />
                       </div>

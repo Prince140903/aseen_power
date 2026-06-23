@@ -6,13 +6,14 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Lock, Eye, EyeOff, Eye as EyeIcon, FileText, AlertCircle, CheckCircle, Loader } from 'lucide-react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import type { Document } from '@/lib/cms';
+import type { Document, Settings } from '@/lib/cms';
 
 interface DocumentsPageWrapperProps {
   documents: Document[];
+  settings: Settings;
 }
 
-export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWrapperProps) {
+export default function DocumentsPageWrapper({ documents = [], settings }: DocumentsPageWrapperProps) {
   const router = useRouter();
   const [isUnlocked, setIsUnlocked] = useState(false);
   const [password, setPassword] = useState('');
@@ -290,7 +291,7 @@ export default function DocumentsPageWrapper({ documents = [] }: DocumentsPageWr
       <Footer setActiveTab={(tab) => {
         setActiveTab(tab);
         router.push(`/#${tab}`);
-      }} openPolicyModal={() => { }} />
+      }} openPolicyModal={() => { }} settings={settings} />
     </div>
   );
 }

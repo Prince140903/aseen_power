@@ -50,52 +50,58 @@ EmailJS handles all form submissions (quote requests and contact forms). Follow 
 
 ### Step 3: Create Email Templates
 
-#### Template 1: Quote Request Email
+#### Template 1: Shared Admin Notification Email
 1. Go to **Email Templates** → **Create New Template**
-2. Name: `Quote Request`
-3. Subject: `New Quote Request from {{from_name}}`
-4. Template content:
+2. Name: `Admin Notification`
+3. Set the template **To Email** field to `{{to_email}}`
+4. Subject: `New {{form_type}} submission from {{from_name}}`
+5. Template content:
 ```
 Hello,
 
-You have received a new quote request:
+You have received a new {{form_type}} submission.
 
 Name: {{from_name}}
 Email: {{from_email}}
-Company: {{company}}
-Project Scope: {{project_scope}}
-Details: {{message}}
-
-Reply To: {{reply_to}}
-
-Best regards,
-Aseen Power System
-```
-5. Copy the **Template ID** (e.g., `template_xxxxx`)
-
-#### Template 2: Contact Form Email
-1. Create another template named `Contact Form`
-2. Subject: `New Contact Inquiry from {{from_name}}`
-3. Template content:
-```
-Hello,
-
-You have received a new contact inquiry:
-
-Name: {{from_name}}
-Email: {{from_email}}
-Company: {{company}}
-Phone: {{phone}}
-Category: {{category}}
-Urgency: {{urgency}}
+Subject: {{request_subject}}
 Message: {{message}}
 
+Additional details:
+{{optional_details}}
+
 Reply To: {{reply_to}}
 
 Best regards,
 Aseen Power System
 ```
-4. Copy the **Template ID**
+6. Copy the **Template ID** (e.g., `template_xxxxx`)
+
+#### Template 2: Shared User Auto-Reply Email
+1. Create one shared auto-reply template named `User Auto Reply`
+2. Set the template **To Email** field to `{{to_email}}`
+3. Subject: `We received your {{form_type}} submission`
+4. Template content:
+```
+Hello {{from_name}},
+
+Thank you for contacting Aseen Power System. We received your {{form_type}} submission regarding {{request_subject}}.
+
+Our team will review your details and contact you soon regarding your request.
+
+Best regards,
+Aseen Power System
+```
+5. Copy the **Template ID**
+
+Shared dynamic variables used by both templates:
+- `{{to_email}}` - recipient email for the current email
+- `{{form_type}}` - `Quote Request` or `Contact Us`
+- `{{from_name}}` - user's name
+- `{{from_email}}` - user's email
+- `{{reply_to}}` - user's email for replies
+- `{{request_subject}}` - quote scope or contact category
+- `{{message}}` - submitted message/details
+- `{{optional_details}}` - only relevant provided fields, such as phone, company, project scope, category, or urgency
 
 ### Step 4: Get Your Public Key
 1. In EmailJS dashboard, go to **Account** → **API Keys**
@@ -105,8 +111,8 @@ Aseen Power System
 ```env
 NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key_here
 NEXT_PUBLIC_EMAILJS_SERVICE_ID=service_xxxxx
-NEXT_PUBLIC_EMAILJS_QUOTE_TEMPLATE_ID=template_xxxxx
-NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID=template_xxxxx
+NEXT_PUBLIC_EMAILJS_ADMIN_TEMPLATE_ID=template_admin_notification_xxxxx
+NEXT_PUBLIC_EMAILJS_AUTOREPLY_TEMPLATE_ID=template_auto_reply_xxxxx
 NEXT_PUBLIC_EMAILJS_ADMIN_EMAIL=your-email@aseenpower.com
 ```
 
@@ -285,8 +291,9 @@ Handled for:
 ### Forms Not Sending
 1. Check EmailJS credentials in `.env.local`
 2. Verify EmailJS templates exist and IDs match
-3. Check browser console for errors
-4. Verify email service is active in EmailJS dashboard
+3. In each EmailJS template, verify the **To Email** field is set to `{{to_email}}`; otherwise EmailJS returns `The recipients address is empty`
+4. Check browser console for errors
+5. Verify email service is active in EmailJS dashboard
 
 ### Documents Can't Be Accessed
 1. Verify document password is set in CMS Settings
