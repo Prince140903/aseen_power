@@ -2,15 +2,15 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Clock, 
-  Calendar, 
-  CheckCircle, 
-  Map, 
-  Sparkles, 
+import {
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  Calendar,
+  CheckCircle,
+  Map,
+  Sparkles,
   Lock,
   ChevronRight,
   AlertCircle,
@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import { initializeEmailJS, sendContactEmail, validateEmail } from '@/lib/emailjs';
 import type { Settings } from '@/lib/cms';
+import Captcha from '@/components/Captcha';
 
 interface ContactViewProps {
   settings: Settings;
@@ -37,6 +38,8 @@ export default function ContactView({ settings }: ContactViewProps) {
   const [formLoading, setFormLoading] = useState(false);
   const [formError, setFormError] = useState<string | null>(null);
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
+  const [captchaVerified, setCaptchaVerified] = useState(false);
+  const [captchaKey, setCaptchaKey] = useState(0);
 
   useEffect(() => {
     initializeEmailJS();
@@ -64,6 +67,11 @@ export default function ContactView({ settings }: ContactViewProps) {
 
     if (!formData.message.trim() || formData.message.trim().length < 10) {
       setFormError('Please provide project details (at least 10 characters)');
+      return;
+    }
+
+    if (!captchaVerified) {
+      setFormError('Please complete the security verification before submitting');
       return;
     }
 
@@ -96,6 +104,8 @@ export default function ContactView({ settings }: ContactViewProps) {
           message: ''
         });
         setFormError(null);
+        setCaptchaVerified(false);
+        setCaptchaKey(prev => prev + 1);
       }, 6000);
     } catch (error) {
       console.error('Error submitting contact form:', error);
@@ -123,7 +133,7 @@ export default function ContactView({ settings }: ContactViewProps) {
   return (
     <div className="bg-[#fbf9f8] dark:bg-[#0f1115] min-h-screen py-16 sm:py-24" id="contact-us-view">
       <div className="max-w-[1280px] mx-auto px-6">
-        
+
         {/* Section Heading */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="font-display text-xs tracking-[0.3em] font-extrabold text-[#785919] dark:text-[#eac076] uppercase block mb-3">
@@ -140,7 +150,7 @@ export default function ContactView({ settings }: ContactViewProps) {
 
         {/* Top block: Contact info cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-16" id="contact-quickcontacts-grid">
-           
+
           <a href={`tel:${settings.contact_phone.replace(/[^+\d]/g, '')}`} className="bg-white dark:bg-[#1a1c22] p-6 rounded-lg border border-[#e9e8e7] dark:border-[#3a3d45] hover:border-[#785919] dark:hover:border-[#eac076] hover:shadow-xs transition-colors text-left block">
             <span className="w-8 h-8 rounded-sm bg-[#785919]/5 dark:bg-[#eac076]/10 border border-[#785919]/15 dark:border-[#eac076]/15 flex items-center justify-center text-[#785919] dark:text-[#eac076] mb-4">
               <Phone className="w-4 h-4" />
@@ -181,7 +191,7 @@ export default function ContactView({ settings }: ContactViewProps) {
 
         {/* Master Row: Form split with HQ blueprint-styled Map */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-24" id="contact-master-portal">
-           
+
           {/* Form Side */}
           <div className="lg:col-span-7 bg-white dark:bg-[#1a1c22] p-8 sm:p-12 rounded-lg border border-[#e9e8e7] dark:border-[#3a3d45] shadow-sm relative">
             <div>
@@ -194,7 +204,7 @@ export default function ContactView({ settings }: ContactViewProps) {
             </div>
 
             {formSubmitted ? (
-              <motion.div 
+              <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 className="flex flex-col items-center text-center py-12"
@@ -219,7 +229,7 @@ export default function ContactView({ settings }: ContactViewProps) {
             ) : (
               <>
                 {formError && (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-sm mb-6"
@@ -231,12 +241,12 @@ export default function ContactView({ settings }: ContactViewProps) {
                 )}
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                   
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="flex flex-col">
                       <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] dark:text-[#b0b3b8] uppercase mb-2">FULL NAME *</label>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         name="fullName"
                         value={formData.fullName}
                         onChange={handleInputChange}
@@ -249,8 +259,8 @@ export default function ContactView({ settings }: ContactViewProps) {
 
                     <div className="flex flex-col">
                       <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] dark:text-[#b0b3b8] uppercase mb-2">COMPANY / ORGANISATION</label>
-                      <input 
-                        type="text" 
+                      <input
+                        type="text"
                         name="company"
                         value={formData.company}
                         onChange={handleInputChange}
@@ -264,8 +274,8 @@ export default function ContactView({ settings }: ContactViewProps) {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="flex flex-col">
                       <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] dark:text-[#b0b3b8] uppercase mb-2">EMAIL ADDRESS *</label>
-                      <input 
-                        type="email" 
+                      <input
+                        type="email"
                         name="emailAddress"
                         value={formData.emailAddress}
                         onChange={handleInputChange}
@@ -278,8 +288,8 @@ export default function ContactView({ settings }: ContactViewProps) {
 
                     <div className="flex flex-col">
                       <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] dark:text-[#b0b3b8] uppercase mb-2">TELEPHONE</label>
-                      <input 
-                        type="tel" 
+                      <input
+                        type="tel"
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
@@ -293,7 +303,7 @@ export default function ContactView({ settings }: ContactViewProps) {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div className="flex flex-col">
                       <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] dark:text-[#b0b3b8] uppercase mb-2">PROJECT CATEGORY</label>
-                      <select 
+                      <select
                         name="projectCategory"
                         value={formData.projectCategory}
                         onChange={handleInputChange}
@@ -310,7 +320,7 @@ export default function ContactView({ settings }: ContactViewProps) {
 
                     <div className="flex flex-col">
                       <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] dark:text-[#b0b3b8] uppercase mb-2">TIMELINE URGENCY</label>
-                      <select  
+                      <select
                         name="urgency"
                         value={formData.urgency}
                         onChange={handleInputChange}
@@ -327,7 +337,7 @@ export default function ContactView({ settings }: ContactViewProps) {
 
                   <div className="flex flex-col">
                     <label className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] dark:text-[#b0b3b8] uppercase mb-2">SCOPE BRIEF & REQUIREMENTS *</label>
-                    <textarea 
+                    <textarea
                       name="message"
                       value={formData.message}
                       onChange={handleInputChange}
@@ -339,6 +349,13 @@ export default function ContactView({ settings }: ContactViewProps) {
                     />
                   </div>
 
+                  <Captcha
+                    key={captchaKey}
+                    onVerify={setCaptchaVerified}
+                    disabled={formLoading}
+                    id="contact-captcha"
+                  />
+
                   <div className="flex items-center gap-2 text-[11px] font-sans text-gray-400 dark:text-[#8b8e93] leading-none">
                     <Lock size={12} className="text-stone-400 dark:text-[#8b8e93]" />
                     Your configurations are safeguarded under strict NDA frameworks.
@@ -346,7 +363,7 @@ export default function ContactView({ settings }: ContactViewProps) {
 
                   <button
                     type="submit"
-                    disabled={formLoading}
+                    disabled={formLoading || !captchaVerified}
                     className="w-full bg-[#1b1c1c] dark:bg-[#2a2c35] hover:bg-[#785919] dark:hover:bg-[#eac076] dark:hover:text-black text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                     id="contact-large-submit-btn"
                   >
@@ -361,16 +378,16 @@ export default function ContactView({ settings }: ContactViewProps) {
 
           {/* Map & FAQ layout right Column */}
           <div className="lg:col-span-5 flex flex-col space-y-10 justify-between">
-             
+
             {/* Headquarters Map Panel */}
             <div className="bg-stone-950 dark:bg-[#0a0b0e] text-white rounded-lg border border-[#785919]/20 dark:border-[#eac076]/20 p-8 relative overflow-hidden h-72 shadow-xl flex flex-col justify-between">
               <div className="absolute inset-0 engineering-grid opacity-[0.15] pointer-events-none" />
-               
+
               <div className="absolute top-1/3 left-0 right-0 h-[1.5px] bg-[#eac076]/20 rotate-6" />
               <div className="absolute top-2/3 left-0 right-0 h-[1.5px] bg-[#eac076]/20 -rotate-12" />
               <div className="absolute top-0 bottom-0 left-1/4 w-[1.5px] bg-[#eac076]/20 rotate-45" />
               <div className="absolute top-0 bottom-0 left-3/4 w-[1.5px] bg-[#eac076]/20 -rotate-12" />
-               
+
               <div className="relative z-10 flex flex-col">
                 <span className="font-display text-[9px] tracking-widest font-extrabold text-[#eac076] uppercase mb-1">
                   OFFICIAL COORDINATES
@@ -401,8 +418,8 @@ export default function ContactView({ settings }: ContactViewProps) {
               </h3>
 
               {faqs.map((faq, idx) => (
-                <div 
-                  key={idx} 
+                <div
+                  key={idx}
                   className="bg-white dark:bg-[#1a1c22] rounded-lg border border-[#e9e8e7] dark:border-[#3a3d45] overflow-hidden"
                 >
                   <button

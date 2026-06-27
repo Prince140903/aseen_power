@@ -15,6 +15,7 @@ import { BackToTop } from '@/components/interactions/BackToTop';
 import { X, CheckCircle, AlertCircle, Loader } from 'lucide-react';
 import { initializeEmailJS, sendQuoteEmail, validateEmail } from '@/lib/emailjs';
 import type { Service, Project, Settings } from '@/lib/cms';
+import Captcha from '@/components/Captcha';
 
 interface PageClientProps {
   services: Service[];
@@ -39,6 +40,8 @@ export default function PageClient({ services = [], projects = [], settings }: P
   const [quoteSubmitted, setQuoteSubmitted] = useState(false);
   const [quoteLoading, setQuoteLoading] = useState(false);
   const [quoteError, setQuoteError] = useState<string | null>(null);
+  const [quoteCaptchaVerified, setQuoteCaptchaVerified] = useState(false);
+  const [quoteCaptchaKey, setQuoteCaptchaKey] = useState(0);
 
   // Scroll to top on active tab changes - only after hydration
   useEffect(() => {
@@ -70,6 +73,11 @@ export default function PageClient({ services = [], projects = [], settings }: P
       return;
     }
 
+    if (!quoteCaptchaVerified) {
+      setQuoteError('Please complete the security verification before submitting');
+      return;
+    }
+
     setQuoteLoading(true);
 
     try {
@@ -94,6 +102,8 @@ export default function PageClient({ services = [], projects = [], settings }: P
         setIsQuoteDrawerOpen(false);
         setQuoteFormData({ name: '', email: '', phone: '', company: '', projectScope: 'HT Substation 33KV', details: '' });
         setQuoteError(null);
+        setQuoteCaptchaVerified(false);
+        setQuoteCaptchaKey(prev => prev + 1);
       }, 4500);
     } catch (error) {
       console.error('Error submitting quote:', error);
@@ -126,12 +136,12 @@ export default function PageClient({ services = [], projects = [], settings }: P
     <div className="flex flex-col min-h-screen bg-[#fbf9f8] dark:bg-[#0f1115]" id="master-page-layout">
       <ScrollProgress />
       <BackToTop />
-      
+
       {/* GLOBAL HEADER */}
-      <Header 
-        activeTab={activeTab} 
-        setActiveTab={setActiveTab} 
-        onRequestQuote={() => setIsQuoteDrawerOpen(true)} 
+      <Header
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        onRequestQuote={() => setIsQuoteDrawerOpen(true)}
       />
 
       {/* DYNAMIC MIDDLE CONTENT AREA */}
@@ -161,7 +171,7 @@ export default function PageClient({ services = [], projects = [], settings }: P
         {isQuoteDrawerOpen && (
           <>
             {/* Dark abstract overlay */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.6 }}
               exit={{ opacity: 0 }}
@@ -171,7 +181,7 @@ export default function PageClient({ services = [], projects = [], settings }: P
             />
 
             {/* Sliding cabinet body */}
-            <motion.div 
+            <motion.div
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
@@ -190,7 +200,7 @@ export default function PageClient({ services = [], projects = [], settings }: P
                       Request Substation Quote
                     </h2>
                   </div>
-                  <button 
+                  <button
                     onClick={() => setIsQuoteDrawerOpen(false)}
                     className="p-2 text-stone-400 dark:text-[#8b8e93] hover:text-black dark:hover:text-white transition-colors rounded-sm hover:bg-stone-50 dark:hover:bg-[#23252d]"
                     id="close-quote-drawer"
@@ -200,7 +210,7 @@ export default function PageClient({ services = [], projects = [], settings }: P
                 </div>
 
                 {quoteSubmitted ? (
-                  <motion.div 
+                  <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}
                     animate={{ opacity: 1, scale: 1 }}
                     className="flex flex-col items-center text-center py-12"
@@ -219,7 +229,7 @@ export default function PageClient({ services = [], projects = [], settings }: P
                 ) : (
                   <>
                     {quoteError && (
-                      <motion.div 
+                      <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
                         className="flex items-start gap-3 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-sm mb-5"
@@ -231,12 +241,12 @@ export default function PageClient({ services = [], projects = [], settings }: P
                     )}
 
                     <form onSubmit={handleQuoteSubmit} className="space-y-5">
-                      
+
                       {/* Name input */}
                       <div className="flex flex-col">
                         <label className="font-display text-[9px] tracking-widest font-extrabold text-[#444748] dark:text-[#b0b3b8] uppercase mb-1.5">Your Name *</label>
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
                           required
                           disabled={quoteLoading}
                           value={quoteFormData.name}
@@ -249,8 +259,8 @@ export default function PageClient({ services = [], projects = [], settings }: P
                       {/* Email input */}
                       <div className="flex flex-col">
                         <label className="font-display text-[9px] tracking-widest font-extrabold text-[#444748] dark:text-[#b0b3b8] uppercase mb-1.5">Business Email *</label>
-                        <input 
-                          type="email" 
+                        <input
+                          type="email"
                           required
                           disabled={quoteLoading}
                           value={quoteFormData.email}
@@ -306,7 +316,7 @@ export default function PageClient({ services = [], projects = [], settings }: P
                       {/* Description Details textarea */}
                       <div className="flex flex-col">
                         <label className="font-display text-[9px] tracking-widest font-extrabold text-[#444748] dark:text-[#b0b3b8] uppercase mb-1.5">Project Scope / Load Rating Details *</label>
-                        <textarea 
+                        <textarea
                           required
                           disabled={quoteLoading}
                           value={quoteFormData.details}
@@ -317,10 +327,19 @@ export default function PageClient({ services = [], projects = [], settings }: P
                         />
                       </div>
 
+                      {/* Security verification captcha */}
+                      <Captcha
+                        key={quoteCaptchaKey}
+                        onVerify={setQuoteCaptchaVerified}
+                        disabled={quoteLoading}
+                        compact
+                        id="quote-captcha"
+                      />
+
                       {/* Submit button */}
                       <button
                         type="submit"
-                        disabled={quoteLoading}
+                        disabled={quoteLoading || !quoteCaptchaVerified}
                         className="w-full bg-[#785919] dark:bg-[#eac076] dark:text-black hover:bg-black dark:hover:bg-white text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         id="drawer-cabinet-submit-btn"
                       >
@@ -349,7 +368,7 @@ export default function PageClient({ services = [], projects = [], settings }: P
         {policyTopic && (
           <>
             {/* Backdrop overlay */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.5 }}
               exit={{ opacity: 0 }}
@@ -359,7 +378,7 @@ export default function PageClient({ services = [], projects = [], settings }: P
             />
 
             {/* Dialog Card container */}
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -373,7 +392,7 @@ export default function PageClient({ services = [], projects = [], settings }: P
                     {policyTopic}
                   </span>
                 </div>
-                <button 
+                <button
                   onClick={() => setPolicyTopic(null)}
                   className="p-1.5 text-stone-400 dark:text-[#8b8e93] hover:text-black dark:hover:text-white transition-colors rounded-sm hover:bg-stone-100 dark:hover:bg-[#23252d]"
                   id="close-policy-modal"
