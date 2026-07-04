@@ -4,6 +4,7 @@ import {
   createService,
   updateService,
   deleteService,
+  uploadImage,
   Service
 } from '@/lib/supabase-client';
 
@@ -29,16 +30,46 @@ export async function GET() {
  */
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    const formData = await request.formData();
     
+    const title = formData.get('title') as string;
+    const description = formData.get('description') as string;
+    const icon = formData.get('icon') as string;
+    const featuresRaw = formData.get('features') as string;
+    const features = featuresRaw ? JSON.parse(featuresRaw) : [];
+    const status = formData.get('status') as string;
+    const certification = formData.get('certification') as string;
+    const order = parseInt(formData.get('order') as string) || 0;
+    const imageFile = formData.get('image') as File;
+
+    let imageUrl = '';
+
+    // Upload image if provided
+    if (imageFile && imageFile.size > 0) {
+      const uploadedUrl = await uploadImage(imageFile, 'projects'); // Using projects bucket for simplicity
+      if (!uploadedUrl) {
+        return NextResponse.json(
+          { error: 'Failed to upload image' },
+          { status: 500 }
+        );
+      }
+      imageUrl = uploadedUrl;
+    } else {
+      return NextResponse.json(
+        { error: 'Service image is mandatory' },
+        { status: 400 }
+      );
+    }
+
     const serviceData: Omit<Service, 'id' | 'created_at' | 'updated_at'> = {
-      title: body.title,
-      description: body.description,
-      icon: body.icon,
-      features: body.features || [],
-      status: body.status,
-      certification: body.certification,
-      order: body.order || 0,
+      title,
+      description,
+      icon,
+      features,
+      status,
+      certification,
+      image_url: imageUrl,
+      order,
     };
 
     const service = await createService(serviceData);
@@ -66,14 +97,37 @@ export async function POST(request: NextRequest) {
  */
 export async function PUT(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { id, ...updates } = body;
+    const formData = await request.formData();
 
+    const id = formData.get('id') as string;
     if (!id) {
       return NextResponse.json(
         { error: 'Service ID required' },
         { status: 400 }
       );
+    }
+
+    const updates: any = {};
+
+    if (formData.has('title')) updates.title = formData.get('title');
+    if (formData.has('description')) updates.description = formData.get('description');
+    if (formData.has('icon')) updates.icon = formData.get('icon');
+    if (formData.has('features')) updates.features = JSON.parse(formData.get('features') as string);
+    if (formData.has('status')) updates.status = formData.get('status');
+    if (formData.has('certification')) updates.certification = formData.get('certification');
+    if (formData.has('order')) updates.order = parseInt(formData.get('order') as string);
+
+    // Handle image upload
+    const imageFile = formData.get('image') as File;
+    if (imageFile && imageFile.size > 0) {
+      const uploadedUrl = await uploadImage(imageFile, 'projects'); // Using projects bucket
+      if (!uploadedUrl) {
+        return NextResponse.json(
+          { error: 'Failed to upload image' },
+          { status: 500 }
+        );
+      }
+      updates.image_url = uploadedUrl;
     }
 
     const service = await updateService(id, updates);

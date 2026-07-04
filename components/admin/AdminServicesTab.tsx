@@ -12,6 +12,7 @@ interface Service {
   features: string[];
   status: string;
   certification: string;
+  image_url?: string;
   order: number;
 }
 
@@ -21,6 +22,8 @@ export default function AdminServicesTab() {
   const [isAdding, setIsAdding] = useState(false);
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(true);
+  const [uploading, setUploading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const [formData, setFormData] = useState<Partial<Service>>({
     title: '',
@@ -29,6 +32,7 @@ export default function AdminServicesTab() {
     features: [''],
     status: '',
     certification: '',
+    image_url: '',
     order: 0
   });
 
@@ -50,29 +54,54 @@ export default function AdminServicesTab() {
 
   const handleSave = async () => {
     try {
+      if (!formData.title) {
+        setMessage('Title is required');
+        return;
+      }
+
+      setUploading(true);
+      const form = new FormData();
+      form.append('title', formData.title);
+      form.append('description', formData.description || '');
+      form.append('icon', formData.icon || 'Factory');
+      form.append('features', JSON.stringify(formData.features || []));
+      form.append('status', formData.status || '');
+      form.append('certification', formData.certification || '');
+      form.append('order', String(formData.order || 0));
+
       if (editingId) {
+        form.append('id', editingId);
+        if (selectedImage) {
+          form.append('image', selectedImage);
+        }
         const res = await fetch('/api/cms/services', {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ id: editingId, ...formData })
+          body: form
         });
         if (res.ok) {
           setMessage('Service updated successfully!');
           setEditingId(null);
+          setSelectedImage(null);
           fetchServices();
         } else {
           const error = await res.json();
           setMessage(error.error || 'Error updating service');
         }
       } else if (isAdding) {
+        if (!selectedImage) {
+          setMessage('Please select a service image');
+          setUploading(false);
+          return;
+        }
+        form.append('image', selectedImage);
         const res = await fetch('/api/cms/services', {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(formData)
+          body: form
         });
         if (res.ok) {
           setMessage('Service added successfully!');
           setIsAdding(false);
+          setSelectedImage(null);
           fetchServices();
         } else {
           const error = await res.json();
@@ -80,9 +109,23 @@ export default function AdminServicesTab() {
         }
       }
       resetForm();
+      setUploading(false);
       setTimeout(() => setMessage(''), 3000);
     } catch (error) {
       setMessage('Error saving service');
+      setUploading(false);
+    }
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        setMessage('Please select an image file');
+        return;
+      }
+      setSelectedImage(file);
+      setMessage('');
     }
   };
 
@@ -111,13 +154,16 @@ export default function AdminServicesTab() {
       features: [''],
       status: '',
       certification: '',
+      image_url: '',
       order: 0
     });
+    setSelectedImage(null);
   };
 
   const startEdit = (service: Service) => {
     setEditingId(service.id);
     setFormData(service);
+    setSelectedImage(null);
   };
 
   if (loading) {
@@ -217,6 +263,27 @@ export default function AdminServicesTab() {
           </div>
 
           <div className="mb-6">
+            <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">
+              Service Image {isAdding ? '*' : '(Optional to update)'}
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleImageChange}
+              className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] file:mr-4 file:py-2 file:px-4 file:rounded-sm file:border-0 file:text-xs file:font-bold file:bg-[#785919] dark:file:bg-[#eac076] dark:file:text-black file:text-white hover:file:bg-black dark:hover:file:bg-white bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
+            />
+            {selectedImage && (
+              <p className="text-xs text-green-600 dark:text-green-400 mt-2 flex items-center gap-1">
+                <CheckCircle size={14} />
+                {selectedImage.name}
+              </p>
+            )}
+            {editingId && formData.image_url && !selectedImage && (
+              <p className="text-xs text-gray-500 dark:text-[#b0b3b8] mt-2">Current image: stored in Supabase Storage</p>
+            )}
+          </div>
+
+          <div className="mb-6">
             <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">Features (one per line)</label>
             <textarea
               value={(formData.features || []).join('\n')}
@@ -264,10 +331,15 @@ export default function AdminServicesTab() {
           <div className="flex gap-3">
             <button
               onClick={handleSave}
-              className="flex items-center gap-2 bg-[#785919] dark:bg-[#eac076] dark:text-black text-white px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black dark:hover:bg-white transition-colors"
+              disabled={uploading}
+              className="flex items-center gap-2 bg-[#785919] dark:bg-[#eac076] dark:text-black text-white px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-black dark:hover:bg-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <Save size={16} />
-              SAVE
+              {uploading ? 'UPLOADING...' : (
+                <>
+                  <Save size={16} />
+                  SAVE
+                </>
+              )}
             </button>
             <button
               onClick={() => {
@@ -275,7 +347,8 @@ export default function AdminServicesTab() {
                 setEditingId(null);
                 resetForm();
               }}
-              className="flex items-center gap-2 bg-gray-200 dark:bg-[#3a3d45] text-black dark:text-[#e8e6e3] px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-gray-300 dark:hover:bg-[#2a2c35] transition-colors"
+              disabled={uploading}
+              className="flex items-center gap-2 bg-gray-200 dark:bg-[#3a3d45] text-black dark:text-[#e8e6e3] px-6 py-2 rounded-sm font-display text-xs font-bold tracking-widest uppercase hover:bg-gray-300 dark:hover:bg-[#2a2c35] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
               <X size={16} />
               CANCEL
@@ -297,8 +370,18 @@ export default function AdminServicesTab() {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-white dark:bg-[#1a1c22] border border-[#e9e8e7] dark:border-[#3a3d45] rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow"
+              className="bg-white dark:bg-[#1a1c22] border border-[#e9e8e7] dark:border-[#3a3d45] rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow"
             >
+              {service.image_url && (
+                <div className="h-40 w-full overflow-hidden bg-gray-200 dark:bg-[#23252d]">
+                  <img
+                    src={service.image_url}
+                    alt={service.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
+              <div className="p-6">
               <div className="flex items-start justify-between mb-4">
                 <div>
                   <h3 className="font-display font-bold text-base text-black dark:text-white mb-1">{service.title}</h3>
@@ -337,6 +420,7 @@ export default function AdminServicesTab() {
               <div className="flex justify-between text-xs">
                 <span className="text-gray-500 dark:text-[#8b8e93]">{service.status}</span>
                 <span className="text-[#785919] dark:text-[#eac076] font-bold">{service.certification}</span>
+              </div>
               </div>
             </motion.div>
           ))

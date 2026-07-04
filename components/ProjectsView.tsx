@@ -20,7 +20,7 @@ export default function ProjectsView({ projects = [] }: ProjectsViewProps) {
     setMounted(true);
   }, []);
 
-  const categories = ['All Projects', 'Industrial', 'Commercial', 'Infrastructure'];
+  const categories = ['All Projects', 'Industrial', 'Commercial', 'Infrastructure', 'Residential'];
 
   // Map CMS data to display format
   const projectsData: CMSProject[] = projects.length > 0 ? projects : [];

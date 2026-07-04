@@ -7,7 +7,7 @@ import { Plus, Edit2, Trash2, Save, X, AlertCircle, CheckCircle, Upload } from '
 interface Project {
   id: string;
   title: string;
-  category: 'Industrial' | 'Commercial' | 'Infrastructure';
+  category: 'Industrial' | 'Commercial' | 'Infrastructure' | 'Residential';
   location: string;
   description: string;
   image_url: string;
@@ -250,6 +250,7 @@ export default function AdminProjectsTab() {
                 <option>Industrial</option>
                 <option>Commercial</option>
                 <option>Infrastructure</option>
+                <option>Residential</option>
               </select>
             </div>
           </div>

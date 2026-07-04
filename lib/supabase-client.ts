@@ -34,6 +34,8 @@ export interface Service {
   features: string[];
   status: string;
   certification: string;
+  image_url?: string;
+  image_path?: string;
   order: number;
   created_at: string;
   updated_at: string;
@@ -42,7 +44,7 @@ export interface Service {
 export interface Project {
   id: string;
   title: string;
-  category: 'Industrial' | 'Commercial' | 'Infrastructure';
+  category: 'Industrial' | 'Commercial' | 'Infrastructure' | 'Residential';
   location: string;
   description: string;
   image_url: string;

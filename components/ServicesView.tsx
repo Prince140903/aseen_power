@@ -17,6 +17,7 @@ import {
 import { ScrollReveal } from '@/components/animations/ScrollReveal';
 import { StaggerContainer, StaggerItem } from '@/components/animations/StaggerContainer';
 import type { Service } from '@/lib/cms';
+import Image from 'next/image';
 
 interface ServicesViewProps {
   services: Service[];
@@ -81,21 +82,40 @@ export default function ServicesView({ services = [] }: ServicesViewProps) {
               return (
                 <StaggerItem key={service.id}>
                   <motion.div
-                    className="bg-white dark:bg-[#1a1c22] rounded-lg border border-[#e9e8e7] dark:border-[#3a3d45] p-8 sm:p-10 shadow-sm hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 transition-all flex flex-col justify-between h-full group"
+                    className="bg-white dark:bg-[#1a1c22] rounded-lg border border-[#e9e8e7] dark:border-[#3a3d45] overflow-hidden shadow-sm hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 transition-all flex flex-col justify-between h-full group"
                     whileHover={{ y: -4, boxShadow: '0 16px 32px rgba(0, 0, 0, 0.1)' }}
                   >
-                    <div>
-                      {/* Icon Box */}
-                      <motion.div 
-                        className="w-12 h-12 rounded-sm bg-[#fbf9f8] dark:bg-[#23252d] border border-[#eac076]/30 flex items-center justify-center text-[#785919] dark:text-[#eac076] mb-8"
-                        whileHover={{ scale: 1.1, backgroundColor: '#eac076', color: 'white' }}
-                      >
-                        {iconMap[service.icon] || iconMap['Factory']}
-                      </motion.div>
-                       
-                      <h2 className="font-display font-bold text-xl text-black dark:text-white tracking-tight mb-4 group-hover:text-[#785919] dark:group-hover:text-[#eac076] transition-colors">
-                        {service.title}
-                      </h2>
+                    {service.image_url && (
+                      <div className="relative h-48 w-full overflow-hidden">
+                        <motion.div
+                          className="relative w-full h-full"
+                          whileHover={{ scale: 1.05 }}
+                        >
+                          <Image
+                            src={service.image_url} 
+                            alt={service.title}
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            className="w-full h-full object-cover transition-transform duration-500"
+                          />
+                        </motion.div>
+                      </div>
+                    )}
+                    <div className="p-8 sm:p-10 flex flex-col h-full justify-between">
+                      <div>
+                        {/* Icon Box */}
+                        {!service.image_url && (
+                          <motion.div 
+                            className="w-12 h-12 rounded-sm bg-[#fbf9f8] dark:bg-[#23252d] border border-[#eac076]/30 flex items-center justify-center text-[#785919] dark:text-[#eac076] mb-8"
+                            whileHover={{ scale: 1.1, backgroundColor: '#eac076', color: 'white' }}
+                          >
+                            {iconMap[service.icon] || iconMap['Factory']}
+                          </motion.div>
+                        )}
+                         
+                        <h2 className="font-display font-bold text-xl text-black dark:text-white tracking-tight mb-4 group-hover:text-[#785919] dark:group-hover:text-[#eac076] transition-colors">
+                          {service.title}
+                        </h2>
                        
                       <p className="font-sans text-sm text-[#444748] dark:text-[#b0b3b8] leading-relaxed mb-8">
                         {service.description}
@@ -122,6 +142,7 @@ export default function ServicesView({ services = [] }: ServicesViewProps) {
                     <div className="mt-8 pt-6 border-t border-gray-100 dark:border-[#3a3d45] flex items-center justify-between text-xs font-display font-bold text-[#785919] dark:text-[#eac076]">
                       <span>STATUS: {service.status}</span>
                       <span>{service.certification}</span>
+                    </div>
                     </div>
                   </motion.div>
                 </StaggerItem>
