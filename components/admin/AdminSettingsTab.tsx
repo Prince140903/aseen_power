@@ -14,6 +14,7 @@ interface Settings {
     email: string;
     phone: string;
     address: string;
+    mapUrl: string;
     businessRegistration: string;
   };
   security: {
@@ -53,6 +54,7 @@ export default function AdminSettingsTab() {
           email: data.settings.contact_email,
           phone: data.settings.contact_phone,
           address: data.settings.contact_address,
+          mapUrl: data.settings.contact_map_url || '',
           businessRegistration: data.settings.contact_business_registration,
         },
 
@@ -96,6 +98,7 @@ export default function AdminSettingsTab() {
         contact_email: settings.contact.email,
         contact_phone: settings.contact.phone,
         contact_address: settings.contact.address,
+        contact_map_url: settings.contact.mapUrl,
         contact_business_registration: settings.contact.businessRegistration,
         security_document_access_password: settings.security.documentAccessPassword,
         social_linkedin: settings.social.linkedin,
@@ -306,6 +309,24 @@ export default function AdminSettingsTab() {
                 }
                 className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] font-sans text-sm bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
                 rows={2}
+              />
+            </div>
+
+            <div className="mt-6">
+              <label className="block font-display text-xs font-bold text-stone-700 dark:text-[#b0b3b8] uppercase mb-2">
+                Google Maps URL (Optional for exact pin)
+              </label>
+              <input
+                type="text"
+                value={settings.contact.mapUrl}
+                onChange={(e) =>
+                  setSettings({
+                    ...settings,
+                    contact: { ...settings.contact, mapUrl: e.target.value },
+                  })
+                }
+                className="w-full px-4 py-2 border border-[#c4c7c7] dark:border-[#3a3d45] rounded-sm focus:outline-none focus:border-[#785919] dark:focus:border-[#eac076] bg-white dark:bg-[#12141a] dark:text-[#e8e6e3]"
+                placeholder="https://maps.google.com/..."
               />
             </div>
 

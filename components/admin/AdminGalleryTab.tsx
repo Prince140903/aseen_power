@@ -234,6 +234,7 @@ export default function AdminGalleryTab() {
                 <option>Industrial</option>
                 <option>Commercial</option>
                 <option>Infrastructure</option>
+                <option>Residential</option>
               </select>
             </div>
           </div>

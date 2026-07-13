@@ -200,19 +200,7 @@ export default function ProjectsView({ projects = [] }: ProjectsViewProps) {
                       COMMISSIONED
                     </motion.span>
                      
-                    <motion.button 
-                      onClick={() => alert(`Reviewing technical specifications of ${project.title}`)}
-                      className="font-display text-[10px] tracking-widest font-extrabold text-[#785919] dark:text-[#eac076] hover:text-black dark:hover:text-white flex items-center gap-1 group/btn transition-colors"
-                      whileHover={{ x: 2 }}
-                    >
-                      SPEC BLUEPRINTs
-                      <motion.div
-                        animate={{ x: [0, 2, 0] }}
-                        transition={{ duration: 1.5, repeat: Infinity }}
-                      >
-                        <ArrowUpRight size={14} />
-                      </motion.div>
-                    </motion.button>
+
                   </div>
                 </div>
 

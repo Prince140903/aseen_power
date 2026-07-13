@@ -139,10 +139,7 @@ export default function ServicesView({ services = [] }: ServicesViewProps) {
                       </ul>
                     </div>
                      
-                    <div className="mt-8 pt-6 border-t border-gray-100 dark:border-[#3a3d45] flex items-center justify-between text-xs font-display font-bold text-[#785919] dark:text-[#eac076]">
-                      <span>STATUS: {service.status}</span>
-                      <span>{service.certification}</span>
-                    </div>
+
                     </div>
                   </motion.div>
                 </StaggerItem>

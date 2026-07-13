@@ -88,6 +88,7 @@ export interface Settings {
   contact_email: string;
   contact_phone: string;
   contact_address: string;
+  contact_map_url?: string;
   contact_business_registration: string;
   security_document_access_password: string;
   social_linkedin: string;
@@ -480,6 +481,7 @@ function getDefaultSettings(): Settings {
     contact_email: 'contact@aseenpower.com',
     contact_phone: '+91 22 1234 5678',
     contact_address: 'Aseen Tower, BKC Phase II, Mumbai, Maharashtra 400051 India',
+    contact_map_url: '',
     contact_business_registration: 'MH-CIV-1002-HVC',
     security_document_access_password: 'aseenpower2026',
     social_linkedin: 'https://linkedin.com/company/aseen-power',

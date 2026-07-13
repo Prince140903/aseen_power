@@ -169,24 +169,19 @@ export default function Footer({ setActiveTab, openPolicyModal, settings }: Foot
             </div>
             
             <div
-              onClick={() => handleQuickLink('contact')}
               className="group relative h-28 w-full border border-white/10 rounded-sm bg-stone-900 dark:bg-[#1a1c22] overflow-hidden flex items-center justify-center"
               id="footer-location-mini-map"
             >
-              <div className="absolute inset-0 engineering-grid opacity-[0.14] group-hover:scale-105 transition-transform duration-300 pointer-events-none" />
-              
-              <div className="absolute top-1/4 left-0 right-0 h-[1.5px] bg-secondary/15 rotate-12" />
-              <div className="absolute top-2/3 left-0 right-0 h-[1.5px] bg-secondary/15 -rotate-6" />
-              <div className="absolute top-0 bottom-0 left-1/3 w-[1.5px] bg-secondary/15 rotate-45" />
-              <div className="absolute top-0 bottom-0 left-2/3 w-[1.5px] bg-secondary/15 -rotate-12" />
-              
-              <div className="relative z-10 flex flex-col items-center">
-                <div className="w-3 h-3 bg-[#eac076] rounded-full animate-ping absolute" />
-                <div className="w-3 h-3 bg-[#785919] dark:bg-[#eac076] border border-white rounded-full relative" />
-                <span className="text-[9px] font-display font-bold tracking-widest text-[#eac076] mt-2 group-hover:text-white transition-colors">
-                  BKC HQ, MUMBAI
-                </span>
-              </div>
+              <iframe
+                src={settings.contact_map_url ? settings.contact_map_url : `https://www.google.com/maps?q=${encodeURIComponent(settings.contact_address || 'Aseen Power, Mumbai')}&t=m&z=14&output=embed`}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={false}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="opacity-90 hover:opacity-100 transition-opacity duration-300 rounded-sm"
+              />
             </div>
           </div>
 
