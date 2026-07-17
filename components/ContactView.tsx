@@ -380,34 +380,27 @@ export default function ContactView({ settings }: ContactViewProps) {
           <div className="lg:col-span-5 flex flex-col space-y-10 justify-between">
 
             {/* Headquarters Map Panel */}
-            <div className="bg-stone-950 dark:bg-[#0a0b0e] text-white rounded-lg border border-[#785919]/20 dark:border-[#eac076]/20 p-8 relative overflow-hidden h-72 shadow-xl flex flex-col justify-between">
-              <div className="absolute inset-0 engineering-grid opacity-[0.15] pointer-events-none" />
-
-              <div className="absolute top-1/3 left-0 right-0 h-[1.5px] bg-[#eac076]/20 rotate-6" />
-              <div className="absolute top-2/3 left-0 right-0 h-[1.5px] bg-[#eac076]/20 -rotate-12" />
-              <div className="absolute top-0 bottom-0 left-1/4 w-[1.5px] bg-[#eac076]/20 rotate-45" />
-              <div className="absolute top-0 bottom-0 left-3/4 w-[1.5px] bg-[#eac076]/20 -rotate-12" />
-
-              <div className="relative z-10 flex flex-col">
-                <span className="font-display text-[9px] tracking-widest font-extrabold text-[#eac076] uppercase mb-1">
+            <div className="bg-stone-950 dark:bg-[#0a0b0e] text-white rounded-lg border border-[#785919]/20 dark:border-[#eac076]/20 relative overflow-hidden h-72 shadow-xl flex flex-col justify-between p-0">
+              <iframe
+                src={settings.contact_map_url ? settings.contact_map_url : `https://www.google.com/maps?q=${encodeURIComponent(settings.contact_address || 'Aseen Power, Mumbai')}&t=m&z=14&output=embed`}
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen={false}
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              <div className="absolute bottom-4 left-4 bg-black/80 backdrop-blur-sm p-4 rounded-sm border border-white/10">
+                <span className="font-display text-[9px] tracking-widest font-extrabold text-[#eac076] uppercase mb-1 block">
                   OFFICIAL COORDINATES
                 </span>
-                <h3 className="font-display font-extrabold text-lg text-white mb-2 uppercase">
+                <h3 className="font-display font-extrabold text-sm text-white mb-1 uppercase">
                   {settings.site_title}
                 </h3>
-                <p className="font-sans text-[11px] text-gray-300 max-w-xs leading-relaxed">
+                <p className="font-sans text-[10px] text-gray-300 max-w-[200px] leading-relaxed">
                   {settings.contact_address}
                 </p>
-              </div>
-
-              <div className="relative z-10 flex items-center gap-3">
-                <span className="flex h-3 w-3 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#eac076]/40 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-[#eac076]"></span>
-                </span>
-                <span className="font-display text-xs font-bold text-white tracking-widest uppercase">
-                  MUMBAI CORPORATE HQ
-                </span>
               </div>
             </div>
 

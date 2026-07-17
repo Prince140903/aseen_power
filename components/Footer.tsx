@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { ExternalLink, Globe, Shield } from 'lucide-react';
+import { ExternalLink, Globe, Mail, Phone, Shield } from 'lucide-react';
 import type { Settings } from '@/lib/cms';
 
 interface FooterProps {
@@ -29,7 +29,7 @@ export default function Footer({ setActiveTab, openPolicyModal, settings }: Foot
 
       <div className="max-w-[1280px] mx-auto px-6 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16 pb-16 border-b border-white/10">
-           
+
           {/* Column 1: Brand Credentials */}
           <div className="lg:col-span-5 flex flex-col justify-between space-y-6">
             <div>
@@ -45,7 +45,7 @@ export default function Footer({ setActiveTab, openPolicyModal, settings }: Foot
                 {settings.footer_company_description}
               </p>
             </div>
-            
+
             {/* Social Link Badges */}
             <div className="flex items-center gap-3 pt-2">
               <button
@@ -76,7 +76,7 @@ export default function Footer({ setActiveTab, openPolicyModal, settings }: Foot
           </div>
 
           {/* Column 2: Quick Links */}
-          <div className="lg:col-span-2.5">
+          <div className="lg:col-span-2">
             <h4 className="font-display text-xs tracking-[0.2em] font-bold text-white mb-6 uppercase">
               QUICK LINKS
             </h4>
@@ -117,7 +117,7 @@ export default function Footer({ setActiveTab, openPolicyModal, settings }: Foot
           </div>
 
           {/* Column 3: Legal Policies */}
-          <div className="lg:col-span-2.5">
+          <div className="lg:col-span-2">
             <h4 className="font-display text-xs tracking-[0.2em] font-bold text-white mb-6 uppercase">
               LEGAL
             </h4>
@@ -158,30 +158,26 @@ export default function Footer({ setActiveTab, openPolicyModal, settings }: Foot
           </div>
 
           {/* Column 4: Location */}
-          <div className="lg:col-span-2 flex flex-col justify-between">
+          <div className="lg:col-span-3 flex flex-col justify-between">
             <div>
               <h4 className="font-display text-xs tracking-[0.2em] font-bold text-white mb-6 uppercase">
                 LOCATION
               </h4>
-              <p className="text-gray-400 font-sans text-xs leading-relaxed mb-4">
+              <p className="text-gray-400 font-sans text-sm leading-relaxed mb-6">
                 {settings.contact_address}
               </p>
-            </div>
-            
-            <div
-              className="group relative h-28 w-full border border-white/10 rounded-sm bg-stone-900 dark:bg-[#1a1c22] overflow-hidden flex items-center justify-center"
-              id="footer-location-mini-map"
-            >
-              <iframe
-                src={settings.contact_map_url ? settings.contact_map_url : `https://www.google.com/maps?q=${encodeURIComponent(settings.contact_address || 'Aseen Power, Mumbai')}&t=m&z=14&output=embed`}
-                width="100%"
-                height="100%"
-                style={{ border: 0 }}
-                allowFullScreen={false}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="opacity-90 hover:opacity-100 transition-opacity duration-300 rounded-sm"
-              />
+              <div className="flex items-center gap-3 mt-4 text-[#eac076]">
+                <span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
+                  <Mail size={14} />
+                </span>
+                <span className="text-sm font-semibold tracking-wide">{settings.contact_email}</span>
+              </div>
+              <div className="flex items-center gap-3 mt-4 text-[#eac076]">
+                <span className="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center flex-shrink-0">
+                  <Phone size={14} />
+                </span>
+                <span className="text-sm font-semibold tracking-wide">{settings.contact_phone}</span>
+              </div>
             </div>
           </div>
 

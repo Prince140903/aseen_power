@@ -101,7 +101,7 @@ export default function ServicesView({ services = [] }: ServicesViewProps) {
                         </motion.div>
                       </div>
                     )}
-                    <div className="p-8 sm:p-10 flex flex-col h-full justify-between">
+                    <div className="p-8 sm:p-10 flex flex-col flex-1">
                       <div>
                         {/* Icon Box */}
                         {!service.image_url && (
@@ -122,23 +122,65 @@ export default function ServicesView({ services = [] }: ServicesViewProps) {
                       </p>
 
                       {/* Features List */}
-                      <ul className="space-y-4">
-                        {service.features.map((feature, idx) => (
-                          <motion.li 
-                            key={idx} 
-                            className="flex items-start gap-3"
-                            initial={{ opacity: 0, x: -10 }}
-                            whileHover={{ x: 4 }}
-                          >
-                            <div className="w-2 h-2 rounded-none bg-[#785919] dark:bg-[#eac076] mt-2 shrink-0" />
-                            <span className="font-display text-xs lg:text-sm font-semibold text-stone-900 dark:text-[#e8e6e3] tracking-wide">
-                              {feature}
+                      {(() => {
+                        let featuresArray: string[] = [];
+                        if (Array.isArray(service.features)) {
+                          featuresArray = service.features;
+                        } else if (typeof service.features === 'string') {
+                          try {
+                            // If it was stored as a JSON string
+                            featuresArray = JSON.parse(service.features);
+                          } catch (e) {
+                            // If it's just a raw string
+                            if ((service.features as string).trim() !== '') {
+                              featuresArray = [(service.features as string).trim()];
+                            }
+                          }
+                        }
+                        
+                        console.log(`Service [${service.title}] features:`, service.features, 'Parsed as:', featuresArray);
+
+                        if (featuresArray && featuresArray.length > 0) {
+                          return (
+                            <ul className="space-y-4 mb-4">
+                              {featuresArray.map((feature, idx) => (
+                                <motion.li 
+                                  key={idx} 
+                                  className="flex items-start gap-3"
+                                  initial={{ opacity: 0, x: -10 }}
+                                  animate={{ opacity: 1, x: 0 }}
+                                  transition={{ delay: 0.1 * idx }}
+                                  whileHover={{ x: 4 }}
+                                >
+                                  <div className="w-2 h-2 rounded-none bg-[#785919] dark:bg-[#eac076] mt-2 shrink-0" />
+                                  <span className="font-display text-xs lg:text-sm font-semibold text-stone-900 dark:text-[#e8e6e3] tracking-wide">
+                                    {feature}
+                                  </span>
+                                </motion.li>
+                              ))}
+                            </ul>
+                          );
+                        }
+                        return null;
+                      })()}
+                      </div>
+                      
+                      {/* CMS Extra values space */}
+                      {((service.certification && service.certification.trim() !== '') || (service.status && service.status.trim() !== '')) && (
+                        <div className="mt-auto pt-5 border-t border-[#e9e8e7] dark:border-[#3a3d45] flex items-center justify-between">
+                          {service.certification && (
+                            <span className="font-display text-[10px] font-bold text-[#785919] dark:text-[#eac076] uppercase flex items-center gap-1.5">
+                               <CheckSquare className="w-3.5 h-3.5" />
+                               {service.certification}
                             </span>
-                          </motion.li>
-                        ))}
-                      </ul>
-                    </div>
-                     
+                          )}
+                          {service.status && (
+                            <span className="font-mono text-[9px] bg-stone-100 dark:bg-[#23252d] px-2 py-1 rounded-sm text-stone-500 dark:text-[#8b8e93] uppercase border border-stone-200 dark:border-[#3a3d45]">
+                              {service.status}
+                            </span>
+                          )}
+                        </div>
+                      )}
 
                     </div>
                   </motion.div>
