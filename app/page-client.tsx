@@ -10,20 +10,22 @@ import ProjectsView from '@/components/ProjectsView';
 import ClientsView from '@/components/ClientsView';
 import AboutView from '@/components/AboutView';
 import ContactView from '@/components/ContactView';
+import WorksView from '@/components/WorksView';
 import { ScrollProgress } from '@/components/interactions/ScrollProgress';
 import { BackToTop } from '@/components/interactions/BackToTop';
 import { X, CheckCircle, AlertCircle, Loader } from 'lucide-react';
 import { initializeEmailJS, sendQuoteEmail, validateEmail } from '@/lib/emailjs';
-import type { Service, Project, Settings } from '@/lib/cms';
+import type { Service, Project, Settings, GalleryImage } from '@/lib/cms';
 import Captcha from '@/components/Captcha';
 
 interface PageClientProps {
   services: Service[];
   projects: Project[];
   settings: Settings;
+  gallery?: GalleryImage[];
 }
 
-export default function PageClient({ services = [], projects = [], settings }: PageClientProps) {
+export default function PageClient({ services = [], projects = [], settings, gallery = [] }: PageClientProps) {
   const [activeTab, setActiveTab] = useState<string>('home');
   const [isQuoteDrawerOpen, setIsQuoteDrawerOpen] = useState(false);
   const [policyTopic, setPolicyTopic] = useState<string | null>(null);
@@ -127,6 +129,8 @@ export default function PageClient({ services = [], projects = [], settings }: P
         return <AboutView />;
       case 'contact':
         return <ContactView settings={settings} />;
+      case 'works':
+        return <WorksView gallery={gallery} />;
       default:
         return <HomeView setActiveTab={setActiveTab} onRequestQuote={() => setIsQuoteDrawerOpen(true)} settings={settings} />;
     }

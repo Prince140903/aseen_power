@@ -155,14 +155,14 @@ export default function AdminGalleryTab() {
   };
 
   if (loading) {
-    return <div className="text-center py-12 dark:text-[#b0b3b8]">Loading gallery...</div>;
+    return <div className="text-center py-12 dark:text-[#b0b3b8]">Loading works ...</div>;
   }
 
   return (
     <div className="max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h2 className="font-display font-bold text-2xl text-black dark:text-white uppercase tracking-tight mb-1">Gallery</h2>
+          <h2 className="font-display font-bold text-2xl text-black dark:text-white uppercase tracking-tight mb-1">Works</h2>
           <p className="text-sm text-gray-600 dark:text-[#b0b3b8]">Manage project photos and portfolio images</p>
         </div>
         {!isAdding && !editingId && (
@@ -186,11 +186,10 @@ export default function AdminGalleryTab() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className={`p-4 rounded-sm border flex items-center gap-2 mb-6 ${
-              message.includes('successfully')
+            className={`p-4 rounded-sm border flex items-center gap-2 mb-6 ${message.includes('successfully')
                 ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800 text-green-700 dark:text-green-400'
                 : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800 text-red-700 dark:text-red-400'
-            }`}
+              }`}
           >
             {message.includes('successfully') ? (
               <CheckCircle size={18} />

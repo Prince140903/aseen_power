@@ -43,7 +43,7 @@ export default function AdminPage() {
     e.preventDefault();
     // Use environment variable if available, otherwise fallback to hardcoded value
     const validPassword = process.env.ADMIN_PASSWORD || 'admin@aseen2026';
-    
+
     if (adminPassword === validPassword) {
       setIsAuthenticated(true);
       localStorage.setItem('adminAuth', 'true');
@@ -118,7 +118,7 @@ export default function AdminPage() {
   const tabs = [
     { id: 'services', label: 'Services', icon: Zap },
     { id: 'projects', label: 'Projects', icon: Briefcase },
-    { id: 'gallery', label: 'Gallery', icon: Image },
+    { id: 'gallery', label: 'Works', icon: Image },
     { id: 'documents', label: 'Documents', icon: FileText },
     { id: 'settings', label: 'Settings', icon: Settings }
   ];
@@ -143,11 +143,10 @@ export default function AdminPage() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`w-full text-left px-4 py-3 rounded-sm transition-all flex items-center gap-3 font-display text-sm font-semibold tracking-wide ${
-                  activeTab === tab.id
+                className={`w-full text-left px-4 py-3 rounded-sm transition-all flex items-center gap-3 font-display text-sm font-semibold tracking-wide ${activeTab === tab.id
                     ? 'bg-[#785919] text-white'
                     : 'text-gray-400 hover:text-white hover:bg-white/5'
-                }`}
+                  }`}
               >
                 <Icon size={18} />
                 {tab.label}
@@ -200,11 +199,10 @@ export default function AdminPage() {
                         setActiveTab(tab.id);
                         setIsMobileMenuOpen(false);
                       }}
-                      className={`w-full text-left px-4 py-3 rounded-sm transition-all flex items-center gap-3 font-display text-sm font-semibold ${
-                        activeTab === tab.id
+                      className={`w-full text-left px-4 py-3 rounded-sm transition-all flex items-center gap-3 font-display text-sm font-semibold ${activeTab === tab.id
                           ? 'bg-[#785919] text-white'
                           : 'text-gray-400 hover:text-white'
-                      }`}
+                        }`}
                     >
                       <Icon size={18} />
                       {tab.label}

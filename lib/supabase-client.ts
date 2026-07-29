@@ -274,7 +274,7 @@ export async function deleteProject(id: string): Promise<boolean> {
 export async function getGallery(): Promise<GalleryImage[]> {
   try {
     const { data, error } = await supabase
-      .from('gallery')
+      .from('gallery_images')
       .select('*')
       .order('order', { ascending: true });
 
@@ -289,7 +289,7 @@ export async function getGallery(): Promise<GalleryImage[]> {
 export async function createGalleryImage(image: Omit<GalleryImage, 'id' | 'created_at' | 'updated_at'>): Promise<GalleryImage | null> {
   try {
     const { data, error } = await supabase
-      .from('gallery')
+      .from('gallery_images')
       .insert([image])
       .select()
       .single();
@@ -305,7 +305,7 @@ export async function createGalleryImage(image: Omit<GalleryImage, 'id' | 'creat
 export async function updateGalleryImage(id: string, updates: Partial<GalleryImage>): Promise<GalleryImage | null> {
   try {
     const { data, error } = await supabase
-      .from('gallery')
+      .from('gallery_images')
       .update(updates)
       .eq('id', id)
       .select()
@@ -322,7 +322,7 @@ export async function updateGalleryImage(id: string, updates: Partial<GalleryIma
 export async function deleteGalleryImage(id: string): Promise<boolean> {
   try {
     const { error } = await supabase
-      .from('gallery')
+      .from('gallery_images')
       .delete()
       .eq('id', id);
 
