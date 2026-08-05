@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { Inter, IBM_Plex_Sans } from 'next/font/google';
 import './globals.css'; // Global styles
 import { ThemeProvider } from '@/components/ThemeProvider';
-import { PremiumCursor } from '@/components/interactions/PremiumCursor';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -30,7 +29,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={`${inter.variable} ${ibmPlexSans.variable}`} suppressHydrationWarning>
       <body className="bg-[#fbf9f8] dark:bg-[#0f1115] text-[#1b1c1c] dark:text-[#e8e6e3] antialiased min-h-screen transition-colors duration-300" suppressHydrationWarning>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <PremiumCursor />
           {children}
         </ThemeProvider>
       </body>

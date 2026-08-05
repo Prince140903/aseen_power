@@ -64,15 +64,7 @@ html.dark {
   color-scheme: dark;
 }
 
-/* Disable default cursor pointer globally */
-* {
-  cursor: none !important;
-}
-
-/* Allow normal cursor for inputs and textareas in admin */
-input, textarea, select {
-  cursor: text;
-}
+/* Default cursor behavior restored */
 
 /* Custom engineering blueprint/technical motifs CSS */
 .engineering-grid {

@@ -7,14 +7,14 @@ import { StaggerContainer, StaggerItem } from '@/components/animations/StaggerCo
 import { ClientsCarousel } from '@/components/ClientsCarousel';
 import type { Settings as CmsSettings } from '@/lib/cms';
 import {
-  ShieldCheck, 
-  Settings, 
-  Award, 
+  ShieldCheck,
+  Settings,
+  Award,
   ChevronLeft,
   ChevronRight,
-  Phone, 
-  Mail, 
-  CheckCircle, 
+  Phone,
+  Mail,
+  CheckCircle,
   Sparkles,
   ArrowUpRight,
   HardHat,
@@ -27,19 +27,19 @@ import {
 
 const heroSlides = [
   {
-    image: 'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&q=80&w=1800',
+    image: '/assets/slider/s1.avif',
     label: 'High-voltage transmission infrastructure'
   },
   {
-    image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&q=80&w=1800',
+    image: '/assets/slider/s2.jpeg',
     label: 'Industrial electrical engineering and commissioning'
   },
   {
-    image: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&q=80&w=1800',
+    image: '/assets/slider/s3.avif',
     label: 'Renewable power and utility-scale energy systems'
   },
   {
-    image: 'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&q=80&w=1800',
+    image: '/assets/slider/s4.avif',
     label: 'Commercial infrastructure power planning'
   }
 ];
@@ -62,7 +62,7 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
   const [formError, setFormError] = useState('');
   const [ticketId, setTicketId] = useState<number>(1000);
   const [activeHeroSlide, setActiveHeroSlide] = useState(0);
- 
+
   useEffect(() => {
     const slider = window.setInterval(() => {
       setActiveHeroSlide(prev => (prev + 1) % heroSlides.length);
@@ -108,7 +108,7 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
             />
           ))}
         </div>
-        <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-black/80 to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-stone-950 via-black/30 to-transparent z-10" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#785919]/10 dark:bg-[#eac076]/10 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-900/10 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute inset-0 engineering-grid opacity-[0.04] pointer-events-none z-10" />
@@ -120,10 +120,10 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
             transition={{ duration: 0.6 }}
             className="flex flex-col items-center"
           >
-            <span className="font-display text-xs lg:text-sm font-extrabold tracking-[0.4em] text-[#eac076] uppercase mb-4 inline-flex items-center gap-2">
+            {/* <span className="font-display text-xs lg:text-sm font-extrabold tracking-[0.4em] text-[#eac076] uppercase mb-4 inline-flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#eac076] animate-pulse" />
               INSTITUTIONAL GRADE ELECTRICAL ENGINEERING
-            </span>
+            </span> */}
             <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl text-white tracking-tight leading-[1.1] max-w-4xl mb-6">
               Powering the Future of <br className="hidden sm:inline" />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-stone-100 to-[#eac076]">Industry & Commerce.</span>
@@ -202,11 +202,11 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
               { icon: ShieldCheck, title: 'Safety & Quality', desc: 'Consulted to the highest standard with ISO certified compliance processes and 100% incident-free history.' },
             ].map((item, i) => (
               <StaggerItem key={i}>
-                <motion.div 
+                <motion.div
                   className="bg-white dark:bg-[#1a1c22] p-8 sm:p-10 rounded-lg border border-[#e9e8e7] dark:border-[#3a3d45] flex flex-col items-center text-center transition-all duration-300 shadow-sm hover:shadow-md dark:hover:shadow-lg dark:hover:shadow-black/20 hover:-translate-y-1 "
                   whileHover={{ y: -4 }}
                 >
-                  <motion.div 
+                  <motion.div
                     className="w-14 h-14 rounded-full bg-[#fbf9f8] dark:bg-[#23252d] border border-[#eac076]/30 flex items-center justify-center mb-6"
                     whileHover={{ scale: 1.1, backgroundColor: '#eac076' }}
                   >
@@ -248,7 +248,7 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
               { num: '06 / COMPREHENSIVE CARE', title: 'Maintenance & AMC', desc: 'Rigorous annual maintenance contract (AMC) scopes and 24/7 technical hotline dispatch for optimal industrial uptime.' },
             ].map((svc, i) => (
               <StaggerItem key={i}>
-                <motion.div 
+                <motion.div
                   onClick={() => { setActiveTab('services'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                   className="group bg-[#fbf9f8] dark:bg-[#23252d] p-8 rounded-lg border-l-4 border-[#785919] dark:border-[#eac076] border-t border-b border-r border-[#e9e8e7] dark:border-[#3a3d45] flex flex-col justify-between hover:bg-white dark:hover:bg-[#2a2c35] hover:border-[#785919]/50 dark:hover:border-[#eac076]/50 hover:shadow-md transition-all duration-300 "
                   whileHover={{ y: -4 }}
@@ -288,16 +288,16 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {[
-              { label: 'INDUSTRIAL PLANT, PUNE', title: 'Complete HT/LT Electrification', img: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=600' },
-              { label: 'CORPORATE OFFICE, BANGALORE', title: 'Interior Electrical & Lighting', img: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=600' },
-              { label: 'DATA CENTER, HYDERABAD', title: 'Precision Power Backup Systems', img: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=600' },
+              { label: 'INDUSTRIAL PLANT', title: 'Complete HT/LT Electrification', img: '/assets/home_projects/h1.jpeg' },
+              { label: 'CORPORATE OFFICE', title: 'Interior Electrical & Lighting', img: '/assets/home_projects/h2.jpeg' },
+              { label: 'DATA CENTER', title: 'Precision Power Backup Systems', img: '/assets/home_projects/h3.jpeg' },
             ].map((card, i) => (
-              <div 
+              <div
                 key={i}
                 onClick={() => { setActiveTab('projects'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 className="relative h-72 rounded-lg overflow-hidden group shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
               >
-                <div 
+                <div
                   className="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-300"
                   style={{ backgroundImage: `url('${card.img}')` }}
                 />
@@ -326,7 +326,7 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
               <p className="font-sans text-xs sm:text-sm md:text-base text-gray-400 leading-relaxed">
                 From initial consultation and administrative submissions to final substation commissioning and testing, we bridge the gap between architectural blueprints and absolute operational excellence.
               </p>
-              <button 
+              <button
                 onClick={() => { setActiveTab('projects'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 className="font-display text-xs tracking-widest font-bold uppercase text-[#eac076] hover:text-white mt-8 inline-flex items-center gap-2 group "
               >
