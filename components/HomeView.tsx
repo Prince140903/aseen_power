@@ -41,6 +41,10 @@ const heroSlides = [
   {
     image: '/assets/slider/s4.avif',
     label: 'Commercial infrastructure power planning'
+  },
+  {
+    image: '/assets/slider/s5.jpg',
+    label: 'Substation infrastructure'
   }
 ];
 
@@ -66,7 +70,7 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
   useEffect(() => {
     const slider = window.setInterval(() => {
       setActiveHeroSlide(prev => (prev + 1) % heroSlides.length);
-    }, 4500);
+    }, 15000);
 
     return () => window.clearInterval(slider);
   }, []);
@@ -94,7 +98,7 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
   return (
     <div className="relative" id="home-view-container">
       {/* 1. IMMERSIVE HERO SECTION */}
-      <section className="relative min-h-[85vh] flex items-center justify-center bg-stone-950 text-white overflow-hidden py-20 px-6">
+      <section className="relative min-h-[85vh] flex items-center justify-center bg-stone-950 text-white overflow-hidden py-20">
         <div className="absolute inset-0 pointer-events-none">
           {heroSlides.map((slide, index) => (
             <motion.div
@@ -113,12 +117,12 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-blue-900/10 rounded-full blur-[120px] pointer-events-none" />
         <div className="absolute inset-0 engineering-grid opacity-[0.04] pointer-events-none z-10" />
 
-        <div className="max-w-[1280px] mx-auto w-full relative z-20 flex flex-col items-center text-center">
+        <div className="max-w-[1280px] mx-auto w-full px-6 relative z-20 flex flex-col items-start text-left">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="flex flex-col items-center"
+            className="flex flex-col items-start"
           >
             {/* <span className="font-display text-xs lg:text-sm font-extrabold tracking-[0.4em] text-[#eac076] uppercase mb-4 inline-flex items-center gap-2">
               <span className="w-1.5 h-1.5 rounded-full bg-[#eac076] animate-pulse" />
@@ -151,34 +155,38 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
           </motion.div>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 z-30 flex -translate-x-1/2 items-center gap-3 rounded-full border border-white/15 bg-black/25 px-4 py-2 backdrop-blur-md">
-          <button
-            type="button"
-            aria-label="Previous hero image"
-            onClick={() => setActiveHeroSlide(prev => (prev - 1 + heroSlides.length) % heroSlides.length)}
-            className="grid h-8 w-8 place-items-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/15"
-          >
-            <ChevronLeft size={16} />
-          </button>
-          <div className="flex items-center gap-2">
-            {heroSlides.map((slide, index) => (
+        <div className="absolute bottom-8 w-full z-30">
+          <div className="max-w-[1280px] mx-auto px-6 flex">
+            <div className="flex items-center gap-3 rounded-full border border-white/15 bg-black/25 px-4 py-2 backdrop-blur-md">
               <button
-                key={slide.label}
                 type="button"
-                aria-label={`Show ${slide.label}`}
-                onClick={() => setActiveHeroSlide(index)}
-                className={`h-2 rounded-full transition-all duration-300 ${activeHeroSlide === index ? 'w-8 bg-[#eac076]' : 'w-2 bg-white/50 hover:bg-white/80'}`}
-              />
-            ))}
+                aria-label="Previous hero image"
+                onClick={() => setActiveHeroSlide(prev => (prev - 1 + heroSlides.length) % heroSlides.length)}
+                className="grid h-8 w-8 place-items-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/15"
+              >
+                <ChevronLeft size={16} />
+              </button>
+              <div className="flex items-center gap-2">
+                {heroSlides.map((slide, index) => (
+                  <button
+                    key={slide.label}
+                    type="button"
+                    aria-label={`Show ${slide.label}`}
+                    onClick={() => setActiveHeroSlide(index)}
+                    className={`h-2 rounded-full transition-all duration-300 ${activeHeroSlide === index ? 'w-8 bg-[#eac076]' : 'w-2 bg-white/50 hover:bg-white/80'}`}
+                  />
+                ))}
+              </div>
+              <button
+                type="button"
+                aria-label="Next hero image"
+                onClick={() => setActiveHeroSlide(prev => (prev + 1) % heroSlides.length)}
+                className="grid h-8 w-8 place-items-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/15"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
           </div>
-          <button
-            type="button"
-            aria-label="Next hero image"
-            onClick={() => setActiveHeroSlide(prev => (prev + 1) % heroSlides.length)}
-            className="grid h-8 w-8 place-items-center rounded-full border border-white/20 text-white transition-colors hover:bg-white/15"
-          >
-            <ChevronRight size={16} />
-          </button>
         </div>
       </section>
 

@@ -28,8 +28,8 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
   const navItems = [
     { id: 'home', label: 'HOME' },
     { id: 'services', label: 'SERVICES' },
-    { 
-      id: 'gallery', 
+    {
+      id: 'gallery',
       label: 'GALLERY',
       subItems: [
         { id: 'projects', label: 'PROJECTS' },
@@ -76,13 +76,13 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
               />
               <div className="flex flex-col items-start justify-center">
                 <motion.span
-                  className="font-display font-extrabold text-xl sm:text-2xl tracking-tighter leading-none group-hover:text-[#785919] dark:group-hover:text-[#eac076] transition-colors duration-200"
+                  className="font-display font-extrabold text-xl sm:text-2xl tracking-[0.03em] leading-none group-hover:text-[#785919] dark:group-hover:text-[#eac076] transition-colors duration-200"
                   animate={{ color: shouldShowSolidBg ? '#1b1c1c' : '#ffffff' }}
                   transition={{ duration: 0.3 }}
                 >
                   ASEEN
                 </motion.span>
-                <span className="font-display font-semibold text-xs sm:text-sm tracking-[0.3em] text-[#785919] dark:text-[#eac076] leading-none mt-1">
+                <span className="font-display font-extrabold text-xl sm:text-2xl tracking-tighter text-[#785919] dark:text-[#eac076] leading-none mt-1">
                   POWER
                 </span>
               </div>
@@ -116,9 +116,8 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
                         <button
                           key={subItem.id}
                           onClick={() => setActiveTab(subItem.id)}
-                          className={`text-left font-display text-xs font-bold tracking-widest px-4 py-3 hover:bg-stone-50 dark:hover:bg-[#23252d] transition-colors ${
-                            activeTab === subItem.id ? 'text-[#785919] dark:text-[#eac076]' : 'text-[#1b1c1c] dark:text-[#e8e6e3]'
-                          }`}
+                          className={`text-left font-display text-xs font-bold tracking-widest px-4 py-3 hover:bg-stone-50 dark:hover:bg-[#23252d] transition-colors ${activeTab === subItem.id ? 'text-[#785919] dark:text-[#eac076]' : 'text-[#1b1c1c] dark:text-[#e8e6e3]'
+                            }`}
                         >
                           {subItem.label}
                         </button>
@@ -126,30 +125,30 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
                     </div>
                   </div>
                 ) : (
-                <motion.button
-                  key={item.id}
-                  onClick={() => setActiveTab(item.id)}
-                  className="relative font-display text-xs lg:text-sm font-semibold tracking-widest py-2 transition-all duration-200"
-                  animate={{
-                    color: shouldShowSolidBg
-                      ? (activeTab === item.id ? '#1b1c1c' : '#666766')
-                      : (activeTab === item.id ? '#ffffff' : '#cccccc')
-                  }}
-                  whileHover={{
-                    color: shouldShowSolidBg ? '#1b1c1c' : '#ffffff'
-                  }}
-                  transition={{ duration: 0.2 }}
-                  id={`nav-link-${item.id}`}
-                >
-                  {item.label}
-                  {activeTab === item.id && (
-                    <motion.div
-                      layoutId="activeIndicator"
-                      className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#785919] dark:bg-[#eac076]"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                </motion.button>
+                  <motion.button
+                    key={item.id}
+                    onClick={() => setActiveTab(item.id)}
+                    className="relative font-display text-xs lg:text-sm font-semibold tracking-widest py-2 transition-all duration-200"
+                    animate={{
+                      color: shouldShowSolidBg
+                        ? (activeTab === item.id ? '#1b1c1c' : '#666766')
+                        : (activeTab === item.id ? '#ffffff' : '#cccccc')
+                    }}
+                    whileHover={{
+                      color: shouldShowSolidBg ? '#1b1c1c' : '#ffffff'
+                    }}
+                    transition={{ duration: 0.2 }}
+                    id={`nav-link-${item.id}`}
+                  >
+                    {item.label}
+                    {activeTab === item.id && (
+                      <motion.div
+                        layoutId="activeIndicator"
+                        className="absolute bottom-0 left-0 right-0 h-[2.5px] bg-[#785919] dark:bg-[#eac076]"
+                        transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                  </motion.button>
                 )
               ))}
             </nav>
@@ -228,9 +227,8 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
                             setActiveTab(subItem.id);
                             setIsMobileMenuOpen(false);
                           }}
-                          className={`text-left font-display text-xs font-bold tracking-widest py-2 transition-colors ${
-                            activeTab === subItem.id ? 'text-[#785919] dark:text-[#eac076]' : 'text-[#666766] dark:text-[#a0a2a8] hover:text-[#785919] dark:hover:text-[#eac076]'
-                          }`}
+                          className={`text-left font-display text-xs font-bold tracking-widest py-2 transition-colors ${activeTab === subItem.id ? 'text-[#785919] dark:text-[#eac076]' : 'text-[#666766] dark:text-[#a0a2a8] hover:text-[#785919] dark:hover:text-[#eac076]'
+                            }`}
                         >
                           {subItem.label}
                         </motion.button>
@@ -238,21 +236,21 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
                     </div>
                   </div>
                 ) : (
-                <motion.button
-                  key={item.id}
-                  onClick={() => {
-                    setActiveTab(item.id);
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className={`text-left font-display text-sm font-bold tracking-widest py-3 border-b border-[#f5f3f3] dark:border-[#2a2c35] last:border-b-0 transition-colors ${activeTab === item.id ? 'text-[#785919] dark:text-[#eac076] pl-2 border-l-2 border-[#785919] dark:border-[#eac076]' : 'text-[#1b1c1c] dark:text-[#e8e6e3] hover:text-[#785919] dark:hover:text-[#eac076]'
-                    }`}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.05 }}
-                  id={`mobile-nav-link-${item.id}`}
-                >
-                  {item.label}
-                </motion.button>
+                  <motion.button
+                    key={item.id}
+                    onClick={() => {
+                      setActiveTab(item.id);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className={`text-left font-display text-sm font-bold tracking-widest py-3 border-b border-[#f5f3f3] dark:border-[#2a2c35] last:border-b-0 transition-colors ${activeTab === item.id ? 'text-[#785919] dark:text-[#eac076] pl-2 border-l-2 border-[#785919] dark:border-[#eac076]' : 'text-[#1b1c1c] dark:text-[#e8e6e3] hover:text-[#785919] dark:hover:text-[#eac076]'
+                      }`}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: idx * 0.05 }}
+                    id={`mobile-nav-link-${item.id}`}
+                  >
+                    {item.label}
+                  </motion.button>
                 )
               ))}
               <motion.button
