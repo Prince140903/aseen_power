@@ -288,7 +288,7 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {[
-              { label: 'INDUSTRIAL PLANT', title: 'Complete HT/LT Electrification', img: '/assets/home_projects/h1.jpeg' },
+              { label: 'test', title: 'Complete HT/LT Electrification', img: '/assets/home_projects/h1.jpeg' },
               { label: 'CORPORATE OFFICE', title: 'Interior Electrical & Lighting', img: '/assets/home_projects/h2.jpeg' },
               { label: 'DATA CENTER', title: 'Precision Power Backup Systems', img: '/assets/home_projects/h3.jpeg' },
             ].map((card, i) => (
