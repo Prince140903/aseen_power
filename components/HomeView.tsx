@@ -130,7 +130,7 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
             </span> */}
             <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl text-white tracking-tight leading-[1.1] max-w-4xl mb-6">
               Powering the Future of <br className="hidden sm:inline" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-stone-100 to-[#eac076]">Industry & Commerce.</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-stone-100 to-[#eac076]">Residential, Commercial & Industrial Sector.</span>
             </h1>
             <p className="font-sans text-sm sm:text-base md:text-lg text-gray-300 max-w-2xl leading-relaxed mb-10">
               {settings.site_description}

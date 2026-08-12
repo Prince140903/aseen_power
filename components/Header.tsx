@@ -82,9 +82,12 @@ export default function Header({ activeTab, setActiveTab, onRequestQuote }: Head
                 >
                   ASEEN
                 </motion.span>
-                <span className="font-display font-extrabold text-xl sm:text-2xl tracking-tighter text-[#785919] dark:text-[#eac076] leading-none mt-1">
+                <motion.span className="font-display font-extrabold text-xl sm:text-2xl tracking-tighter text-[#785919] dark:text-[#eac076] leading-none mt-1 duration-200"
+                  animate={{ color: shouldShowSolidBg ? '#1b1c1c' : '#ffffff' }}
+                  transition={{ duration: 0.3 }}
+                >
                   POWER
-                </span>
+                </motion.span>
               </div>
             </motion.button>
 
