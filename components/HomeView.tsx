@@ -31,15 +31,15 @@ const heroSlides = [
     label: 'High-voltage transmission infrastructure'
   },
   {
-    image: '/assets/slider/s2.jpeg',
+    image: '/assets/slider/solar.jpg',
     label: 'Industrial electrical engineering and commissioning'
   },
   {
-    image: '/assets/slider/s3.avif',
+    image: '/assets/slider/skyline.jpg',
     label: 'Renewable power and utility-scale energy systems'
   },
   {
-    image: '/assets/slider/s4.avif',
+    image: '/assets/slider/mall.jpg',
     label: 'Commercial infrastructure power planning'
   },
   {
