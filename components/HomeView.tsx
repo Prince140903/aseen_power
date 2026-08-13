@@ -297,8 +297,8 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {[
               { label: 'High Rise Residential Complex', title: 'Complete HT/LT Electrification', img: '/assets/home_projects/h1.jpeg' },
-              { label: 'HT/ST Substation', title: 'Interior Electrical & Lighting', img: '/assets/home_projects/h2.jpeg' },
-              { label: 'Power Panels for Commercial Complex', title: 'Precision Power Backup Systems', img: '/assets/home_projects/h3.jpeg' },
+              { label: 'HT/ST Substation', title: ' Critical Electrical Infrastructure', img: '/assets/home_projects/h2.jpeg' },
+              { label: 'Power Panels - Power Control Centers (PCC), Motor Control Centers (MCC)', title: 'Design, Manufacture & Install', img: '/assets/home_projects/h3.jpeg' },
             ].map((card, i) => (
               <div
                 key={i}
