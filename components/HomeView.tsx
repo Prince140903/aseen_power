@@ -298,7 +298,7 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
             {[
               { label: 'High Rise Residential Complex', title: 'Complete HT/LT Electrification', img: '/assets/home_projects/h1.jpeg' },
               { label: 'HT/ST Substation', title: ' Critical Electrical Infrastructure', img: '/assets/home_projects/h2.jpeg' },
-              { label: 'Power Panels - Power Control Centers (PCC), Motor Control Centers (MCC)', title: 'Design, Manufacture & Install', img: '/assets/home_projects/h3.jpeg' },
+              { label: 'Power Panels', title: 'Design, Manufacture & Install', img: '/assets/home_projects/h3.jpeg' },
             ].map((card, i) => (
               <div
                 key={i}
