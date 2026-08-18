@@ -39,7 +39,7 @@ const heroSlides = [
     label: 'Renewable power and utility-scale energy systems'
   },
   {
-    image: '/assets/slider/mall.jpg',
+    image: '/assets/slider/Thane.png',
     label: 'Commercial infrastructure power planning'
   },
   {
