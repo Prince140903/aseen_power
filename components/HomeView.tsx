@@ -24,6 +24,10 @@ import {
   Calendar,
   Layers
 } from 'lucide-react';
+import { initializeEmailJS, sendContactEmail, validateEmail } from '@/lib/emailjs';
+import Captcha from '@/components/Captcha';
+
+
 
 const heroSlides = [
   {
@@ -63,9 +67,13 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
     message: ''
   });
   const [formSubmitted, setFormSubmitted] = useState(false);
+  const [formLoading, setFormLoading] = useState(false);
   const [formError, setFormError] = useState('');
   const [ticketId, setTicketId] = useState<number>(1000);
   const [activeHeroSlide, setActiveHeroSlide] = useState(0);
+  const [captchaVerified, setCaptchaVerified] = useState(false);
+  const [captchaKey, setCaptchaKey] = useState(0);
+
 
   useEffect(() => {
     const slider = window.setInterval(() => {
@@ -75,25 +83,85 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
     return () => window.clearInterval(slider);
   }, []);
 
+  useEffect(() => {
+    initializeEmailJS();
+  }, []);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    if (formError) setFormError('');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.fullName || !formData.emailAddress || !formData.message) {
-      setFormError('Please fill out all required fields.');
+    setFormError('');
+
+    if (!formData.fullName.trim()) {
+      setFormError('Please enter your full name');
       return;
     }
-    setFormError('');
-    setTicketId(Math.floor(1000 + Math.random() * 9000));
-    setFormSubmitted(true);
-    setTimeout(() => {
-      setFormSubmitted(false);
-      setFormData({ fullName: '', company: '', emailAddress: '', message: '' });
-    }, 5500);
+
+    if (!validateEmail(formData.emailAddress)) {
+      setFormError('Please enter a valid email address');
+      return;
+    }
+
+    if (!formData.message.trim() || formData.message.trim().length < 10) {
+      setFormError('Please provide details (at least 10 characters)');
+      return;
+    }
+
+    if (!captchaVerified) {
+      setFormError('Please complete the security verification before submitting');
+      return;
+    }
+
+    setFormLoading(true);
+
+
+    try {
+      // Normalize values for sendContactEmail
+      const submissionData = {
+        fullName: formData.fullName,
+        company: formData.company || 'Not provided',
+        emailAddress: formData.emailAddress,
+        phone: 'Not provided',
+        projectCategory: 'Home Form Contact Inquiry',
+        urgency: 'Standard',
+        message: formData.message
+      };
+
+      const emailSent = await sendContactEmail(submissionData);
+
+      if (!emailSent) {
+        setFormError('Failed to send message. Please try again or contact us directly.');
+        return;
+      }
+
+      await fetch('/api/forms/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(submissionData)
+      }).catch(err => console.error('Backend logging failed:', err));
+
+      setTicketId(Math.floor(1000 + Math.random() * 9000));
+      setFormSubmitted(true);
+      setTimeout(() => {
+        setFormSubmitted(false);
+        setFormData({ fullName: '', company: '', emailAddress: '', message: '' });
+        setCaptchaVerified(false);
+        setCaptchaKey(prev => prev + 1);
+      }, 5500);
+    } catch (err) {
+
+      console.error('Error submitting contact form:', err);
+      setFormError('An unexpected error occurred. Please try again.');
+    } finally {
+      setFormLoading(false);
+    }
   };
+
 
   return (
     <div className="relative" id="home-view-container">
@@ -422,9 +490,22 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
                     <label htmlFor="message" className="font-display text-[10px] tracking-widest font-extrabold text-[#444748] dark:text-[#b0b3b8] uppercase mb-2">MESSAGE *</label>
                     <textarea id="message" name="message" value={formData.message} onChange={handleInputChange} placeholder="Tell us about your project requirements..." required rows={4} className="w-full bg-white dark:bg-[#1a1c22] border border-[#c4c7c7] dark:border-[#3a3d45] focus:border-[#785919] dark:focus:border-[#eac076] focus:outline-none rounded-sm px-4 py-3 font-sans text-sm text-black dark:text-white placeholder:text-gray-400 dark:placeholder:text-[#8b8e93] resize-none transition-colors" />
                   </div>
-                  <button type="submit" className="w-full bg-[#1b1c1c] dark:bg-[#2a2c35] hover:bg-[#785919] dark:hover:bg-[#eac076] dark:hover:text-black text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 " id="lead-submit-btn">
-                    GET A CONSULTATION
+                  <Captcha
+                    key={captchaKey}
+                    onVerify={setCaptchaVerified}
+                    disabled={formLoading}
+                    id="home-captcha"
+                  />
+                  <button
+                    type="submit"
+                    disabled={formLoading || !captchaVerified}
+                    className="w-full bg-[#1b1c1c] dark:bg-[#2a2c35] hover:bg-[#785919] dark:hover:bg-[#eac076] dark:hover:text-black text-white font-display text-xs tracking-widest font-bold uppercase py-4 rounded-sm transition-all duration-300 shadow-md hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#1b1c1c] dark:disabled:hover:bg-[#2a2c35] dark:disabled:hover:text-white"
+                    id="lead-submit-btn"
+                  >
+                    {formLoading ? 'SENDING...' : 'GET A CONSULTATION'}
                   </button>
+
+
                 </form>
               )}
             </div>
