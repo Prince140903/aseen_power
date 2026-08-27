@@ -35,15 +35,15 @@ const heroSlides = [
     label: 'High-voltage transmission infrastructure'
   },
   {
-    image: '/assets/slider/s2.jpeg',
+    image: '/assets/slider/solar.jpg',
     label: 'Industrial electrical engineering and commissioning'
   },
   {
-    image: '/assets/slider/s3.avif',
+    image: '/assets/slider/skyline.jpg',
     label: 'Renewable power and utility-scale energy systems'
   },
   {
-    image: '/assets/slider/s4.avif',
+    image: '/assets/slider/Thane.png',
     label: 'Commercial infrastructure power planning'
   },
   {
@@ -364,9 +364,9 @@ export default function HomeView({ setActiveTab, onRequestQuote, settings }: Hom
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {[
-              { label: 'test', title: 'Complete HT/LT Electrification', img: '/assets/home_projects/h1.jpeg' },
-              { label: 'CORPORATE OFFICE', title: 'Interior Electrical & Lighting', img: '/assets/home_projects/h2.jpeg' },
-              { label: 'DATA CENTER', title: 'Precision Power Backup Systems', img: '/assets/home_projects/h3.jpeg' },
+              { label: 'High Rise Residential Complex', title: 'Complete HT/LT Electrification', img: '/assets/home_projects/h1.jpeg' },
+              { label: 'HT/ST Substation', title: ' Critical Electrical Infrastructure', img: '/assets/home_projects/h2.jpeg' },
+              { label: 'Power Panels', title: 'Design, Manufacture & Install', img: '/assets/home_projects/h3.jpeg' },
             ].map((card, i) => (
               <div
                 key={i}
