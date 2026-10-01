@@ -54,6 +54,14 @@ A full-stack, production-ready corporate/business website featuring a custom Con
 | Admin Panel | `/admin` | CMS for managing all content |
 | Documents Portal | `/documents` | Protected file downloads for clients |
 
+##Screenshots
+
+<img width="1903" height="939" alt="image" src="https://github.com/user-attachments/assets/6ad6a469-3ffa-4f33-ae46-aba6fd91648d" />
+
+<img width="1903" height="992" alt="image" src="https://github.com/user-attachments/assets/b60d10b1-909d-40f3-a215-f4b0f4746b22" />
+
+
+
 ## License
 
 Proprietary — All rights reserved.
